@@ -1,12 +1,3 @@
+import { quicktype, InputData, JSONSchemaInput, CSharpTargetLanguage } from 'quicktype-core';
 
-import {
-  quicktype,
-  InputData,
-  JSONSchemaInput,
-  CSharpTargetLanguage,
-} from "quicktype-core";
-
-
-export function requestAdaptorGenerator() {
-
-}
+export function requestAdaptorGenerator() {}
