@@ -1,11 +1,12 @@
 {
-	"name": "request-adaptor-generator",
+	"name": "request-adaptor-generator-core",
 	"version": "1.0.0",
 	"description": "> TODO: description",
 	"author": "向家祥 <xjiaxiang_86@163.com>",
 	"homepage": "https://github.com/x-ideas/code-generator#readme",
 	"license": "ISC",
-	"main": "lib/request-adaptor-generator.ts",
+  "main": "lib/core.ts",
+  "typings": "lib/core.ts",
 	"directories": {
 		"lib": "lib",
 		"test": "__tests__"
