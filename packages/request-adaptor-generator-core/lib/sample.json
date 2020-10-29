@@ -1,0 +1,14 @@
+{
+  "name": "How To Live Forever",
+  "artist": {
+    "name": "Michael Forrest",
+    "founded": 1982,
+    "members": ["Michael Forrest"]
+  },
+  "tracks": [
+    {
+      "name": "Get Connected",
+      "duration": 208
+    }
+  ]
+}
