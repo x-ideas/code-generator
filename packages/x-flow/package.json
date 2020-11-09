@@ -1,0 +1,30 @@
+{
+  "name": "x-flow",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "向家祥 <xjiaxiang_86@163.com>",
+  "homepage": "https://github.com/x-ideas/code-generator#readme",
+  "license": "ISC",
+  "main": "lib/xFlow.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/x-ideas/code-generator.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/x-ideas/code-generator/issues"
+  },
+  "dependencies": {
+    "cross-fetch": "^3.0.6",
+    "openapi-types": "^7.0.1"
+  }
+}
