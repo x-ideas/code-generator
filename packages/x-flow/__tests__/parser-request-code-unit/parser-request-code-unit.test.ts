@@ -8,7 +8,7 @@ import { ParseRequestCodeFlowUnit } from '../../lib/concreate-units/parse-reques
 import OpenAPIData from './openAPI.json';
 
 describe('测试ParseRequestCodeFlowUnit', () => {
-  it('解析3610401', async () => {
+  it('解析3610401(存在)', async () => {
     const prcfu = new ParseRequestCodeFlowUnit();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -123,5 +123,12 @@ describe('测试ParseRequestCodeFlowUnit', () => {
         },
       },
     });
+  });
+
+  it('解析876544(不存在)', async () => {
+    const prcfu = new ParseRequestCodeFlowUnit();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    expect(prcfu.doWork(['876544', OpenAPIData])).rejects.toBeInstanceOf(Error);
   });
 });
