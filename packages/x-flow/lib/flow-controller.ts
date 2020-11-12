@@ -18,11 +18,14 @@ export class XFlowController {
     this._units = [];
   }
 
-  run(): void {
-    const data = {};
+  addUnit(unit: XFlowUnit): void {
+    this._units.push(unit);
+  }
 
-    const final = compose(this._units.map(unit => unit.doWork));
+  async run(data?: any): Promise<any> {
+    const final = compose(this._units.map(unit => unit.doWork.bind(unit)));
 
-    final(data);
+    const result = final(data);
+    return result;
   }
 }

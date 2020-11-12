@@ -144,7 +144,7 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
   }
 
   /**
-   *
+   * 找到definition中的相关连的定义
    * @private
    * @param {OpenAPIV2.SchemaObject} def
    * @param {OpenAPIV2.DefinitionsObject} definitions
@@ -176,6 +176,24 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
 
       this.findRelatedDefinitionRefsFromDefinition(property, definitions, results);
     }
+  }
+
+  /**
+   * 删除属性中的allowEmptyValue
+   * 这是因为我们项目中的swagger文档不符合规范
+   * @private
+   * @param {OpenAPIV2.SchemaObject} def
+   * @returns {OpenAPIV2.SchemaObject}
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _filterDefinitionItemProperty(def: OpenAPIV2.SchemaObject): OpenAPIV2.SchemaObject {
+    Reflect.deleteProperty(def, 'allowEmptyValue');
+
+    for (const prop of Object.values(def.properties ?? {})) {
+      this._filterDefinitionItemProperty(prop);
+    }
+
+    return def;
   }
 
   async doWork(params: [string, OpenAPIV2.Document]): Promise<OpenAPIV2.Document> {
@@ -214,7 +232,7 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
         })
       ) {
         const def = (doc.definitions ?? {})[defKey];
-        definitions[defKey] = def;
+        definitions[defKey] = this._filterDefinitionItemProperty(def);
 
         this.findRelatedDefinitionRefsFromDefinition(def, doc.definitions ?? {}, modelRefs);
       }
@@ -231,7 +249,7 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
         })
       ) {
         const def = (doc.definitions ?? {})[defKey];
-        definitions[defKey] = def;
+        definitions[defKey] = this._filterDefinitionItemProperty(def);
       }
     }
 
