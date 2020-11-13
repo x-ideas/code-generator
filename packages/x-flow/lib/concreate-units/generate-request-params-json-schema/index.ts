@@ -48,6 +48,9 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
           type: parameter.type,
           description: parameter.description ?? '',
         };
+
+      default:
+        return {};
     }
   }
 

@@ -30,6 +30,6 @@ describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
     fc.addUnit(frpUnit);
 
     const result: OpenAPIV2.Document = await fc.run();
-    console.log(result);
+    // console.log(result);
   });
 });
