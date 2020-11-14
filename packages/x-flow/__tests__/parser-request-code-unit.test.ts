@@ -8,7 +8,7 @@ import { ParseRequestCodeFlowUnit } from '../lib/concreate-units/parse-request-c
 import OpenAPIData from './assets/openAPI.json';
 
 describe('测试ParseRequestCodeFlowUnit', () => {
-  it('解析3610401(存在)', async () => {
+  it('解析3610401-存在', async () => {
     const prcfu = new ParseRequestCodeFlowUnit();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -128,5 +128,20 @@ describe('测试ParseRequestCodeFlowUnit', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     expect(prcfu.doWork(['876544', OpenAPIData])).rejects.toBeInstanceOf(Error);
+  });
+
+  it('解析3610116', async () => {
+    const prcfu = new ParseRequestCodeFlowUnit();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    expect(prcfu.doWork(['3610116', OpenAPIData])).rejects.toBeInstanceOf(Error);
+  });
+
+  it('解析3610116', async () => {
+    const prcfu = new ParseRequestCodeFlowUnit();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const result = await prcfu.doWork(['3610116', OpenAPIData]);
+    console.log(result);
   });
 });

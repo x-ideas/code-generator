@@ -23,8 +23,20 @@ function isResponseRefObject(obj?: OpenAPIV2.ReferenceObject | OpenAPIV2.Respons
   return !!obj?.$ref;
 }
 
+function isInBodyParameterObject(obj: OpenAPIV2.Parameter): obj is OpenAPIV2.InBodyParameterObject {
+  return obj.in === 'body';
+}
+
 export class ParseRequestCodeFlowUnit extends XFlowUnit {
-  private findPath(code: string, doc: OpenAPIV2.Document): OpenAPIV2.PathsObject | undefined {
+  /**
+   * 根据code找到对应的path对象
+   * @private
+   * @param {string} code
+   * @param {OpenAPIV2.Document} doc
+   * @returns {(OpenAPIV2.PathsObject | undefined)}
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private findRequestPathObject(code: string, doc: OpenAPIV2.Document): OpenAPIV2.PathsObject | undefined {
     const reg = new RegExp(code);
     for (const pathKey of Object.keys(doc.paths)) {
       const pathInfo = doc.paths[pathKey];
@@ -44,10 +56,10 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
         };
       }
 
-      if ((pathInfo as OpenAPIV2.PathItemObject).del?.summary?.match(reg)) {
+      if ((pathInfo as OpenAPIV2.PathItemObject).delete?.summary?.match(reg)) {
         return {
           [pathKey]: {
-            del: (pathInfo as OpenAPIV2.PathItemObject).del,
+            delete: (pathInfo as OpenAPIV2.PathItemObject).delete,
           },
         };
       }
@@ -81,8 +93,8 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
         return obj.post;
       }
 
-      if (obj.del) {
-        return obj.del;
+      if (obj.delete) {
+        return obj.delete;
       }
 
       if (obj.put) {
@@ -93,15 +105,206 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
     return undefined;
   }
 
+  //#region 寻找Ref
+  /******************** 寻找ref START *****************/
+
+  /**
+   * 是否是相对的ref
+   * @private
+   * @param {string} ref
+   * @returns {boolean}
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _isRelativeRef(ref: string): boolean {
+    return ref.startsWith('#');
+  }
+
+  /**
+   * 找到相对ref对应的schema对象
+   * @private
+   * @param {string} ref
+   * @param {OpenAPIV2.DefinitionsObject} [definitions={}]
+   * @returns {(OpenAPIV2.SchemaObject | undefined)}
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _findRelativeRefSchema(ref: string, definitions: OpenAPIV2.DefinitionsObject = {}): OpenAPIV2.SchemaObject | undefined {
+    const elements = ref.split('/');
+    const key = elements.length > 0 ? elements[elements.length - 1] : '';
+
+    return definitions[key];
+  }
+
+  /**
+   * 找到properties中的ref链接
+   * @private
+   * @param {{ [name: string]: OpenAPIV2.SchemaObject }} properties
+   * @param {string[]} results
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _findRefFromProperties(
+    properties: { [name: string]: OpenAPIV2.SchemaObject },
+    results: string[],
+    definitions: OpenAPIV2.DefinitionsObject = {}
+  ): void {
+    const values = Object.values(properties);
+
+    for (const value of values) {
+      this._findRefFromSchemaObject(value, results, definitions);
+    }
+  }
+
+  /**
+   * 从ItemObject中解析出ref
+   * @private
+   * @param {OpenAPIV2.ItemsObject} itemObj
+   * @param {string[]} results
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _findRefFromItemObject(itemObj: OpenAPIV2.ItemsObject, results: string[], definitions: OpenAPIV2.DefinitionsObject = {}): void {
+    if (itemObj.$ref) {
+      if (!results.includes(itemObj.$ref)) {
+        results.push(itemObj.$ref);
+        // 找到ref对应的schema
+        this._interaterDealWithRef(itemObj.$ref, definitions, results);
+      }
+    }
+
+    if (itemObj.items) {
+      this._findRefFromItemObject(itemObj.items, results, definitions);
+    }
+  }
+
+  /**
+   * 从ref中找到对应的schema，然后继续迭代查找ref
+   * @private
+   * @param {OpenAPIV2.ItemsObject} itemObj
+   * @param {OpenAPIV2.DefinitionsObject} definitions
+   * @param {string[]} results
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _interaterDealWithRef(ref: string, definitions: OpenAPIV2.DefinitionsObject, results: string[]) {
+    if (this._isRelativeRef(ref)) {
+      const schemaObj = this._findRelativeRefSchema(ref, definitions);
+      if (schemaObj) {
+        this._findRefFromSchemaObject(schemaObj, results, definitions);
+      } else {
+        console.error(`没有找到 ${ref} 对应的schema`);
+      }
+    }
+  }
+
+  private _findRefFromSchema(schema: OpenAPIV2.Schema, results: string[], definitions: OpenAPIV2.DefinitionsObject = {}): void {
+    if (isSchemaRefObject(schema)) {
+      results.push(schema.$ref);
+      // 找到ref对应的schema
+      this._interaterDealWithRef(schema.$ref, definitions, results);
+    } else {
+      this._findRefFromSchemaObject(schema, results, definitions);
+    }
+  }
+
+  /**
+   * 找到schema object中的ref链接
+   * @private
+   * @param {OpenAPIV2.SchemaObject} schemaObj
+   * @param {string[]} results
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _findRefFromSchemaObject(schemaObj: OpenAPIV2.SchemaObject, results: string[], definitions: OpenAPIV2.DefinitionsObject = {}): void {
+    // NOTE: 这是是我们swagger文档添加的
+    if (schemaObj.$ref) {
+      if (!results.includes(schemaObj.$ref)) {
+        results.push(schemaObj.$ref);
+        // 找到ref对应的schema
+        this._interaterDealWithRef(schemaObj.$ref, definitions, results);
+      }
+    }
+
+    if (schemaObj.items) {
+      this._findRefFromItemObject(schemaObj.items, results, definitions);
+    }
+
+    this._findRefFromProperties(schemaObj.properties ?? {}, results, definitions);
+  }
+
+  /**
+   * 寻找参数中的ref
+   * @private
+   * @param {OpenAPIV2.Parameters} parameters
+   * @param {string[]} results
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _findRefFromParameters(parameters: OpenAPIV2.Parameters, results: string[], definitions: OpenAPIV2.DefinitionsObject = {}): void {
+    for (const par of parameters) {
+      if (isParamsRefObject(par)) {
+        if (!results.includes(par.$ref)) {
+          results.push(par.$ref);
+          // 找到ref对应的schema
+          this._interaterDealWithRef(par.$ref, definitions, results);
+        }
+      } else {
+        this._findRefFromParameter(par, results, definitions);
+      }
+    }
+  }
+
+  /**
+   * 在具体的参数对象中ref
+   * @private
+   * @param {OpenAPIV2.Parameter} parameter
+   * @param {string[]} results
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _findRefFromParameter(parameter: OpenAPIV2.Parameter, results: string[], definitions: OpenAPIV2.DefinitionsObject = {}): void {
+    if (isInBodyParameterObject(parameter)) {
+      // In body parameter
+      if (parameter.schema.$ref) {
+        if (!results.includes(parameter.schema.$ref)) {
+          results.push(parameter.schema.$ref);
+          // 找到ref对应的schema
+          this._interaterDealWithRef(parameter.schema.$ref, definitions, results);
+        }
+      }
+    } else {
+      // 此时parameter继承ItemObject
+      this._findRefFromItemObject(parameter, results, definitions);
+    }
+  }
+
+  /**
+   * 从response中解析出ref
+   * @private
+   * @param {OpenAPIV2.Response} response
+   * @param {string[]} results
+   * @memberof ParseRequestCodeFlowUnit
+   */
+  private _findRefFromResponse(response: OpenAPIV2.Response, results: string[], definitions: OpenAPIV2.DefinitionsObject = {}): void {
+    if (isResponseRefObject(response)) {
+      if (!results.includes(response.$ref)) {
+        results.push(response.$ref);
+        // 找到ref对应的schema
+        this._interaterDealWithRef(response.$ref, definitions, results);
+      }
+    } else {
+      if (response.schema) {
+        this._findRefFromSchema(response.schema, results, definitions);
+      }
+    }
+  }
+
+  /******************** 寻找ref END *****************/
+  //#endregion
+
   /**
    * 从path中找到相关的ref(绝对/相对)
    * 包含参数和响应部分
    * 通过这些ref，去过滤json API中definitions中的定义
    * @param {OpenAPIV2.OperationObject} path
+   * @param {OpenAPIV2.DefinitionsObject} definitions 所有的定义
    * @returns {string[]}
    * @memberof ParseRequestCodeFlowUnit
    */
-  private findRelatedDefinitionsRefs(path?: OpenAPIV2.OperationObject): string[] {
+  private findRelatedDefinitionsRefs(path?: OpenAPIV2.OperationObject, definitions: OpenAPIV2.DefinitionsObject = {}): string[] {
     if (!path) {
       throw new Error('path路径不存在');
     }
@@ -110,72 +313,16 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
     // 参数
     const params = path.parameters;
     if (params) {
-      for (const par of params) {
-        if (isParamsRefObject(par)) {
-          refs.push(par.$ref);
-        } else {
-          if (isSchemaRefObject(par.schema)) {
-            refs.push(par.schema.$ref);
-          } else {
-            // 剩下的就是Shema了
-            // 不做处理
-          }
-        }
-      }
+      this._findRefFromParameters(params, refs, definitions);
     }
 
     // 响应
     if (path.responses['200']) {
       const successResponse = path.responses['200'] as OpenAPIV2.Response;
-
-      if (isResponseRefObject(successResponse)) {
-        refs.push(successResponse.$ref);
-      } else {
-        if (isSchemaRefObject(successResponse.schema)) {
-          refs.push(successResponse.schema.$ref);
-        } else {
-          // 剩下的就是Shema了
-          // 不做处理
-        }
-      }
+      this._findRefFromResponse(successResponse, refs, definitions);
     }
 
     return refs;
-  }
-
-  /**
-   * 找到definition中的相关连的定义
-   * @private
-   * @param {OpenAPIV2.SchemaObject} def
-   * @param {OpenAPIV2.DefinitionsObject} definitions
-   * @returns {string[]}
-   * @memberof ParseRequestCodeFlowUnit
-   */
-  private findRelatedDefinitionRefsFromDefinition(def: OpenAPIV2.SchemaObject, definitions: OpenAPIV2.DefinitionsObject, results: string[]): void {
-    function parseItems(res: string[], item?: OpenAPIV2.ItemsObject) {
-      if (item?.$ref) {
-        res.push(item.$ref);
-      }
-
-      if (item?.type === 'array') {
-        const items = item.items as OpenAPIV2.ItemsObject;
-        parseItems(res, items);
-      }
-    }
-
-    const properties = def.properties ?? {};
-
-    for (const property of Object.values(properties)) {
-      if (property.$ref) {
-        results.push(property.$ref);
-        continue;
-      }
-
-      // 解析items
-      parseItems(results, property.items);
-
-      this.findRelatedDefinitionRefsFromDefinition(property, definitions, results);
-    }
   }
 
   /**
@@ -201,7 +348,7 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
     const code = params[0];
     const doc = params[1];
 
-    const path = this.findPath(code, doc);
+    const path = this.findRequestPathObject(code, doc);
     if (!path) {
       throw Error(`没有找到code[${code}]对应的path信息`);
     }
@@ -213,14 +360,11 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
     if (!pathOperationObj) {
       throw Error('path路径下边没有找到对应operation对象');
     }
-    const relativeRefs = this.findRelatedDefinitionsRefs(pathOperationObj).filter(ref => {
+    const relativeRefs = this.findRelatedDefinitionsRefs(pathOperationObj, doc.definitions ?? {}).filter(ref => {
       // 只找出相对ref
       return ref.startsWith('#');
     });
 
-    // model中带的refs
-    // eslint-disable-next-line prefer-const
-    let modelRefs: string[] = [];
     // 过滤doc的definitions
     for (const defKey of Object.keys(doc.definitions ?? {})) {
       if (
@@ -234,24 +378,27 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
         const def = (doc.definitions ?? {})[defKey];
         definitions[defKey] = this._filterDefinitionItemProperty(def);
 
-        this.findRelatedDefinitionRefsFromDefinition(def, doc.definitions ?? {}, modelRefs);
+        // this._findRefFromSchemaObject(def, modelRefs);
       }
     }
 
     // model中带入的def
-    for (const defKey of Object.keys(doc.definitions ?? {})) {
-      if (
-        modelRefs.find(rref => {
-          const elements = rref.split('/');
-          const lastElement = elements.length > 0 ? elements[elements.length - 1] : '';
+    // for (const defKey of Object.keys(doc.definitions ?? {})) {
+    //   if (
+    //     modelRefs.find(rref => {
+    //       const elements = rref.split('/');
+    //       const lastElement = elements.length > 0 ? elements[elements.length - 1] : '';
 
-          return lastElement === defKey;
-        })
-      ) {
-        const def = (doc.definitions ?? {})[defKey];
-        definitions[defKey] = this._filterDefinitionItemProperty(def);
-      }
-    }
+    //       return lastElement === defKey;
+    //     })
+    //   ) {
+    //     const def = (doc.definitions ?? {})[defKey];
+
+    //     definitions[defKey] = this._filterDefinitionItemProperty(def);
+
+    //     this._findRefFromSchemaObject(def, modelRefs);
+    //   }
+    // }
 
     return {
       swagger: doc.swagger,
