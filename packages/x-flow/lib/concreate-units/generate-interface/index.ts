@@ -31,7 +31,8 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
     const inputData = new InputData();
 
     // TODO: 名字
-    const source = { name: 'IGenerated', schema: JSON.stringify(jsonSchema) };
+
+    const source = { name: this.#options.nicePropertyName ? 'IBGeneratedInfo' : 'IFGeneratedInfo', schema: JSON.stringify(jsonSchema) };
     inputData.addSource('schema', source, () => new JSONSchemaInput(undefined));
 
     const { lines } = await quicktype({
