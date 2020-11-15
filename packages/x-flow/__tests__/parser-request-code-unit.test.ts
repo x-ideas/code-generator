@@ -123,25 +123,35 @@ describe('测试ParseRequestCodeFlowUnit', () => {
     });
   });
 
-  it('解析876544(不存在)', async () => {
+  it('解析876544-code不存在', async () => {
     const prcfu = new ParseRequestCodeFlowUnit();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     expect(prcfu.doWork(['876544', OpenAPIData])).rejects.toBeInstanceOf(Error);
   });
 
-  it('解析3610116', async () => {
-    const prcfu = new ParseRequestCodeFlowUnit();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    expect(prcfu.doWork(['3610116', OpenAPIData])).rejects.toBeInstanceOf(Error);
-  });
-
-  it('解析3610116', async () => {
+  it('解析3610116-循环code', async () => {
     const prcfu = new ParseRequestCodeFlowUnit();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const result = await prcfu.doWork(['3610116', OpenAPIData]);
-    console.log(result);
+
+    expect(Object.keys(result.definitions ?? {}).length).toBe(12);
+    expect(Object.keys(result.definitions ?? {})).toEqual(
+      expect.arrayContaining([
+        'DepotReplenishDraftVO',
+        'DepotReplenishOrderBatchDTO',
+        'DepotReplenishOrderBatchStoreCardDTO',
+        'DepotReplenishOrderBatchStoreDTO',
+        'DepotReplenishOrderShowDTO',
+        'DepotReplenishOverviewDTO',
+        'DepotReplenishSummaryDTO',
+        'DepotStoreCardDTO',
+        'PupuResponse«DepotReplenishDraftVO»',
+        '新增补货订单',
+        '门店补货商品',
+        '进度占比信息',
+      ])
+    );
   });
 });

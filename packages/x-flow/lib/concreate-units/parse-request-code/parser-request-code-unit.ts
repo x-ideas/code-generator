@@ -377,28 +377,8 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
       ) {
         const def = (doc.definitions ?? {})[defKey];
         definitions[defKey] = this._filterDefinitionItemProperty(def);
-
-        // this._findRefFromSchemaObject(def, modelRefs);
       }
     }
-
-    // model中带入的def
-    // for (const defKey of Object.keys(doc.definitions ?? {})) {
-    //   if (
-    //     modelRefs.find(rref => {
-    //       const elements = rref.split('/');
-    //       const lastElement = elements.length > 0 ? elements[elements.length - 1] : '';
-
-    //       return lastElement === defKey;
-    //     })
-    //   ) {
-    //     const def = (doc.definitions ?? {})[defKey];
-
-    //     definitions[defKey] = this._filterDefinitionItemProperty(def);
-
-    //     this._findRefFromSchemaObject(def, modelRefs);
-    //   }
-    // }
 
     return {
       swagger: doc.swagger,
