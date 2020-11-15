@@ -2,14 +2,86 @@ import { OpenAPIV2 } from 'openapi-types';
 import { CollectOutputFlowUnit } from '../lib/collect-output-flow-unit';
 import { GenerateRequestParamsJsonSchemaFlowUnit } from '../lib/concreate-units/generate-request-params-json-schema';
 import { ParseRequestCodeFlowUnit } from '../lib/concreate-units/parse-request-code';
-import { SpecialOutputFlowUnit } from '../lib/concreate-units/special-output-flow-unit';
+import { SpecialOutputFlowUnit } from '../lib/concreate-units/specify-output';
 import { SwaggerParseFlowUnit } from '../lib/concreate-units/swagger-parse';
 import { XFlowController } from '../lib/flow-controller';
 
 import OpenAPIData from './assets/openAPI.json';
 
 describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
-  test('解析3610401', async () => {
+  test('只包含header', async () => {
+    const fc = new XFlowController();
+
+    const collectOutputUnit = new CollectOutputFlowUnit();
+
+    const outputCodeUnit = new SpecialOutputFlowUnit('3610115');
+    const outputOpenAPIUnit = new SpecialOutputFlowUnit(OpenAPIData);
+    collectOutputUnit.addUnit(outputCodeUnit);
+    collectOutputUnit.addUnit(outputOpenAPIUnit);
+
+    const codeParseUnit = new ParseRequestCodeFlowUnit();
+    const swaggerParseUnit = new SwaggerParseFlowUnit();
+
+    const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
+
+    fc.addUnit(collectOutputUnit);
+    fc.addUnit(codeParseUnit);
+    fc.addUnit(swaggerParseUnit);
+    fc.addUnit(frpUnit);
+
+    const result: OpenAPIV2.Document = await fc.run();
+    // console.log(result);
+  });
+
+  test('只包含path+header', async () => {
+    const fc = new XFlowController();
+
+    const collectOutputUnit = new CollectOutputFlowUnit();
+
+    const outputCodeUnit = new SpecialOutputFlowUnit('3610111');
+    const outputOpenAPIUnit = new SpecialOutputFlowUnit(OpenAPIData);
+    collectOutputUnit.addUnit(outputCodeUnit);
+    collectOutputUnit.addUnit(outputOpenAPIUnit);
+
+    const codeParseUnit = new ParseRequestCodeFlowUnit();
+    const swaggerParseUnit = new SwaggerParseFlowUnit();
+
+    const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
+
+    fc.addUnit(collectOutputUnit);
+    fc.addUnit(codeParseUnit);
+    fc.addUnit(swaggerParseUnit);
+    fc.addUnit(frpUnit);
+
+    const result: OpenAPIV2.Document = await fc.run();
+    // console.log(result);
+  });
+
+  test('只包含body+header', async () => {
+    const fc = new XFlowController();
+
+    const collectOutputUnit = new CollectOutputFlowUnit();
+
+    const outputCodeUnit = new SpecialOutputFlowUnit('3610116');
+    const outputOpenAPIUnit = new SpecialOutputFlowUnit(OpenAPIData);
+    collectOutputUnit.addUnit(outputCodeUnit);
+    collectOutputUnit.addUnit(outputOpenAPIUnit);
+
+    const codeParseUnit = new ParseRequestCodeFlowUnit();
+    const swaggerParseUnit = new SwaggerParseFlowUnit();
+
+    const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
+
+    fc.addUnit(collectOutputUnit);
+    fc.addUnit(codeParseUnit);
+    fc.addUnit(swaggerParseUnit);
+    fc.addUnit(frpUnit);
+
+    const result: OpenAPIV2.Document = await fc.run();
+    // console.log(result);
+  });
+
+  test('不包含body和path', async () => {
     const fc = new XFlowController();
 
     const collectOutputUnit = new CollectOutputFlowUnit();
@@ -30,6 +102,5 @@ describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
     fc.addUnit(frpUnit);
 
     const result: OpenAPIV2.Document = await fc.run();
-    // console.log(result);
   });
 });

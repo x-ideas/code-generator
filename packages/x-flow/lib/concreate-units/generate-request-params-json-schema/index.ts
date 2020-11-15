@@ -8,6 +8,10 @@ import { OpenAPIV2 } from 'openapi-types';
 
 import { XFlowUnit } from '../../flow-unit';
 
+function isInBodyParameterObject(parameter: OpenAPIV2.Parameter): parameter is OpenAPIV2.InBodyParameterObject {
+  return parameter.in === 'body';
+}
+
 export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
   /**
    * 获取描述
@@ -70,18 +74,18 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
         // 过滤掉path中的参数，这部分参数另外处理
         return par.in !== 'path';
       })
-      .filter(par => {
-        // 过滤body中的参数，这部分随后处理
-        return par.in !== 'body';
-      })
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      .map((par: OpenAPIV2.GeneralParameterObject) => {
-        // 因为我们过滤了
-        const result: JSONSchema4 = {
-          [par.name]: this._convertJsonTypeDefineFromOpenApi(par),
-        };
-        return result;
+      .map((par: OpenAPIV2.Parameter) => {
+        if (isInBodyParameterObject(par)) {
+          const result: JSONSchema4 = {
+            body: par.schema,
+          };
+          return result;
+        } else {
+          const result: JSONSchema4 = {
+            [par.name]: this._convertJsonTypeDefineFromOpenApi(par),
+          };
+          return result;
+        }
       })
       .reduce((accum, current) => {
         return {
@@ -98,7 +102,7 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
     if (paths[0]) {
       const firstPath = paths[0];
 
-      return firstPath.get ?? firstPath.post ?? firstPath.del ?? firstPath.put ?? undefined;
+      return firstPath.get ?? firstPath.post ?? firstPath.delete ?? firstPath.put ?? undefined;
     }
 
     return undefined;

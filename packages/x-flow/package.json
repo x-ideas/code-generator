@@ -24,7 +24,12 @@
     "url": "https://github.com/x-ideas/code-generator/issues"
   },
   "dependencies": {
+    "@apidevtools/swagger-parser": "^10.0.2",
+    "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.4",
+    "@types/json-schema": "^7.0.6",
     "cross-fetch": "^3.0.6",
-    "openapi-types": "^7.0.1"
+    "openapi-types": "^7.0.1",
+    "quicktype-core": "^6.0.69",
+    "swagger2openapi": "^7.0.3"
   }
 }
