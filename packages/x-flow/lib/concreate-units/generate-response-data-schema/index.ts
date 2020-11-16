@@ -40,18 +40,24 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
     return path.responses[200] ?? undefined;
   }
 
-  private generateItemJsonSchema(items?: OpenAPIV2.ItemsObject): JSONSchema4 | JSONSchema4[] | undefined {
+  private generateItemJsonSchema(
+    items?: OpenAPIV2.ItemsObject,
+    defs: OpenAPIV2.DefinitionsObject = {},
+    refs: string[] = []
+  ): JSONSchema4 | JSONSchema4[] | undefined {
     if (items) {
       if (items.$ref) {
-        // 不处理，因为之前我们已经使用了swagger
-        throw Error('不能处理item.$ref，请提前使用swagger parse进行处理');
+        if (!refs.includes(items.$ref)) {
+          // @ts-ignore
+          this.dealWithRef(items.$ref, defs, refs, items?.description);
+        }
       }
 
       switch (items.type) {
         case 'array': {
           return {
             type: items.type,
-            items: this.generateItemJsonSchema(items.items),
+            items: this.generateItemJsonSchema(items.items, defs, refs),
           };
         }
 
@@ -62,7 +68,7 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
             // @ts-ignore
             description: items.title ?? '',
             // @ts-ignore
-            properties: this.generatePropertiesJSONSchema(items.properties ?? {}),
+            properties: this.generatePropertiesJSONSchema(items.properties ?? {}, defs, refs),
           };
         }
 
@@ -80,22 +86,31 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
     return undefined;
   }
 
-  private generateJSonSchemaFromOpenAPISchema(schema: OpenAPIV2.SchemaObject): JSONSchema4 {
+  private generateJSonSchemaFromOpenAPISchema(
+    schema: OpenAPIV2.SchemaObject,
+    defs: OpenAPIV2.DefinitionsObject,
+    refs: string[],
+    description?: string
+  ): JSONSchema4 {
+    if (schema.$ref && !refs.includes(schema.$ref)) {
+      return this.dealWithRef(schema.$ref, defs, refs, schema.description) ?? {};
+    }
+
     switch (schema.type) {
       case 'array': {
         const items = schema.items;
         return {
           type: schema.type,
-          description: schema.description ?? schema.title,
-          items: this.generateItemJsonSchema(items),
+          description: schema.description ?? schema.title ?? description,
+          items: this.generateItemJsonSchema(items, defs, refs),
         };
       }
 
       case 'object': {
         return {
           type: schema.type,
-          description: schema.description,
-          properties: this.generatePropertiesJSONSchema(schema.properties ?? {}),
+          description: schema.description ?? description,
+          properties: this.generatePropertiesJSONSchema(schema.properties ?? {}, defs, refs),
         };
       }
 
@@ -105,8 +120,9 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
       case 'boolean':
         return {
           type: schema.type,
-          description: schema.description,
+          description: schema.description ?? description,
           default: schema.default,
+          required: schema.required,
         };
 
       default:
@@ -114,40 +130,67 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
     }
   }
 
-  private generatePropertiesJSONSchema(properties: { [key: string]: OpenAPIV2.SchemaObject }): { [key: string]: JSONSchema4 } {
+  private generatePropertiesJSONSchema(
+    properties: { [key: string]: OpenAPIV2.SchemaObject },
+    defs: OpenAPIV2.DefinitionsObject,
+    refs: string[],
+    description = ''
+  ): { [key: string]: JSONSchema4 } {
     const result: { [key: string]: JSONSchema4 } = {};
     for (const key of Object.keys(properties)) {
       // 只选中data和pager
       const property = properties[key];
 
-      result[key] = this.generateJSonSchemaFromOpenAPISchema(property);
+      if (['errcode', 'errmsg'].includes(key)) {
+        continue;
+      }
+
+      result[key] = this.generateJSonSchemaFromOpenAPISchema(property, defs, refs, description);
     }
 
     return result;
   }
 
-  private convertResponse(response: OpenAPIV2.Response): { [k: string]: JSONSchema4 } | undefined {
-    if (isResponseRefObj(response)) {
-      throw Error('目前不能处理带有ref的响应，请先用swagger parse flow unit处理一下swagger文档');
+  private dealWithRef(ref: string, defs: OpenAPIV2.DefinitionsObject, refs: string[], description?: string): JSONSchema4 | undefined {
+    const elements = ref.split('/');
+    const key = elements[elements.length - 1];
+
+    if (key) {
+      const schema = defs[key];
+      if (schema) {
+        refs.push(ref);
+
+        return this.generateJSonSchemaFromOpenAPISchema(schema, defs, refs, description);
+      }
     }
 
-    if (response.schema) {
-      if (isSchemaRefObj(response.schema)) {
-        throw Error('目前不能处理带有ref的响应，请先用swagger parse flow unit处理一下swagger文档');
+    return undefined;
+  }
+
+  /**
+   * 转换响应
+   * 需要处理的是循环的情况，所有ref是需要处理的
+   * @private
+   * @param {OpenAPIV2.Response} response
+   * @param {OpenAPIV2.DefinitionsObject} defs
+   * @param {string[]} refs
+   * @returns {({ [k: string]: JSONSchema4 } | undefined)}
+   * @memberof GenerateResponseDataSchemaFlowUnit
+   */
+  private convertResponse(response: OpenAPIV2.Response, defs: OpenAPIV2.DefinitionsObject, refs: string[]): JSONSchema4 {
+    if (isResponseRefObj(response)) {
+      if (!refs.includes(response.$ref)) {
+        // 找到ref的定义
+        return this.dealWithRef(response.$ref, defs, refs, '') ?? {};
       }
-
-      if (response.schema.properties) {
-        // 只选data和pager
-        const keys = Object.keys(response.schema.properties);
-        const result: { [name: string]: JSONSchema4 } = {};
-        for (const key of keys) {
-          if (['data', 'pager'].includes(key)) {
-            result[key] = this.generateJSonSchemaFromOpenAPISchema(response.schema.properties[key]);
-            // return this.generatePropertiesJSONSchema(response.schema.properties);
-          }
+    } else if (response.schema) {
+      if (isSchemaRefObj(response.schema)) {
+        if (!refs.includes(response.schema.$ref)) {
+          // 找到ref的定义
+          return this.dealWithRef(response.schema.$ref, defs, refs, '') ?? {};
         }
-
-        return result;
+      } else if (response.schema.properties) {
+        return this.generatePropertiesJSONSchema(response.schema.properties, defs, refs);
       }
     }
 
@@ -166,12 +209,13 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
       throw Error('没有找到成功的响应');
     }
 
+    const refs: string[] = [];
     const result: JSONSchema4 = {
       $schema: 'http://json-schema.org/draft-04/schema#',
       description: this.getDescription(path),
-      type: 'object',
-      properties: this.convertResponse(response),
-      // required: this.getRequeiredParamers((requestDef.parameters ?? []) as OpenAPIV2.Parameter[]),
+      ...this.convertResponse(response, operationObj.definitions ?? {}, refs),
+      required: [],
+      // required: this.getRequeiredR((requestDef.parameters ?? []) as OpenAPIV2.Parameter[]),
     };
 
     return result;

@@ -14,7 +14,12 @@ export class SwaggerParseFlowUnit extends XFlowUnit {
   async doWork(openApi: OpenAPI.Document): Promise<OpenAPI.Document> {
     const parser = new SwaggerParser();
 
-    const api = await parser.validate(openApi);
+    const api = await parser.validate(openApi, {
+      dereference: {
+        // 对于循环的ref，不处理
+        circular: 'ignore',
+      },
+    });
     return api;
   }
 }

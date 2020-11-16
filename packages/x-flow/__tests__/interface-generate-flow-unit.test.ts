@@ -60,6 +60,32 @@ describe('测试InterfaceGenerateFlowUnit', () => {
     fc.addUnit(backendInterfaceGenerate);
 
     const result: OpenAPIV2.Document = await fc.run();
+    // console.log(result);
+  });
+
+  test('3610116的响应-循环引用', async () => {
+    const fc = new XFlowController();
+
+    const collectOutputUnit = new CollectOutputFlowUnit();
+
+    const outputCodeUnit = new SpecialOutputFlowUnit('3610116');
+    const outputOpenAPIUnit = new SpecialOutputFlowUnit(OpenAPIData);
+    collectOutputUnit.addUnit(outputCodeUnit);
+    collectOutputUnit.addUnit(outputOpenAPIUnit);
+
+    const codeParseUnit = new ParseRequestCodeFlowUnit();
+    const swaggerParseUnit = new SwaggerParseFlowUnit();
+    const frpUnit = new GenerateResponseDataSchemaFlowUnit();
+
+    const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
+
+    fc.addUnit(collectOutputUnit);
+    fc.addUnit(codeParseUnit);
+    fc.addUnit(swaggerParseUnit);
+    fc.addUnit(frpUnit);
+    fc.addUnit(backendInterfaceGenerate);
+
+    const result: OpenAPIV2.Document = await fc.run();
     console.log(result);
   });
 });
