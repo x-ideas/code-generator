@@ -86,6 +86,6 @@ describe('测试InterfaceGenerateFlowUnit', () => {
     fc.addUnit(backendInterfaceGenerate);
 
     const result: OpenAPIV2.Document = await fc.run();
-    console.log(result);
+    // console.log(result);
   });
 });

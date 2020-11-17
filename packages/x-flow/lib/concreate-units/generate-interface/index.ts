@@ -27,7 +27,7 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
     this.#options = options;
   }
 
-  async doWork(jsonSchema: JSONSchema4): Promise<string> {
+  async doWork(jsonSchema: JSONSchema4): Promise<string[]> {
     const inputData = new InputData();
 
     // TODO: 名字
@@ -46,6 +46,6 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
       },
     });
 
-    return lines.join('\n');
+    return lines;
   }
 }
