@@ -8,7 +8,7 @@ import { XFlowController } from '../lib/flow-controller';
 import OpenAPIData from './assets/openAPI.json';
 import { GenerateResponseDataSchemaFlowUnit } from '../lib/concreate-units/generate-response-data-schema';
 
-describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
+describe('测试Generate Response Data JsonSchemaFlowUnit', () => {
   test('简单', async () => {
     const fc = new XFlowController();
 
@@ -32,7 +32,7 @@ describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
     const result: OpenAPIV2.Document = await fc.run();
   });
 
-  test('复杂-3610116', async () => {
+  test('循环-3610116', async () => {
     const fc = new XFlowController();
 
     const collectOutputUnit = new CollectOutputFlowUnit();
