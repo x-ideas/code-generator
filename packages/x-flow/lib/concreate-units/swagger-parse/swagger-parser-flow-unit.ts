@@ -1,3 +1,4 @@
+import { OpenAPIV2 } from 'openapi-types';
 /*
  * @name:
  * description:
@@ -11,7 +12,7 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import { XFlowUnit } from '../../flow-unit';
 
 export class SwaggerParseFlowUnit extends XFlowUnit {
-  async doWork(openApi: OpenAPI.Document): Promise<OpenAPI.Document> {
+  async doWork(openApi: OpenAPI.Document): Promise<OpenAPIV2.Document> {
     const parser = new SwaggerParser();
 
     const api = await parser.validate(openApi, {
@@ -20,6 +21,7 @@ export class SwaggerParseFlowUnit extends XFlowUnit {
         circular: 'ignore',
       },
     });
-    return api;
+    // NOTE: 我们这里只处理v2
+    return api as OpenAPIV2.Document;
   }
 }

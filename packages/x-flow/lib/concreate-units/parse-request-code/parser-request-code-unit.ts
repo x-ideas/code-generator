@@ -27,6 +27,10 @@ function isInBodyParameterObject(obj: OpenAPIV2.Parameter): obj is OpenAPIV2.InB
   return obj.in === 'body';
 }
 
+function isInPathParameterObject(obj: OpenAPIV2.Parameter): obj is OpenAPIV2.GeneralParameterObject {
+  return obj.in === 'path';
+}
+
 export class ParseRequestCodeFlowUnit extends XFlowUnit {
   /**
    * 根据code找到对应的path对象
@@ -37,13 +41,27 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
    * @memberof ParseRequestCodeFlowUnit
    */
   private findRequestPathObject(code: string, doc: OpenAPIV2.Document): OpenAPIV2.PathsObject | undefined {
+    function _filterUnValidPropertyOfParemeters(obj: OpenAPIV2.OperationObject): OpenAPIV2.OperationObject {
+      if (obj.parameters) {
+        for (const value of Object.values(obj.parameters)) {
+          if (isParamsRefObject(value)) {
+            // do nothing
+          } else if (isInPathParameterObject(value)) {
+            value.required = true;
+          }
+        }
+      }
+
+      return obj;
+    }
+
     const reg = new RegExp(code);
     for (const pathKey of Object.keys(doc.paths)) {
       const pathInfo = doc.paths[pathKey];
       if ((pathInfo as OpenAPIV2.PathItemObject).get?.summary?.match(reg)) {
         return {
           [pathKey]: {
-            get: (pathInfo as OpenAPIV2.PathItemObject).get,
+            get: _filterUnValidPropertyOfParemeters((pathInfo as OpenAPIV2.PathItemObject).get),
           },
         };
       }
@@ -51,7 +69,7 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
       if ((pathInfo as OpenAPIV2.PathItemObject).post?.summary?.match(reg)) {
         return {
           [pathKey]: {
-            post: (pathInfo as OpenAPIV2.PathItemObject).post,
+            post: _filterUnValidPropertyOfParemeters((pathInfo as OpenAPIV2.PathItemObject).post),
           },
         };
       }
@@ -59,7 +77,7 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
       if ((pathInfo as OpenAPIV2.PathItemObject).delete?.summary?.match(reg)) {
         return {
           [pathKey]: {
-            delete: (pathInfo as OpenAPIV2.PathItemObject).delete,
+            delete: _filterUnValidPropertyOfParemeters((pathInfo as OpenAPIV2.PathItemObject).delete),
           },
         };
       }
@@ -67,7 +85,7 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
       if ((pathInfo as OpenAPIV2.PathItemObject).put?.summary?.match(reg)) {
         return {
           [pathKey]: {
-            put: (pathInfo as OpenAPIV2.PathItemObject).put,
+            put: _filterUnValidPropertyOfParemeters((pathInfo as OpenAPIV2.PathItemObject).put),
           },
         };
       }
@@ -385,6 +403,7 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
       info: doc.info,
       paths: path,
       definitions: definitions,
+      // definitions: doc.definitions,
     };
   }
 }

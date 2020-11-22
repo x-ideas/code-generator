@@ -24,18 +24,20 @@
     "@apidevtools/swagger-parser": "^10.0.2",
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.4",
     "@types/json-schema": "^7.0.6",
-    "ast-types": "^0.14.2",
     "cross-fetch": "^3.0.6",
     "jscodeshift": "^0.11.0",
+    "lodash": "^4.17.20",
     "openapi-types": "^7.0.1",
     "quicktype-core": "^6.0.69",
     "recast": "^0.20.4",
-    "swagger2openapi": "^7.0.3"
+    "swagger2openapi": "^7.0.3",
+    "ts-node": "^9.0.0"
   },
   "devDependencies": {
     "@assemblyscript/loader": "^0.17.2",
     "@rollup/plugin-typescript": "^6.1.0",
     "@types/jscodeshift": "^0.7.1",
+    "@types/lodash": "^4.14.165",
     "assemblyscript": "^0.17.2",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-latest": "^6.24.1",
@@ -54,6 +56,8 @@
     "test": "node tests",
     "build": "rollup -c ./rollup.config.js",
     "asc-build": "asc ./lib/hello-world.ts -b ./dist/hello-world.wasm",
-    "asc": "asc"
+    "asc": "asc",
+    "webassembly": "node ./dist/bundle.js",
+    "demo": "ts-node ./index.ts"
   }
 }

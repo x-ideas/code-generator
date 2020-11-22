@@ -1,0 +1,218 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "朴朴java服务端接口文档，遵循RESTful规范",
+    "version": "0.0.1",
+    "title": "admin-scm"
+  },
+  "paths": {
+    "/admin/depot/apply/logs/{detail_id}": {
+      "get": {
+        "tags": ["depot-apply-controller"],
+        "summary": "查找需求单明细修改日志: 3610412",
+        "operationId": "listApplyDetailLogsUsingGET",
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "用户签名，JWT Bearer",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "detail_id",
+            "in": "path",
+            "description": "门店补货需求单明细ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PupuResponseListDepotReplenishApplyDetailLogVO"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "PupuResponseListDepotReplenishApplyDetailLogVO": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DepotReplenishApplyDetailLogVO"
+          }
+        },
+        "errcode": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "errmsg": {
+          "type": "string"
+        }
+      },
+      "title": "PupuResponse«List«DepotReplenishApplyDetailLogVO»»"
+    },
+    "DepotReplenishApplyDetailLogVO": {
+      "type": "object",
+      "properties": {
+        "apply_detail_id": {
+          "type": "string"
+        },
+        "apply_id": {
+          "type": "string"
+        },
+        "code_upc": {
+          "type": "string"
+        },
+        "day_arrive_expect": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "day_sale": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dc_id": {
+          "type": "string"
+        },
+        "dc_product_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "is_delete": {
+          "type": "boolean"
+        },
+        "num_on_the_way": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "period_arrive": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "product_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "product_name": {
+          "type": "string"
+        },
+        "product_purchase_type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "product_sale_unit": {
+          "type": "string"
+        },
+        "receive_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "receive_count_diff": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "replenish_coefficient": {
+          "type": "number",
+          "format": "double"
+        },
+        "replenish_count_adjust": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "replenish_count_correct": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "replenish_count_handled": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "replenish_count_real": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "replenish_count_suggest": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "replenish_id": {
+          "type": "string"
+        },
+        "rule_detail_id": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "sale_num_day_safe": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "shelf_codes": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "stock_quantity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "store_id": {
+          "type": "string"
+        },
+        "store_product_id": {
+          "type": "string"
+        },
+        "time_apply_update": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "time_operate": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "time_update": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "user_id_operate": {
+          "type": "string"
+        },
+        "user_id_reply": {
+          "type": "string"
+        },
+        "user_id_update": {
+          "type": "string"
+        },
+        "user_name_update": {
+          "type": "string"
+        }
+      },
+      "title": "DepotReplenishApplyDetailLogVO"
+    }
+  }
+}

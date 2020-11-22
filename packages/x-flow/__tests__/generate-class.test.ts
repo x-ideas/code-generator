@@ -75,8 +75,8 @@ describe('测试 generate class', () => {
     const unit = new GenerateClassFlowUnit();
 
     const result = await unit.doWork(str);
-    console.log(result);
-    expect(1).toBe(2);
+    // console.log(result);
+    // expect(1).toBe(2);
     // console.log(result);
   });
 });
