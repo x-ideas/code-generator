@@ -27,12 +27,14 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
     this.#options = options;
   }
 
-  async doWork(jsonSchema: JSONSchema4): Promise<string[]> {
+  async doWork(params: { jsonSchema: JSONSchema4; topName: string }): Promise<string[]> {
+    const generateName = () => {
+      return this.#options.nicePropertyName ? `IB${params.topName}` : `IF${params.topName}`;
+    };
+
     const inputData = new InputData();
 
-    // TODO: 名字
-
-    const source = { name: this.#options.nicePropertyName ? 'IBGeneratedInfo' : 'IFGeneratedInfo', schema: JSON.stringify(jsonSchema) };
+    const source = { name: generateName(), schema: JSON.stringify(params.jsonSchema) };
     inputData.addSource('schema', source, () => new JSONSchemaInput(undefined));
 
     const { lines } = await quicktype({

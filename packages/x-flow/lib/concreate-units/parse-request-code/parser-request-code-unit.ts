@@ -276,13 +276,14 @@ export class ParseRequestCodeFlowUnit extends XFlowUnit {
   private _findRefFromParameter(parameter: OpenAPIV2.Parameter, results: string[], definitions: OpenAPIV2.DefinitionsObject = {}): void {
     if (isInBodyParameterObject(parameter)) {
       // In body parameter
-      if (parameter.schema.$ref) {
-        if (!results.includes(parameter.schema.$ref)) {
-          results.push(parameter.schema.$ref);
-          // 找到ref对应的schema
-          this._interaterDealWithRef(parameter.schema.$ref, definitions, results);
-        }
-      }
+      this._findRefFromSchema(parameter.schema, results, definitions);
+      // if (parameter.schema.$ref) {
+      //   if (!results.includes(parameter.schema.$ref)) {
+      //     results.push(parameter.schema.$ref);
+      //     // 找到ref对应的schema
+      //     this._interaterDealWithRef(parameter.schema.$ref, definitions, results);
+      //   }
+      // }
     } else {
       // 此时parameter继承ItemObject
       this._findRefFromItemObject(parameter, results, definitions);

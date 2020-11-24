@@ -125,6 +125,7 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
       if (items.$ref) {
         if (!refs.includes(items.$ref)) {
           // @ts-ignore
+          throw Error('此时不应该出现ref，马上联系管理员');
           // this.dealWithRef(items.$ref, defs, refs, items?.description);
         }
       }
@@ -169,7 +170,7 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
     description?: string
   ): JSONSchema4 {
     if (schema.$ref && !refs.includes(schema.$ref)) {
-      throw Error('此时不应该存在ref');
+      throw Error('此时不应该存在ref, 或者这是一个错误');
     }
 
     switch (schema.type) {
@@ -229,13 +230,15 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
       })
       .map((par: OpenAPIV2.GeneralParameterObject) => {
         if (par.schema) {
-          const result: JSONSchema4 = {
-            type: par.schema.type ?? 'object',
-            description: par.schema.description ?? par.schema.title ?? '',
-            properties: this.generatePropertiesJSONSchema(par.schema.properties ?? {}, {}, []),
-          };
+          // this.generateJSonSchemaFromOpenAPISchema(par.schema, {}, []);
+
+          // const result: JSONSchema4 = {
+          //   type: par.schema.type ?? 'object',
+          //   description: par.schema.description ?? par.schema.title ?? '',
+          //   properties: this.generatePropertiesJSONSchema(par.schema.properties ?? {}, {}, []),
+          // };
           return {
-            [par.name]: result,
+            [par.name]: this.generateJSonSchemaFromOpenAPISchema(par.schema, {}, [], par.description),
           };
         }
         return {
@@ -362,14 +365,6 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
     if (!requestDef) {
       throw Error('没有找到请求的定义');
     }
-
-    // const result: JSONSchema4 = {
-    //   $schema: 'http://json-schema.org/draft-04/schema#',
-    //   description: this.getDescription(requestDef),
-    //   type: 'object',
-    //   properties: this.convertParameters((requestDef.parameters ?? []) as OpenAPIV2.Parameter[]),
-    //   required: this.getRequeiredParamers((requestDef.parameters ?? []) as OpenAPIV2.Parameter[]),
-    // };
 
     return {
       path: {

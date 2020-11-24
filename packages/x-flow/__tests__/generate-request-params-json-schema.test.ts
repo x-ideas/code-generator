@@ -190,7 +190,7 @@ describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
       properties: {
         saveRo: {
           type: 'object',
-          description: '新增补货订单',
+          description: 'saveRo',
           properties: {
             batch_type: {
               type: 'integer',
@@ -336,6 +336,74 @@ describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
           },
         },
       },
+    });
+  });
+
+  test('path_body3610404', async () => {
+    const fc = new XFlowController();
+
+    const collectOutputUnit = new CollectOutputFlowUnit();
+
+    const outputCodeUnit = new SpecialOutputFlowUnit('3610404');
+    const outputOpenAPIUnit = new SpecialOutputFlowUnit(OpenAPIData);
+    collectOutputUnit.addUnit(outputCodeUnit);
+    collectOutputUnit.addUnit(outputOpenAPIUnit);
+
+    const codeParseUnit = new ParseRequestCodeFlowUnit();
+    const swaggerParseUnit = new SwaggerParseFlowUnit();
+
+    const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
+
+    fc.addUnit(collectOutputUnit);
+    fc.addUnit(codeParseUnit);
+    fc.addUnit(swaggerParseUnit);
+    fc.addUnit(frpUnit);
+
+    const result = await fc.run();
+    expect(result.path).toEqual({
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      description: '确认需求单，变更补货数: 3610404',
+      properties: {
+        id: {
+          description: 'id',
+          type: 'string',
+        },
+      },
+      required: ['id'],
+    });
+
+    expect(result.query).toEqual({
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      description: '确认需求单，变更补货数: 3610404',
+      properties: {},
+      required: [],
+    });
+
+    expect(result.body).toEqual({
+      $schema: 'http://json-schema.org/draft-04/schema#',
+      description: '确认需求单，变更补货数: 3610404',
+      properties: {
+        list: {
+          description: 'list',
+          type: 'array',
+          items: {
+            type: 'object',
+            description: '补货需求单补货数',
+            properties: {
+              product_id: {
+                type: 'string',
+                description: '商品id',
+              },
+              replenish_count: {
+                type: 'integer',
+                description: '补货数',
+              },
+            },
+          },
+        },
+      },
+      // NOTE: 此时list是必须的，应该出现在requeired中
+      required: [],
     });
   });
 
