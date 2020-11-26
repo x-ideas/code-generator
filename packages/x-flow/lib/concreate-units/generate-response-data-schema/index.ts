@@ -130,7 +130,7 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
     }
   }
 
-  private generateSchema(schema: OpenAPIV2.Schema, defs: OpenAPIV2.DefinitionsObject, refs: string[]) {
+  private generateSchema(schema: OpenAPIV2.Schema, defs: OpenAPIV2.DefinitionsObject, refs: string[]): JSONSchema4 {
     if (isSchemaRefObj(schema)) {
       if (!refs.includes(schema.$ref)) {
         // 找到ref的定义
@@ -138,10 +138,12 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
       }
     } else {
       return {
-        type: schema.type,
+        type: 'object',
         properties: this.generatePropertiesJSONSchema(schema.properties ?? {}, defs, refs),
       };
     }
+
+    return {};
   }
 
   private generatePropertiesJSONSchema(

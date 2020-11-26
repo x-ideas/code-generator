@@ -1,4 +1,7 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["assembly"]
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["assembly", "lib"]
 }
