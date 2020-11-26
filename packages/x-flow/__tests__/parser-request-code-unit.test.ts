@@ -130,6 +130,14 @@ describe('测试ParseRequestCodeFlowUnit', () => {
     expect(prcfu.doWork(['876544', OpenAPIData])).rejects.toBeInstanceOf(Error);
   });
 
+  it('解析3610404-code', async () => {
+    const prcfu = new ParseRequestCodeFlowUnit();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const result = await prcfu.doWork(['3610404', OpenAPIData]);
+    console.warn(result);
+  });
+
   it('解析3610116-循环code', async () => {
     const prcfu = new ParseRequestCodeFlowUnit();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

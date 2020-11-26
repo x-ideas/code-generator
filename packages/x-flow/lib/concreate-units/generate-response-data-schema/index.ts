@@ -130,6 +130,20 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
     }
   }
 
+  private generateSchema(schema: OpenAPIV2.Schema, defs: OpenAPIV2.DefinitionsObject, refs: string[]) {
+    if (isSchemaRefObj(schema)) {
+      if (!refs.includes(schema.$ref)) {
+        // 找到ref的定义
+        return this.dealWithRef(schema.$ref, defs, refs, '') ?? {};
+      }
+    } else {
+      return {
+        type: schema.type,
+        properties: this.generatePropertiesJSONSchema(schema.properties ?? {}, defs, refs),
+      };
+    }
+  }
+
   private generatePropertiesJSONSchema(
     properties: { [key: string]: OpenAPIV2.SchemaObject },
     defs: OpenAPIV2.DefinitionsObject,
@@ -184,14 +198,7 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
         return this.dealWithRef(response.$ref, defs, refs, '') ?? {};
       }
     } else if (response.schema) {
-      if (isSchemaRefObj(response.schema)) {
-        if (!refs.includes(response.schema.$ref)) {
-          // 找到ref的定义
-          return this.dealWithRef(response.schema.$ref, defs, refs, '') ?? {};
-        }
-      } else if (response.schema.properties) {
-        return this.generatePropertiesJSONSchema(response.schema.properties, defs, refs);
-      }
+      return this.generateSchema(response.schema, defs, refs);
     }
 
     return {};
@@ -210,13 +217,15 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
     }
 
     const refs: string[] = [];
-    const result: JSONSchema4 = {
-      $schema: 'http://json-schema.org/draft-04/schema#',
-      description: this.getDescription(path),
-      ...this.convertResponse(response, operationObj.definitions ?? {}, refs),
-      required: [],
-      // required: this.getRequeiredR((requestDef.parameters ?? []) as OpenAPIV2.Parameter[]),
-    };
+    // const result: JSONSchema4 = {
+    //   $schema: 'http://json-schema.org/draft-04/schema#',
+    //   description: this.getDescription(path),
+    //   ...this.convertResponse(response, operationObj.definitions ?? {}, refs),
+    //   // required: [],
+    //   // required: this.getRequeiredR((requestDef.parameters ?? []) as OpenAPIV2.Parameter[]),
+    // };
+
+    const result = this.convertResponse(response, operationObj.definitions ?? {}, refs);
 
     return result;
   }

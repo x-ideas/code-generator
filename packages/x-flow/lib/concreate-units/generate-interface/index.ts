@@ -27,9 +27,10 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
     this.#options = options;
   }
 
-  async doWork(params: { jsonSchema: JSONSchema4; topName: string }): Promise<string[]> {
+  async doWork(params: { jsonSchema: JSONSchema4; topName?: string }): Promise<string[]> {
     const generateName = () => {
-      return this.#options.nicePropertyName ? `IB${params.topName}` : `IF${params.topName}`;
+      const name = params.topName ? params.topName : 'Demo';
+      return this.#options.nicePropertyName ? `IB${name}` : `IF${name}`;
     };
 
     const inputData = new InputData();

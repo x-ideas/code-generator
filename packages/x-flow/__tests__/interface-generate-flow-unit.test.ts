@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { OpenAPIV2 } from 'openapi-types';
 import { CollectOutputFlowUnit } from '../lib/collect-output-flow-unit';
 import { InterfaceGenerateFlowUnit } from '../lib/concreate-units/generate-interface';
@@ -9,9 +10,23 @@ import { XFlowController } from '../lib/flow-controller';
 import OpenAPIData from './assets/openAPI.json';
 import { GenerateRequestParamsJsonSchemaFlowUnit } from '../lib/concreate-units/generate-request-params-json-schema';
 import { GenerateResponseDataSchemaFlowUnit } from '../lib/concreate-units/generate-response-data-schema';
-import { JSONSchema4 } from 'json-schema';
+import { MergeOutputFlowUnit } from '../lib/merge-output-flow-unit';
 
-describe('测试InterfaceGenerateFlowUnit', () => {
+import Swagger3601401Data from './assets/3610401.json';
+import { WrapDataFlowUnit } from '../lib/wrap-data-flow-unit';
+
+describe('测试InterfaceGenerateFlowUnit-response', () => {
+  test('3601401-data', async () => {
+    const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
+    const result = await backendInterfaceGenerate.doWork({
+      // @ts-ignore
+      jsonSchema: Swagger3601401Data,
+      topName: 'Demo',
+    });
+
+    expect(result.length).toBeGreaterThan(0);
+  });
+
   it('不修改property', async () => {
     const fc = new XFlowController();
 
@@ -24,18 +39,24 @@ describe('测试InterfaceGenerateFlowUnit', () => {
 
     const codeParseUnit = new ParseRequestCodeFlowUnit();
     const swaggerParseUnit = new SwaggerParseFlowUnit();
-    const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
+    const frpUnit = new GenerateResponseDataSchemaFlowUnit();
 
+    const wrapUnit = new WrapDataFlowUnit('jsonSchema');
+    const moUnit = new MergeOutputFlowUnit({
+      topName: 'Demo',
+    });
     const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
     fc.addUnit(frpUnit);
+    fc.addUnit(wrapUnit);
+    fc.addUnit(moUnit);
     fc.addUnit(backendInterfaceGenerate);
 
-    const result: OpenAPIV2.Document = await fc.run();
-    // console.log(result);
+    const result: string[] = await fc.run();
+    expect(result.length).toBeGreaterThan(0);
   });
 
   test('3610401的响应-包含数组', async () => {
@@ -52,16 +73,22 @@ describe('测试InterfaceGenerateFlowUnit', () => {
     const swaggerParseUnit = new SwaggerParseFlowUnit();
     const frpUnit = new GenerateResponseDataSchemaFlowUnit();
 
+    const wrapUnit = new WrapDataFlowUnit('jsonSchema');
+    const moUnit = new MergeOutputFlowUnit({
+      topName: 'Demo',
+    });
     const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
     fc.addUnit(frpUnit);
+    fc.addUnit(wrapUnit);
+    fc.addUnit(moUnit);
     fc.addUnit(backendInterfaceGenerate);
 
-    const result: OpenAPIV2.Document = await fc.run();
-    // console.log(result);
+    const result: string[] = await fc.run();
+    expect(result.length).toBeGreaterThan(0);
   });
 
   test('3610116的响应-循环引用', async () => {
@@ -78,16 +105,22 @@ describe('测试InterfaceGenerateFlowUnit', () => {
     const swaggerParseUnit = new SwaggerParseFlowUnit();
     const frpUnit = new GenerateResponseDataSchemaFlowUnit();
 
+    const wrapUnit = new WrapDataFlowUnit('jsonSchema');
+    const moUnit = new MergeOutputFlowUnit({
+      topName: 'Demo',
+    });
     const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
     fc.addUnit(frpUnit);
+    fc.addUnit(wrapUnit);
+    fc.addUnit(moUnit);
     fc.addUnit(backendInterfaceGenerate);
 
-    const result: OpenAPIV2.Document = await fc.run();
-    // console.log(result);
+    const result: string[] = await fc.run();
+    expect(result.length).toBeGreaterThan(0);
   });
 });
 
@@ -105,24 +138,30 @@ describe('测试InterfaceGenerateFlowUnit--请求参数', () => {
     const codeParseUnit = new ParseRequestCodeFlowUnit();
     const swaggerParseUnit = new SwaggerParseFlowUnit();
 
+    const moUnit = new MergeOutputFlowUnit({
+      topName: 'Demo',
+    });
+
     const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
     const binterUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
+
+    fc.addUnit(moUnit);
     fc.addUnit(frpUnit);
     // fc.addUnit(binterUnit);
 
     const requestParamsSchema = await fc.run();
 
-    const pathLines = await binterUnit.doWork(requestParamsSchema.path);
+    const pathLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.path, topName: 'Demo' });
     expect(pathLines.length).toBe(0);
 
-    const queryLines = await binterUnit.doWork(requestParamsSchema.query);
+    const queryLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.query, topName: 'Demo' });
     expect(queryLines.length).toBe(0);
 
-    const bodyLines = await binterUnit.doWork(requestParamsSchema.body);
+    const bodyLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.body, topName: 'Demo' });
     expect(bodyLines.length).toBe(0);
   });
 
@@ -139,24 +178,30 @@ describe('测试InterfaceGenerateFlowUnit--请求参数', () => {
     const codeParseUnit = new ParseRequestCodeFlowUnit();
     const swaggerParseUnit = new SwaggerParseFlowUnit();
 
+    const moUnit = new MergeOutputFlowUnit({
+      topName: 'Demo',
+    });
+
     const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
     const binterUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
+
+    fc.addUnit(moUnit);
     fc.addUnit(frpUnit);
     // fc.addUnit(binterUnit);
 
     const requestParamsSchema = await fc.run();
 
-    const pathLines = await binterUnit.doWork(requestParamsSchema.path);
+    const pathLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.path, topName: 'Demo' });
     expect(pathLines.length).not.toBe(0);
 
-    const queryLines = await binterUnit.doWork(requestParamsSchema.query);
+    const queryLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.query, topName: 'Demo' });
     expect(queryLines.length).toBe(0);
 
-    const bodyLines = await binterUnit.doWork(requestParamsSchema.body);
+    const bodyLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.body, topName: 'Demo' });
     expect(bodyLines.length).toBe(0);
   });
 
@@ -173,22 +218,28 @@ describe('测试InterfaceGenerateFlowUnit--请求参数', () => {
     const codeParseUnit = new ParseRequestCodeFlowUnit();
     const swaggerParseUnit = new SwaggerParseFlowUnit();
 
+    const moUnit = new MergeOutputFlowUnit({
+      topName: 'Demo',
+    });
+
     const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
     const binterUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
+
+    fc.addUnit(moUnit);
     fc.addUnit(frpUnit);
 
     const requestParamsSchema = await fc.run();
-    const pathLines = await binterUnit.doWork(requestParamsSchema.path);
+    const pathLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.path, topName: 'Demo' });
     expect(pathLines.length).not.toBe(0);
 
-    const queryLines = await binterUnit.doWork(requestParamsSchema.query);
+    const queryLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.query, topName: 'Demo' });
     expect(queryLines.length).toBe(0);
 
-    const bodyLines = await binterUnit.doWork(requestParamsSchema.body);
+    const bodyLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.body, topName: 'Demo' });
     expect(bodyLines.length).toBe(0);
   });
 
@@ -205,22 +256,27 @@ describe('测试InterfaceGenerateFlowUnit--请求参数', () => {
     const codeParseUnit = new ParseRequestCodeFlowUnit();
     const swaggerParseUnit = new SwaggerParseFlowUnit();
 
+    const moUnit = new MergeOutputFlowUnit({
+      topName: 'Demo',
+    });
+
     const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
     const binterUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
+    fc.addUnit(moUnit);
     fc.addUnit(frpUnit);
 
     const requestParamsSchema = await fc.run();
-    const pathLines = await binterUnit.doWork(requestParamsSchema.path);
+    const pathLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.path, topName: 'Demo' });
     expect(pathLines.length).toBe(0);
 
-    const queryLines = await binterUnit.doWork(requestParamsSchema.query);
+    const queryLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.query, topName: 'Demo' });
     expect(queryLines.length).not.toBe(0);
 
-    const bodyLines = await binterUnit.doWork(requestParamsSchema.body);
+    const bodyLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.body, topName: 'Demo' });
     expect(bodyLines.length).toBe(0);
   });
 });

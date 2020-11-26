@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "分页查找补货需求单: 3610401",
+  "type": "object",
+  "properties": {
+    "count": { "type": "integer", "description": "" },
+    "data": {
+      "type": "array",
+      "description": "",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "补货需求单，列表用",
+          "properties": {
+            "apply_no": { "type": "string", "description": "需求单号" },
+            "apply_type": {
+              "type": "integer",
+              "description": "补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)"
+            },
+            "date_part_plan": {
+              "type": "integer",
+              "description": "计划到货时间段，10=白天，20=晚上"
+            },
+            "date_plan": { "type": "integer", "description": "计划到货日期" },
+            "dc_abbr_name": { "type": "string", "description": "总仓简称" },
+            "dc_id": { "type": "string", "description": "总仓id" },
+            "dc_name": { "type": "string", "description": "总仓名称" },
+            "id": { "type": "string", "description": "id" },
+            "is_delete": { "type": "boolean", "description": "是否删除" },
+            "item_count_plan": {
+              "type": "integer",
+              "description": "计划品项数量"
+            },
+            "item_count_real": {
+              "type": "integer",
+              "description": "实际品项数量"
+            },
+            "order_id": { "type": "string", "description": "补货订单id" },
+            "status": {
+              "type": "integer",
+              "description": "状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成"
+            },
+            "store_abbr_name": { "type": "string", "description": "门店简称" },
+            "store_code": { "type": "integer", "description": "门店code" },
+            "store_id": { "type": "string", "description": "门店id" },
+            "store_name": { "type": "string", "description": "门店名称" },
+            "time_create": { "type": "integer", "description": "创建时间" },
+            "time_plan": { "type": "integer", "description": "计划到货时间" },
+            "time_real": { "type": "integer", "description": "实际到货时间" },
+            "time_update": { "type": "integer", "description": "更新时间" },
+            "user_id_update": { "type": "string", "description": "更新人id" },
+            "user_name_update": { "type": "string", "description": "更新人名称" }
+          }
+        }
+      }
+    },
+    "pager": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "first_item_on_page": { "type": "integer", "description": "" },
+        "has_next_page": { "type": "boolean", "description": "" },
+        "has_previous_page": { "type": "boolean", "description": "" },
+        "is_first_page": { "type": "boolean", "description": "" },
+        "is_last_page": { "type": "boolean", "description": "" },
+        "last_item_on_page": { "type": "integer", "description": "" },
+        "page_count": { "type": "integer", "description": "" },
+        "page_number": { "type": "integer", "description": "" },
+        "page_size": { "type": "integer", "description": "" },
+        "total_item_count": { "type": "integer", "description": "" }
+      }
+    }
+  }
+}

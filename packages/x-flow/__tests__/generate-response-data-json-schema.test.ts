@@ -1,4 +1,3 @@
-import { OpenAPIV2 } from 'openapi-types';
 import { CollectOutputFlowUnit } from '../lib/collect-output-flow-unit';
 import { ParseRequestCodeFlowUnit } from '../lib/concreate-units/parse-request-code';
 import { SpecialOutputFlowUnit } from '../lib/concreate-units/specify-output';
@@ -7,9 +6,10 @@ import { XFlowController } from '../lib/flow-controller';
 
 import OpenAPIData from './assets/openAPI.json';
 import { GenerateResponseDataSchemaFlowUnit } from '../lib/concreate-units/generate-response-data-schema';
+import { JSONSchema4 } from 'json-schema';
 
 describe('测试Generate Response Data JsonSchemaFlowUnit', () => {
-  test('简单', async () => {
+  test('非list', async () => {
     const fc = new XFlowController();
 
     const collectOutputUnit = new CollectOutputFlowUnit();
@@ -29,7 +29,33 @@ describe('测试Generate Response Data JsonSchemaFlowUnit', () => {
     fc.addUnit(swaggerParseUnit);
     fc.addUnit(frpUnit);
 
-    const result: OpenAPIV2.Document = await fc.run();
+    const result: JSONSchema4 = await fc.run();
+    expect(result.properties).toBeDefined();
+  });
+
+  test('list', async () => {
+    const fc = new XFlowController();
+
+    const collectOutputUnit = new CollectOutputFlowUnit();
+
+    const outputCodeUnit = new SpecialOutputFlowUnit('3610401');
+    const outputOpenAPIUnit = new SpecialOutputFlowUnit(OpenAPIData);
+    collectOutputUnit.addUnit(outputCodeUnit);
+    collectOutputUnit.addUnit(outputOpenAPIUnit);
+
+    const codeParseUnit = new ParseRequestCodeFlowUnit();
+    const swaggerParseUnit = new SwaggerParseFlowUnit();
+
+    const frpUnit = new GenerateResponseDataSchemaFlowUnit();
+
+    fc.addUnit(collectOutputUnit);
+    fc.addUnit(codeParseUnit);
+    fc.addUnit(swaggerParseUnit);
+    fc.addUnit(frpUnit);
+
+    const result: JSONSchema4 = await fc.run();
+
+    expect(result.properties).toBeDefined();
   });
 
   test('循环-3610116', async () => {
@@ -52,8 +78,8 @@ describe('测试Generate Response Data JsonSchemaFlowUnit', () => {
     fc.addUnit(swaggerParseUnit);
     fc.addUnit(frpUnit);
 
-    const result: OpenAPIV2.Document = await fc.run();
-    console.log(result);
+    const result: JSONSchema4 = await fc.run();
+    expect(result.properties).toBeDefined();
   });
 
   // test('只包含body+header', async () => {
