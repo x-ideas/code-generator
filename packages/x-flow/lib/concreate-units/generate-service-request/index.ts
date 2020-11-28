@@ -19,6 +19,8 @@ import { ParseRequestCodeFlowUnit } from './../parse-request-code/parser-request
 import { InterfaceGenerateFlowUnit } from '../generate-interface';
 import { OpenAPIV2 } from 'openapi-types';
 import { GenerateClassFlowUnit } from '../generate-class';
+import { GenerateInterfaceAdaptor } from '../generate-interface-adaptor';
+import { GenerateToClassAdaptorFlowUnit } from '../generate-to-class-adaptor';
 
 interface IGenerateServiceRequestFlowUnitParams {
   /**
@@ -169,7 +171,6 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       jsonSchema: query,
     });
 
-    // NOTE: 找到interface对应的名字
     return {
       name: result.length > 0 ? 'queryParams' : '',
       type: result.length > 0 ? this._getTopInterfaeType(result) : '',
@@ -198,17 +199,15 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
   }> {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
     const result = await unit.doWork({
-      topName: `${params.serviceName}BodyParams`,
+      topName: `IF${params.serviceName}BodyParams`,
       jsonSchema: body,
     });
 
     const bUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
     const bResult = await bUnit.doWork({
-      topName: `${params.serviceName}BodyParams`,
+      topName: `IB${params.serviceName}BodyParams`,
       jsonSchema: body,
     });
-
-    // FIXME: 找到interface对应的名字
 
     return {
       name: result.length > 0 ? 'bodyParams' : undefined,
@@ -287,9 +286,10 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       fromType: result.fQueryType,
       from: result.fQueryInterface.join('\n'),
       toType: result.bQueryType,
-      to: result.bQueryInterface.join('\n'),
+      // to: result.bQueryInterface.join('\n'),
       isToClass: false,
-      type: 'QueryParams',
+      isConvertedFromFront: true,
+      // type: 'QueryParams',
     });
 
     // body的适配
@@ -298,24 +298,15 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       fromType: result.fBodyType,
 
       toType: result.bBodyType,
-      to: result.bBodyInterface.join('\n'),
+      // to: result.bBodyInterface.join('\n'),
       isToClass: false,
-      type: 'BodyParams',
+      // type: 'BodyParams',
+      isConvertedFromFront: true,
     });
 
     // response的适配
     const gcUnit = new GenerateClassFlowUnit({ convertedFromNiceFormat: true });
     const classDefines = await gcUnit.doWork(result.fResponseInterface);
-    const responseAdaptorInfo = await this._generateAdaptors({
-      from: result.bResponseInterface.join('\n'),
-      fromType: result.bResponseInfoType,
-
-      to: toClass ? classDefines : result.fResponseInterface.join('\n'),
-      toType: result.fResponseInfoType,
-
-      isToClass: toClass,
-      type: result.fResponseInfoType,
-    });
 
     // axis请求的参数
     const axisRequestParams: string[] = [];
@@ -348,30 +339,31 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       fBodyType: result.fBodyType,
     });
 
-    /**
-     *      
-     * 
-      ${result.fBodyInterface.join('\n')}
+    const responseAdaptorInfo = await this._generateAdaptors({
+      from: result.bResponseInterface.join('\n'),
+      fromType: result.bResponseInfoType,
 
-      ${toClass ? classDefines : result.fResponseInterface.join('\n')}
+      // to: toClass ? classDefines : result.fResponseInterface.join('\n'),
+      toType: result.fResponseInfoType,
 
+      isToClass: toClass,
+      isConvertedFromFront: false,
+      // type: result.fResponseInfoType,
+    });
 
-      ${result.bQueryInterface.join('\n')}
-
-      ${result.bBodyInterface.join('\n')}
-
-      ${toClass && result.bResponseInterface.join('\n')}
-
-
-      // 适配
-      ${queryAdaptorInfo.func}
-
-      ${bodyAdaptorInfo.func}
-
-      ${responseAdaptorInfo.func}
-    
-     * 
-     */
+    // response的适配
+    let returnData = '';
+    if (options.method === 'get') {
+      returnData = result.isReturnArray
+        ? `{
+          ...result.data,
+          data: result.data.data.map((item) => ${responseAdaptorInfo.funcName}(item)
+        }`
+        : `{
+        ...result.data,
+        data: ${responseAdaptorInfo.funcName}(result.data.data)
+      }`;
+    }
 
     return `
 
@@ -385,13 +377,16 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       ${result.bBodyInterface.join('\n')}
 
 
+      ${toClass ? responseAdaptorInfo.func : ''}
+
+
       export async function ${generateName}(${funcParams}): Promise<${result.fResponseDataType}> {
         const result = await http.${options.method}<${result.bResponseDataType}>(microservice.javaAdmin + \`${
       pathParams.requestUrl
     }\`, ${axisRequestParams.join(',')});
 
         if (isRequestSucceed(result)) {
-          return result.data;
+          return ${returnData};
         } else {
           return Promise.reject(${errorStr});
         }
@@ -464,13 +459,32 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     fromType: string;
     from: string;
     toType: string;
-    to: string;
+    // to: string;
     isToClass: boolean;
-    type: string;
+    // type: string;
+    isConvertedFromFront: boolean;
   }): Promise<{ funcName: string; func: string }> {
+    if (options.isToClass) {
+      const gcUnit = new GenerateToClassAdaptorFlowUnit();
+      const result = await gcUnit.doWork(options.toType);
+      return {
+        func: result.func,
+        funcName: result.funcName,
+      };
+    }
+
+    const gUnit = new GenerateInterfaceAdaptor();
+    const result = await gUnit.doWork({
+      fromType: options.fromType,
+      from: options.from,
+
+      toType: options.toType,
+      isConvertedFromFront: options.isConvertedFromFront,
+    });
+
     return {
-      funcName: 'todoFunc',
-      func: 'function todoFunc() {}',
+      funcName: result.topFuncName,
+      func: result.funcStrs.join('\n'),
     };
   }
 

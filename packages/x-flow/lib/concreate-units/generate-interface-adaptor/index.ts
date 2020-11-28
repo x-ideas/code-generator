@@ -75,7 +75,7 @@ export class GenerateInterfaceAdaptor extends XFlowUnit {
     return result;
   }
 
-  async doWork(options: IGenerateInterfaceAdaptorOptions): Promise<string[]> {
+  async doWork(options: IGenerateInterfaceAdaptorOptions) {
     const collection: Collection<jscodeshift.ASTNode> = jscodeshift(options.from, {
       parser: {
         parse(source: string) {
@@ -101,11 +101,16 @@ export class GenerateInterfaceAdaptor extends XFlowUnit {
     });
 
     const funcStr: string[] = [];
+    let topFuncName = '';
     collection.find(jscodeshift.TSInterfaceDeclaration).forEach((path: ASTPath<jscodeshift.TSInterfaceDeclaration>) => {
       if (jscodeshift.Identifier.check(path.node.id)) {
         const interfaceName = path.node.id.name;
 
         const interfaceProperties: jscodeshift.TSPropertySignature[] = path.node.body.body as jscodeshift.TSPropertySignature[];
+
+        if (!topFuncName) {
+          topFuncName = this._getFuncName(interfaceName, options);
+        }
 
         const func = jscodeshift.functionDeclaration(
           jscodeshift.identifier(this._getFuncName(interfaceName, options)),
@@ -135,6 +140,9 @@ export class GenerateInterfaceAdaptor extends XFlowUnit {
       }
     });
 
-    return funcStr;
+    return {
+      topFuncName: topFuncName,
+      funcStrs: funcStr,
+    };
   }
 }

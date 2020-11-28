@@ -53,10 +53,13 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
     return funcDeclaration;
   }
 
-  async doWork(className: string): Promise<string> {
+  async doWork(className: string) {
     const program = jscodeshift('').find(jscodeshift.Program);
     program.get('body').value.push(this.generateFunc(className));
 
-    return program.toSource();
+    return {
+      funcName: `to${className}AdaptorFunc`,
+      func: program.toSource(),
+    };
   }
 }
