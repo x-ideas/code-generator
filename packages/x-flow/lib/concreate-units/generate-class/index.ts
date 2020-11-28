@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /*
  * @name:
  * description:
@@ -14,6 +15,13 @@ import { Collection } from 'jscodeshift/src/Collection';
 import * as K from 'jscodeshift/node_modules/ast-types/gen/kinds';
 
 export class GenerateClassFlowUnit extends XFlowUnit {
+  #convertedFromNiceFormat: boolean;
+  constructor({ convertedFromNiceFormat = true }: { convertedFromNiceFormat: boolean }) {
+    super();
+
+    this.#convertedFromNiceFormat = convertedFromNiceFormat;
+  }
+
   /**
    *
    * @private
@@ -26,7 +34,9 @@ export class GenerateClassFlowUnit extends XFlowUnit {
     const newProgram = newCollection.find(jscodeshift.Program);
 
     collection.find(jscodeshift.TSInterfaceDeclaration).forEach(path => {
-      const classDeclaration = generateClassDeclaration(path);
+      const classDeclaration = generateClassDeclaration(path, {
+        convertedFromNiceFormat: this.#convertedFromNiceFormat,
+      });
       newProgram.get('body').value.push(classDeclaration);
     });
 
@@ -73,12 +83,20 @@ export class GenerateClassFlowUnit extends XFlowUnit {
  * @param {jscodeshift.TSPropertySignature} property
  * @returns {jscodeshift.Decorator}
  */
-function generateExposeDecorator(property: jscodeshift.TSPropertySignature): jscodeshift.Decorator {
+function generateExposeDecorator(
+  property: jscodeshift.TSPropertySignature,
+  options: {
+    convertedFromNiceFormat: boolean;
+  }
+): jscodeshift.Decorator {
   // 找到参数
   const argums: jscodeshift.ObjectExpression[] = [];
   if (jscodeshift.Identifier.check(property.key)) {
     // property
-    const nameProperty = jscodeshift.property('init', jscodeshift.identifier('name'), jscodeshift.literal(property.key.name));
+
+    const bName: string = options.convertedFromNiceFormat ? lodash.snakeCase(property.key.name) : property.key.name;
+
+    const nameProperty = jscodeshift.property('init', jscodeshift.identifier('name'), jscodeshift.literal(bName));
     argums.push(jscodeshift.objectExpression([nameProperty]));
   }
 
@@ -143,6 +161,7 @@ function generateValidateDecorator(property: jscodeshift.TSPropertySignature): j
         // NOTE: 通过前缀区分
         return jscodeshift.decorator(
           jscodeshift.callExpression(jscodeshift.identifier('Type'), [
+            // @ts-ignore
             jscodeshift.arrowFunctionExpression([], jscodeshift.identifier(property.typeAnnotation.typeAnnotation.typeName?.name)),
           ])
         );
@@ -163,14 +182,14 @@ function generateValidateDecorator(property: jscodeshift.TSPropertySignature): j
  * 生成class property的初始化值
  * @param {jscodeshift.TSPropertySignature} property
  */
-function generateClassPropertyInitValue(property: jscodeshift.TSPropertySignature): K.ExpressionKind {
+function generateClassPropertyInitValue(property: jscodeshift.TSPropertySignature): K.ExpressionKind | null {
   // 找到type类型
   const optional = property.optional;
   if (optional) {
     return null;
   }
 
-  switch (property.typeAnnotation.typeAnnotation.type) {
+  switch (property.typeAnnotation?.typeAnnotation.type) {
     case 'TSBooleanKeyword':
       return jscodeshift.literal(false);
 
@@ -266,7 +285,12 @@ function generateClassPropertyAnnotation(property: jscodeshift.TSPropertySignatu
  * @param {jscodeshift.TSPropertySignature} property
  * @returns {(jscodeshift.ClassProperty | undefined)}
  */
-function generateClassPropertyFromInterfaceProperty(property: jscodeshift.TSPropertySignature): jscodeshift.ClassProperty | null {
+function generateClassPropertyFromInterfaceProperty(
+  property: jscodeshift.TSPropertySignature,
+  options: {
+    convertedFromNiceFormat: boolean;
+  }
+): jscodeshift.ClassProperty | null {
   if (jscodeshift.Identifier.check(property.key)) {
     const ccName = lodash.camelCase(property.key.name);
 
@@ -277,7 +301,7 @@ function generateClassPropertyFromInterfaceProperty(property: jscodeshift.TSProp
 
     // @ts-ignore
     // NOTE: 定义居然没有
-    cProperty.decorators = [generateExposeDecorator(property), generateValidateDecorator(property)].filter(Boolean);
+    cProperty.decorators = [generateExposeDecorator(property, options), generateValidateDecorator(property)].filter(Boolean);
 
     return cProperty;
   }
@@ -290,11 +314,17 @@ function generateClassPropertyFromInterfaceProperty(property: jscodeshift.TSProp
  * @param {jscodeshift.TSPropertySignature[]} properties
  * @returns {jscodeshift.ClassDeclaration}
  */
-function generateClassDeclaration(interfaceDeclaration: jscodeshift.ASTPath<jscodeshift.TSInterfaceDeclaration>): jscodeshift.ClassDeclaration {
+function generateClassDeclaration(
+  interfaceDeclaration: jscodeshift.ASTPath<jscodeshift.TSInterfaceDeclaration>,
+  options: {
+    convertedFromNiceFormat: boolean;
+  }
+): jscodeshift.ClassDeclaration {
   const interfaceName = jscodeshift(interfaceDeclaration).get('id', 'name').value;
   const properties = jscodeshift(interfaceDeclaration).get('body', 'body').value;
 
-  const cProperties = properties.map(prop => generateClassPropertyFromInterfaceProperty(prop));
+  // @ts-ignore
+  const cProperties = properties.map(prop => generateClassPropertyFromInterfaceProperty(prop, options));
 
   return jscodeshift.classDeclaration(jscodeshift.identifier(interfaceName), jscodeshift.classBody(cProperties));
 }

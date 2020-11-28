@@ -81,21 +81,24 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
   ): {
     [name: string]: JSONSchema4;
   } {
-    return parameters
-      .filter(par => {
-        return par.in === 'path';
-      })
-      .map((par: OpenAPIV2.GeneralParameterObject) => {
-        return {
-          [par.name]: this._convertJsonTypeDefineFromOpenApi(par),
-        };
-      })
-      .reduce((accum, current) => {
-        return {
-          ...accum,
-          ...current,
-        };
-      }, {});
+    return (
+      parameters
+        .filter(par => {
+          return par.in === 'path';
+        })
+        // @ts-ignore
+        .map((par: OpenAPIV2.GeneralParameterObject) => {
+          return {
+            [par.name]: this._convertJsonTypeDefineFromOpenApi(par),
+          };
+        })
+        .reduce((accum, current) => {
+          return {
+            ...accum,
+            ...current,
+          };
+        }, {})
+    );
   }
 
   /**
@@ -224,51 +227,57 @@ export class GenerateRequestParamsJsonSchemaFlowUnit extends XFlowUnit {
   }
 
   private convertBodyParemeters(parameters: OpenAPIV2.Parameter[]): { [name: string]: JSONSchema4 } {
-    return parameters
-      .filter(par => {
-        return par.in === 'body';
-      })
-      .map((par: OpenAPIV2.GeneralParameterObject) => {
-        if (par.schema) {
-          // this.generateJSonSchemaFromOpenAPISchema(par.schema, {}, []);
+    return (
+      parameters
+        .filter(par => {
+          return par.in === 'body';
+        })
+        // @ts-ignore
+        .map((par: OpenAPIV2.GeneralParameterObject) => {
+          if (par.schema) {
+            // this.generateJSonSchemaFromOpenAPISchema(par.schema, {}, []);
 
-          // const result: JSONSchema4 = {
-          //   type: par.schema.type ?? 'object',
-          //   description: par.schema.description ?? par.schema.title ?? '',
-          //   properties: this.generatePropertiesJSONSchema(par.schema.properties ?? {}, {}, []),
-          // };
+            // const result: JSONSchema4 = {
+            //   type: par.schema.type ?? 'object',
+            //   description: par.schema.description ?? par.schema.title ?? '',
+            //   properties: this.generatePropertiesJSONSchema(par.schema.properties ?? {}, {}, []),
+            // };
+            return {
+              [par.name]: this.generateJSonSchemaFromOpenAPISchema(par.schema, {}, [], par.description),
+            };
+          }
           return {
-            [par.name]: this.generateJSonSchemaFromOpenAPISchema(par.schema, {}, [], par.description),
+            [par.name]: this._convertJsonTypeDefineFromOpenApi(par),
           };
-        }
-        return {
-          [par.name]: this._convertJsonTypeDefineFromOpenApi(par),
-        };
-      })
-      .reduce((accum, current) => {
-        return {
-          ...accum,
-          ...current,
-        };
-      }, {});
+        })
+        .reduce((accum, current) => {
+          return {
+            ...accum,
+            ...current,
+          };
+        }, {})
+    );
   }
 
   private convertQueryParemeters(parameters: OpenAPIV2.Parameter[]): { [name: string]: JSONSchema4 } {
-    return parameters
-      .filter(par => {
-        return par.in === 'query';
-      })
-      .map((par: OpenAPIV2.GeneralParameterObject) => {
-        return {
-          [par.name]: this._convertJsonTypeDefineFromOpenApi(par),
-        };
-      })
-      .reduce((accum, current) => {
-        return {
-          ...accum,
-          ...current,
-        };
-      }, {});
+    return (
+      parameters
+        .filter(par => {
+          return par.in === 'query';
+        })
+        // @ts-ignore
+        .map((par: OpenAPIV2.GeneralParameterObject) => {
+          return {
+            [par.name]: this._convertJsonTypeDefineFromOpenApi(par),
+          };
+        })
+        .reduce((accum, current) => {
+          return {
+            ...accum,
+            ...current,
+          };
+        }, {})
+    );
   }
 
   private getRequeiredQueryParemters(parameters: OpenAPIV2.Parameter[]): string[] {

@@ -5,7 +5,7 @@
   "author": "向家祥 <xjiaxiang_86@163.com>",
   "homepage": "https://github.com/x-ideas/code-generator#readme",
   "license": "ISC",
-  "main": "lib/xFlow.js",
+  "main": "./dist/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -24,6 +24,7 @@
     "@apidevtools/swagger-parser": "^10.0.2",
     "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.4",
     "@types/json-schema": "^7.0.6",
+    "assert": "^2.0.0",
     "cross-fetch": "^3.0.6",
     "jscodeshift": "^0.11.0",
     "lodash": "^4.17.20",
@@ -54,10 +55,8 @@
     "asbuild:optimized": "asc assembly/index.ts --target release",
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized",
     "test": "node tests",
-    "build": "rollup -c ./rollup.config.js",
+    "build": "tsc",
     "asc-build": "asc ./lib/hello-world.ts -b ./dist/hello-world.wasm",
-    "asc": "asc",
-    "webassembly": "node ./dist/bundle.js",
-    "demo": "ts-node ./index.ts"
+    "asc": "asc"
   }
 }

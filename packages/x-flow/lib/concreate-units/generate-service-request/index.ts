@@ -7,6 +7,8 @@
 
 import assert from 'assert';
 import lodash from 'lodash';
+import * as babelParser from '@babel/parser';
+import jscodeshift from 'jscodeshift';
 import { JSONSchema4 } from 'json-schema';
 import { XFlowUnit } from '../../flow-unit';
 import { GenerateRequestParamsJsonSchemaFlowUnit } from '../generate-request-params-json-schema';
@@ -16,6 +18,7 @@ import { SwaggerParseFlowUnit } from '../swagger-parse';
 import { ParseRequestCodeFlowUnit } from './../parse-request-code/parser-request-code-unit';
 import { InterfaceGenerateFlowUnit } from '../generate-interface';
 import { OpenAPIV2 } from 'openapi-types';
+import { GenerateClassFlowUnit } from '../generate-class';
 
 interface IGenerateServiceRequestFlowUnitParams {
   /**
@@ -49,6 +52,22 @@ interface IGenerateServiceRequestFlowUnitParams {
   responseDataType: string;
 }
 
+type RequestMethod = 'get' | 'post' | 'delete' | 'put';
+
+interface IGenerateFuncOptions {
+  funcName: string;
+
+  method: RequestMethod;
+  requestPath: string;
+
+  pathSchema: JSONSchema4;
+  querySchema: JSONSchema4;
+  bodySchema: JSONSchema4;
+  responseSchema: JSONSchema4;
+
+  responseType: string;
+}
+
 export class GenerateServiceRequestFlowUnit extends XFlowUnit {
   /**
    * 生成请求的链接信息
@@ -59,11 +78,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
    * @returns {{ requestUrl: string; pathParameterNames: string[] }} 请求的链接和请求方法中的path名字
    * @memberof GenerateServiceRequestFlowUnit
    */
-  private _generateRequestPathParams(
-    obj: JSONSchema4,
-    path: string,
-    params: IGenerateServiceRequestFlowUnitParams
-  ): { requestUrl: string; pathParameterNames: { name: string; type: string }[] } {
+  private _generateRequestPathParams(obj: JSONSchema4, path: string): { requestUrl: string; pathParameterNames: { name: string; type: string }[] } {
     if (obj.properties) {
       const pathElements: string[] = Object.keys(obj.properties);
 
@@ -81,6 +96,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
           return {
             name: lodash.camelCase(ele),
             // FIXME: 这里的类型会返回数组
+            // @ts-ignore
             type: (obj.properties[ele].type as string) ?? 'unknown',
           };
         }),
@@ -88,10 +104,39 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     } else {
       // 说明没有path参数
       return {
-        requestUrl: `${params.requestUrl}${path}`,
+        requestUrl: path,
         pathParameterNames: [],
       };
     }
+  }
+
+  private _getTopInterfaeType(interfaces: string[]): string {
+    const collection = jscodeshift(interfaces.join('\n'), {
+      parser: {
+        parse(source: string) {
+          return babelParser.parse(source, {
+            sourceType: 'module',
+            // 支持typescript, jsx
+            plugins: [
+              'estree',
+              'typescript',
+              [
+                'decorators',
+                {
+                  decoratorsBeforeExport: true,
+                },
+              ],
+              'exportDefaultFrom',
+              'classProperties',
+              'classPrivateProperties',
+            ],
+          });
+        },
+      },
+    });
+
+    const value = collection.find(jscodeshift.TSInterfaceDeclaration).get('0').node.id.name;
+    return value;
   }
 
   /**
@@ -103,21 +148,33 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
    */
   private async _generateReuqestQueryParams(
     query: JSONSchema4,
-    params: IGenerateServiceRequestFlowUnitParams
+    params: {
+      serviceName: string;
+    }
   ): Promise<{
     name: string;
     type: string;
+    fInterfaceStrs: string[];
+    bInterfaceStrs: string[];
   }> {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
     const result = await unit.doWork({
-      topName: `${params.serviceName}QueryParams`,
+      topName: `IF${params.serviceName}QueryParams`,
+      jsonSchema: query,
+    });
+
+    const bUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
+    const bResult = await bUnit.doWork({
+      topName: `IB${params.serviceName}QueryParams`,
       jsonSchema: query,
     });
 
     // NOTE: 找到interface对应的名字
     return {
       name: result.length > 0 ? 'queryParams' : '',
-      type: result.length > 0 ? `IF${params.serviceName}QueryParams` : '',
+      type: result.length > 0 ? this._getTopInterfaeType(result) : '',
+      fInterfaceStrs: result,
+      bInterfaceStrs: bResult,
     };
   }
 
@@ -130,10 +187,14 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
    */
   private async _generateRequestBodyParams(
     body: JSONSchema4,
-    params: IGenerateServiceRequestFlowUnitParams
+    params: {
+      serviceName: string;
+    }
   ): Promise<{
-    name: string;
+    name?: string;
     type: string;
+    fInterfaceStrs: string[];
+    bInterfaceStrs: string[];
   }> {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
     const result = await unit.doWork({
@@ -141,61 +202,342 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       jsonSchema: body,
     });
 
+    const bUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
+    const bResult = await bUnit.doWork({
+      topName: `${params.serviceName}BodyParams`,
+      jsonSchema: body,
+    });
+
     // FIXME: 找到interface对应的名字
 
     return {
-      name: result.length > 0 ? 'bodyParams' : '',
-      type: result.length > 0 ? `IF${params.serviceName}BodyParams` : '',
+      name: result.length > 0 ? 'bodyParams' : undefined,
+      type: result.length > 0 ? this._getTopInterfaeType(result) : '',
+      fInterfaceStrs: result,
+      bInterfaceStrs: bResult,
     };
   }
 
-  private async _generateResponseInterface(responseSchema: JSONSchema4, params: IGenerateServiceRequestFlowUnitParams) {
+  /**
+   * 响应
+   * @param responseSchema
+   * @param params
+   */
+  private async _generateResponseInterface(responseSchema: JSONSchema4, params: { responseDataType: string }) {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     const result = await unit.doWork({
-      // FIXME: 这个类型的名称
-      topName: `${params.responseDataType}Info`,
-      // NOTE: 只解析data
+      topName: `IF${params.responseDataType}Info`,
       jsonSchema: (responseSchema.properties ?? {}).data,
     });
 
-    // FIXME: 类型
+    const buUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
+
+    const bResult = await buUnit.doWork({
+      topName: `IB${params.responseDataType}Info`,
+      jsonSchema: (responseSchema.properties ?? {}).data,
+    });
+
     const isNotVoid = result.length > 0;
 
-    const type = isNotVoid ? `IF${params.responseDataType}Info` : 'void';
+    const fType = isNotVoid ? this._getTopInterfaeType(result) : 'void';
+    const bType = isNotVoid ? this._getTopInterfaeType(bResult) : 'unknown';
 
     // 判断是否ListResponse，还是CommonResponse
-
     const isListResponse = !!(responseSchema.properties ?? {})['pager'];
     const isArray = (responseSchema.properties ?? {})['data']['type'] === 'array';
 
-    const templateType = isArray ? `${type}[]` : `${type}`;
+    const templateType = isArray ? `${fType}[]` : `${fType}`;
+    const bTemplateType = isArray ? `${bType}[]` : `${bType}`;
 
     return {
-      type: type,
+      fType: fType,
+      bType: bType,
       isArray: isArray,
       isListResponse: isListResponse,
-      responseType: isListResponse ? `IListResponse<${templateType}>` : `ICommonResponse<${templateType}>`,
+
+      fResponseType: isListResponse ? `IListResponse<${templateType}>` : `ICommonResponse<${templateType}>`,
+      bResponseType: isListResponse ? `IListResponse<${bTemplateType}>` : `ICommonResponse<${bTemplateType}>`,
+
+      fInterfaces: result,
+      bInterfaces: bResult,
     };
   }
 
-  // private _generateDeleteRequestFunction(): string {}
+  private async _generateGetRequestFunction(options: IGenerateFuncOptions): Promise<string> {
+    // 适配函数
+    // class定义
 
-  // private _generatePutRequestFunction(): string {}
+    const result = await this._generataDefinitions({
+      querySchema: options.querySchema,
+      bodySchema: options.bodySchema,
 
-  // private _generatePostequestFunction(): string {}
+      responseSchema: options.responseSchema,
+      serviceName: options.funcName,
 
-  // private _generateGetRequestFunction(): string {
-  //   // 函数名字
-  //   // 函数入参
-  //   // 函数出参
-  //   // 请求链接
-  //   // 请求方法
-  //   // 适配函数
-  //   // class定义
-  // }
+      responseType: options.responseType,
+    });
 
-  private _getPathMethod(pathItemObj: OpenAPIV2.PathItemObject): string | undefined {
+    const pathParams = this._generateRequestPathParams(options.pathSchema, options.requestPath);
+
+    const toClass = options.method === 'get';
+
+    // query的适配
+    const queryAdaptorInfo = await this._generateAdaptors({
+      fromType: result.fQueryType,
+      from: result.fQueryInterface.join('\n'),
+      toType: result.bQueryType,
+      to: result.bQueryInterface.join('\n'),
+      isToClass: false,
+      type: 'QueryParams',
+    });
+
+    // body的适配
+    const bodyAdaptorInfo = await this._generateAdaptors({
+      from: result.fBodyInterface.join('\n'),
+      fromType: result.fBodyType,
+
+      toType: result.bBodyType,
+      to: result.bBodyInterface.join('\n'),
+      isToClass: false,
+      type: 'BodyParams',
+    });
+
+    // response的适配
+    const gcUnit = new GenerateClassFlowUnit({ convertedFromNiceFormat: true });
+    const classDefines = await gcUnit.doWork(result.fResponseInterface);
+    const responseAdaptorInfo = await this._generateAdaptors({
+      from: result.bResponseInterface.join('\n'),
+      fromType: result.bResponseInfoType,
+
+      to: toClass ? classDefines : result.fResponseInterface.join('\n'),
+      toType: result.fResponseInfoType,
+
+      isToClass: toClass,
+      type: result.fResponseInfoType,
+    });
+
+    // axis请求的参数
+    const axisRequestParams: string[] = [];
+    if (options.method === 'get') {
+      if (result.fQueryName) {
+        axisRequestParams.push(`{
+          params: ${queryAdaptorInfo.funcName}(${result.fQueryName})
+        }`);
+      }
+    } else {
+      if (result.fBodyName) {
+        axisRequestParams.push(`${bodyAdaptorInfo.funcName}(${result.fBodyName})`);
+      }
+
+      if (result.fQueryName) {
+        axisRequestParams.push(`{
+          params: ${queryAdaptorInfo.funcName}(${result.fQueryName})
+        }`);
+      }
+    }
+
+    const errorStr = "new Error(`请求失败:(${result?.data?.errmsg || '未知原因'})`)";
+
+    const generateName = await this._generateFuncName({ method: options.method, name: options.funcName });
+    const funcParams = await this._generateFuncParams({
+      pathParams: pathParams,
+      fQueryName: result.fQueryName,
+      fQueryType: result.fQueryType,
+      fBodyName: result.fBodyName,
+      fBodyType: result.fBodyType,
+    });
+
+    /**
+     *      
+     * 
+      ${result.fBodyInterface.join('\n')}
+
+      ${toClass ? classDefines : result.fResponseInterface.join('\n')}
+
+
+      ${result.bQueryInterface.join('\n')}
+
+      ${result.bBodyInterface.join('\n')}
+
+      ${toClass && result.bResponseInterface.join('\n')}
+
+
+      // 适配
+      ${queryAdaptorInfo.func}
+
+      ${bodyAdaptorInfo.func}
+
+      ${responseAdaptorInfo.func}
+    
+     * 
+     */
+
+    return `
+
+      ${result.fQueryInterface.join('\n')}
+      ${result.fBodyInterface.join('\n')}
+
+      ${toClass ? classDefines : result.fResponseInterface.join('\n')}
+
+      ${result.bQueryInterface.join('\n')}
+
+      ${result.bBodyInterface.join('\n')}
+
+
+      export async function ${generateName}(${funcParams}): Promise<${result.fResponseDataType}> {
+        const result = await http.${options.method}<${result.bResponseDataType}>(microservice.javaAdmin + \`${
+      pathParams.requestUrl
+    }\`, ${axisRequestParams.join(',')});
+
+        if (isRequestSucceed(result)) {
+          return result.data;
+        } else {
+          return Promise.reject(${errorStr});
+        }
+      }
+    `;
+  }
+
+  private async _generateFuncName(options: { method: RequestMethod; name: string }): Promise<string> {
+    switch (options.method) {
+      case 'get':
+        return `get${options.name}`;
+
+      case 'delete':
+        return `delete${options.name}`;
+
+      case 'post':
+        return `create${options.name}`;
+
+      case 'put':
+        return `update${options.name}`;
+
+      default:
+        return options.name;
+    }
+  }
+
+  private async _generateFuncParams(options: {
+    pathParams: {
+      requestUrl: string;
+      pathParameterNames: {
+        name: string;
+        type: string;
+      }[];
+    };
+    fQueryType: string;
+    fQueryName?: string;
+    fBodyType: string;
+    fBodyName?: string;
+  }): Promise<string> {
+    // 参数信息
+    const requestParamsArr: { name: string; type: string }[] = [];
+    if (options.pathParams.pathParameterNames.length > 0) {
+      requestParamsArr.push(...options.pathParams.pathParameterNames);
+    }
+
+    if (options.fQueryName) {
+      requestParamsArr.push({
+        name: options.fQueryName,
+        type: options.fQueryType,
+      });
+    }
+
+    if (options.fBodyName) {
+      requestParamsArr.push({
+        name: options.fBodyName,
+        type: options.fBodyType,
+      });
+    }
+
+    const requestParams: string = requestParamsArr
+      .map(item => {
+        return `${item.name}: ${item.type}`;
+      })
+      .join(',');
+
+    return requestParams;
+  }
+
+  private async _generateAdaptors(options: {
+    fromType: string;
+    from: string;
+    toType: string;
+    to: string;
+    isToClass: boolean;
+    type: string;
+  }): Promise<{ funcName: string; func: string }> {
+    return {
+      funcName: 'todoFunc',
+      func: 'function todoFunc() {}',
+    };
+  }
+
+  private async _generataDefinitions(options: {
+    querySchema: JSONSchema4;
+    bodySchema: JSONSchema4;
+    responseSchema: JSONSchema4;
+    serviceName: string;
+    responseType: string;
+  }): Promise<{
+    fQueryType: string;
+    bQueryType: string;
+    fQueryName?: string;
+    fQueryInterface: string[];
+    bQueryInterface: string[];
+
+    fBodyType: string;
+    bBodyType: string;
+    fBodyName?: string;
+    fBodyInterface: string[];
+    bBodyInterface: string[];
+
+    // 响应有关
+    isReturnArray: boolean;
+    isPager: boolean;
+
+    fResponseInterface: string[];
+    bResponseInterface: string[];
+
+    fResponseInfoType: string;
+    bResponseInfoType: string;
+
+    fResponseDataType: string;
+    bResponseDataType: string;
+  }> {
+    const queryParams = await this._generateReuqestQueryParams(options.querySchema, { serviceName: options.serviceName });
+    const bodyParams = await this._generateRequestBodyParams(options.bodySchema, { serviceName: options.serviceName });
+    const responseTypeInfo = await this._generateResponseInterface(options.responseSchema, { responseDataType: options.responseType });
+
+    return {
+      fQueryName: queryParams.name,
+      fQueryType: queryParams.type,
+      fQueryInterface: queryParams.fInterfaceStrs,
+      bQueryType: lodash.snakeCase(queryParams.type),
+      bQueryInterface: queryParams.bInterfaceStrs,
+
+      fBodyName: bodyParams.name,
+      fBodyType: bodyParams.type,
+      bBodyType: lodash.snakeCase(bodyParams.type),
+      fBodyInterface: bodyParams.fInterfaceStrs,
+      bBodyInterface: bodyParams.bInterfaceStrs,
+
+      fResponseInfoType: responseTypeInfo.fType,
+      bResponseInfoType: responseTypeInfo.bType,
+
+      fResponseDataType: responseTypeInfo.fResponseType,
+      bResponseDataType: responseTypeInfo.bResponseType,
+
+      isReturnArray: responseTypeInfo.isArray,
+      isPager: responseTypeInfo.isListResponse,
+
+      fResponseInterface: responseTypeInfo.fInterfaces,
+      bResponseInterface: responseTypeInfo.bInterfaces,
+    };
+  }
+
+  private _getPathMethod(pathItemObj: OpenAPIV2.PathItemObject): RequestMethod | undefined {
     if (pathItemObj.get) {
       return 'get';
     }
@@ -215,7 +557,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     return undefined;
   }
 
-  async doWork(params: IGenerateServiceRequestFlowUnitParams) {
+  async doWork(params: IGenerateServiceRequestFlowUnitParams): Promise<string> {
     const rsFlowUnit = new RequestSwaggerFlowUnit();
     const prcFlowUnit = new ParseRequestCodeFlowUnit();
     const spFlowUnit = new SwaggerParseFlowUnit();
@@ -239,50 +581,15 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     const paramsSchema = await grpsFlowUnit.doWork(parsedSwaggerDoc);
     const responseSchema = await grdFlowUnit.doWork(parsedSwaggerDoc);
 
-    const pathParams = this._generateRequestPathParams(paramsSchema.path, path, params);
-    const queryParams = await this._generateReuqestQueryParams(paramsSchema.query, params);
-    const bodyParams = await this._generateRequestBodyParams(paramsSchema.body, params);
-
-    // 参数信息
-    const requestParamsArr: { name: string; type: string }[] = [];
-    if (pathParams.pathParameterNames.length > 0) {
-      requestParamsArr.push(...pathParams.pathParameterNames);
-    }
-
-    if (queryParams.name) {
-      requestParamsArr.push(queryParams);
-    }
-
-    if (bodyParams.name) {
-      requestParamsArr.push(bodyParams);
-    }
-
-    const requestParams: string = requestParamsArr
-      .map(item => {
-        return `${item.name}: ${item.type}`;
-      })
-      .join(',');
-
-    // TODO: 函数备注信息
-
-    // 函数的返回类型
-    const responseTypeInfo = await this._generateResponseInterface(responseSchema, params);
-
-    const errorStr = "new Error(`请求失败:(${result?.data?.errmsg || '未知原因'})`)";
-
-    // 适配函数
-
-    // 生成函数
-    const funcStr = `export async function ${params.serviceName}(${requestParams}): Promise<${responseTypeInfo.responseType}> {
-        const result = await http.${method}<${responseTypeInfo.responseType}>(microservice.javaAdmin + ${pathParams.requestUrl});
-
-        if (isRequestSucceed(result)) {
-          return result.data;
-        } else {
-          return Promise.reject(${errorStr});
-        }
-    }`;
-
-    return funcStr;
+    return this._generateGetRequestFunction({
+      funcName: params.serviceName,
+      method: method,
+      requestPath: path,
+      pathSchema: paramsSchema.path,
+      querySchema: paramsSchema.query,
+      bodySchema: paramsSchema.body,
+      responseSchema: responseSchema,
+      responseType: params.responseDataType,
+    });
   }
 }

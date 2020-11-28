@@ -72,7 +72,7 @@ describe('测试 generate class', () => {
           receive_sum_real?: number;
       }`.split('\n');
 
-    const unit = new GenerateClassFlowUnit();
+    const unit = new GenerateClassFlowUnit({ convertedFromNiceFormat: false });
 
     const result = await unit.doWork(str);
     // console.log(result);

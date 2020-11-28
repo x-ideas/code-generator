@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /*
  * @name:
  * description:
@@ -27,15 +28,10 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
     this.#options = options;
   }
 
-  async doWork(params: { jsonSchema: JSONSchema4; topName?: string }): Promise<string[]> {
-    const generateName = () => {
-      const name = params.topName ? params.topName : 'Demo';
-      return this.#options.nicePropertyName ? `IB${name}` : `IF${name}`;
-    };
-
+  async doWork(params: { jsonSchema: JSONSchema4; topName: string }): Promise<string[]> {
     const inputData = new InputData();
 
-    const source = { name: generateName(), schema: JSON.stringify(params.jsonSchema) };
+    const source = { name: params.topName, schema: JSON.stringify(params.jsonSchema) };
     inputData.addSource('schema', source, () => new JSONSchemaInput(undefined));
 
     const { lines } = await quicktype({
@@ -45,7 +41,8 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
       // leadingComments: ['测试备注'],
       rendererOptions: {
         'just-types': 'true',
-        'nice-property-names': this.#options.nicePropertyName ? 'true' : 'false',
+        // @ts-ignore
+        'nice-property-names': this.#options.nicePropertyName ? 'true' : '',
       },
     });
 
