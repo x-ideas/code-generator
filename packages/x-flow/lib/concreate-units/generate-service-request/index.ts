@@ -8,6 +8,7 @@
 import assert from 'assert';
 import lodash from 'lodash';
 import * as babelParser from '@babel/parser';
+import prettier from 'prettier';
 import jscodeshift from 'jscodeshift';
 import { JSONSchema4 } from 'json-schema';
 import { XFlowUnit } from '../../flow-unit';
@@ -25,33 +26,44 @@ import { GenerateToClassAdaptorFlowUnit } from '../generate-to-class-adaptor';
 interface IGenerateServiceRequestFlowUnitParams {
   /**
    * 请求的code
+   * @example 3610412
    */
   code: string;
   /**
-   * swagger文档地址
+   * 用于解析swagger文档的链接地址
+   * @example 'http://10.99.244.137:7076/v2/api-docs',
    */
   swaggerSite: string;
   /**
    * 类名
    */
-  className: string;
+  // className: string;
 
   /**
    * 请求的地址（不包括路径）
    * @example
    * http://ja.api.dev.pupuvip.com
    */
-  requestUrl: string;
+  // requestUrl: string;
 
   /**
-   * 请求函数的名称
+   * 请求函数的名称，不需要带上get, update之类的前缀，处理流程会自动添加
+   * @example
+   *   RegionInfo  --> 生成  getRegionInfo
    */
   serviceName: string;
 
   /**
-   * 请求返回的数据的类型
+   * 请求返回的数据的类型，只需要带主要名字，如RegionInfo,
+   * 最终会生成带上I或者C的名字
+   * @example
    */
   responseDataType: string;
+
+  /**
+   * 是否转换成class
+   */
+  toClass: boolean;
 }
 
 type RequestMethod = 'get' | 'post' | 'delete' | 'put';
@@ -67,7 +79,15 @@ interface IGenerateFuncOptions {
   bodySchema: JSONSchema4;
   responseSchema: JSONSchema4;
 
+  /**
+   * 返回的数据类型
+   */
   responseType: string;
+
+  /**
+   * 是否转换成class
+   */
+  toClass: boolean;
 }
 
 export class GenerateServiceRequestFlowUnit extends XFlowUnit {
@@ -279,7 +299,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
     const pathParams = this._generateRequestPathParams(options.pathSchema, options.requestPath);
 
-    const toClass = options.method === 'get';
+    const toClass = options.toClass && options.method === 'get';
 
     // query的适配
     const queryAdaptorInfo = await this._generateAdaptors({
@@ -348,7 +368,8 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
       isToClass: toClass,
       isConvertedFromFront: false,
-      // type: result.fResponseInfoType,
+
+      isArray: result.isReturnArray,
     });
 
     // response的适配
@@ -357,7 +378,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       returnData = result.isReturnArray
         ? `{
           ...result.data,
-          data: result.data.data.map((item) => ${responseAdaptorInfo.funcName}(item)
+          data: ${responseAdaptorInfo.funcName}(result.data.data)
         }`
         : `{
         ...result.data,
@@ -376,8 +397,10 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
       ${result.bBodyInterface.join('\n')}
 
+      ${result.bResponseInterface.join('\n')}
 
-      ${toClass ? responseAdaptorInfo.func : ''}
+
+      ${responseAdaptorInfo.func}
 
 
       export async function ${generateName}(${funcParams}): Promise<${result.fResponseDataType}> {
@@ -463,10 +486,11 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     isToClass: boolean;
     // type: string;
     isConvertedFromFront: boolean;
+    isArray?: boolean;
   }): Promise<{ funcName: string; func: string }> {
     if (options.isToClass) {
       const gcUnit = new GenerateToClassAdaptorFlowUnit();
-      const result = await gcUnit.doWork(options.toType);
+      const result = await gcUnit.doWork({ className: options.toType, isArray: options.isArray ?? false });
       return {
         func: result.func,
         funcName: result.funcName,
@@ -595,7 +619,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     const paramsSchema = await grpsFlowUnit.doWork(parsedSwaggerDoc);
     const responseSchema = await grdFlowUnit.doWork(parsedSwaggerDoc);
 
-    return this._generateGetRequestFunction({
+    const result = await this._generateGetRequestFunction({
       funcName: params.serviceName,
       method: method,
       requestPath: path,
@@ -604,6 +628,17 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       bodySchema: paramsSchema.body,
       responseSchema: responseSchema,
       responseType: params.responseDataType,
+      toClass: params.toClass,
     });
+
+    // return prettier.format(result, {
+    //   tabWidth: 2,
+    //   semi: true,
+    //   printWidth: 150,
+    //   singleQuote: true,
+    //   jsxSingleQuote: false,
+    //   arrowParens: 'avoid',
+    // });
+    return result;
   }
 }

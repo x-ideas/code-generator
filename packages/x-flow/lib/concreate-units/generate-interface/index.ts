@@ -43,6 +43,7 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
         'just-types': 'true',
         // @ts-ignore
         'nice-property-names': this.#options.nicePropertyName ? 'true' : '',
+        'acronym-style': 'camel',
       },
     });
 

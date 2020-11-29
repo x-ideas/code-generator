@@ -312,19 +312,22 @@ function generateClassPropertyFromInterfaceProperty(
  * 生成class声明
  * @param {string} className
  * @param {jscodeshift.TSPropertySignature[]} properties
- * @returns {jscodeshift.ClassDeclaration}
+ * @returns {jscodeshift.ExportNamedDeclaration}
  */
 function generateClassDeclaration(
   interfaceDeclaration: jscodeshift.ASTPath<jscodeshift.TSInterfaceDeclaration>,
   options: {
     convertedFromNiceFormat: boolean;
   }
-): jscodeshift.ClassDeclaration {
-  const interfaceName = jscodeshift(interfaceDeclaration).get('id', 'name').value;
+): jscodeshift.ExportNamedDeclaration {
+  const interfaceName: string = jscodeshift(interfaceDeclaration).get('id', 'name').value;
   const properties = jscodeshift(interfaceDeclaration).get('body', 'body').value;
 
   // @ts-ignore
   const cProperties = properties.map(prop => generateClassPropertyFromInterfaceProperty(prop, options));
 
-  return jscodeshift.classDeclaration(jscodeshift.identifier(interfaceName), jscodeshift.classBody(cProperties));
+  // 将第一个I替换成C
+  return jscodeshift.exportNamedDeclaration(
+    jscodeshift.classDeclaration(jscodeshift.identifier(`C${interfaceName.slice(1)}`), jscodeshift.classBody(cProperties))
+  );
 }

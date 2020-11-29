@@ -29,6 +29,7 @@
     "jscodeshift": "^0.11.0",
     "lodash": "^4.17.20",
     "openapi-types": "^7.0.1",
+    "prettier": "^2.2.1",
     "quicktype-core": "^6.0.69",
     "recast": "^0.20.4",
     "swagger2openapi": "^7.0.3",

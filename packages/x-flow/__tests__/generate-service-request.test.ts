@@ -18,26 +18,26 @@ beforeEach(() => {
 });
 
 describe('测试generate-service-request', () => {
-  // test('code 3610412 get 数组/CommonResponse', async () => {
-  //   const unit = new GenerateServiceRequestFlowUnit();
+  test('code 3610412 get 数组/CommonResponse', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610412',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
 
-  //   const result = await unit.doWork({
-  //     requestUrl: 'http://ja.api.dev.pupuvip.com',
-  //     code: '3610412',
-  //     swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
-  //     className: 'Demo',
-  //     serviceName: 'getDemoRequest',
-  //     responseDataType: 'RegionInfoDemo',
-  //   });
+      serviceName: 'DemoRequest',
 
-  //   console.log(result);
+      responseDataType: 'RegionInfoDemo',
 
-  //   // fs.writeFileSync('./demo.ts', result);
-  // });
+      toClass: false,
+    });
 
+    // fs.writeFileSync('./demo.ts', result);
+    expect(1).toBe(2);
+
+    // console.log(result);
+  });
   // test('code 3610401 get 数组/ ListResponse ', async () => {
   //   const unit = new GenerateServiceRequestFlowUnit();
-
   //   const result = await unit.doWork({
   //     requestUrl: 'http://ja.api.dev.pupuvip.com',
   //     code: '3610401',
@@ -46,14 +46,10 @@ describe('测试generate-service-request', () => {
   //     serviceName: 'getDemoRequest',
   //     responseDataType: 'RegionInfoDemo',
   //   });
-
   //   console.log(result);
-
   // });
-
   // test('code 3610119 get 非数组/CommonResponse void', async () => {
   //   const unit = new GenerateServiceRequestFlowUnit();
-
   //   const result = await unit.doWork({
   //     requestUrl: 'http://ja.api.dev.pupuvip.com',
   //     code: '3610119',
@@ -62,22 +58,18 @@ describe('测试generate-service-request', () => {
   //     serviceName: 'getDemoRequest',
   //     responseDataType: 'RegionInfoDemo',
   //   });
-
   //   console.log(result);
   // });
-
-  test('code 3610404 put CommonResponse', async () => {
-    const unit = new GenerateServiceRequestFlowUnit();
-
-    const result = await unit.doWork({
-      requestUrl: 'http://ja.api.dev.pupuvip.com',
-      code: '3610404',
-      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
-      className: 'Demo',
-      serviceName: 'getDemoRequest',
-      responseDataType: 'RegionInfoDemo',
-    });
-
-    console.log(result);
-  });
+  // test('code 3610404 put CommonResponse', async () => {
+  //   const unit = new GenerateServiceRequestFlowUnit();
+  //   const result = await unit.doWork({
+  //     requestUrl: 'http://ja.api.dev.pupuvip.com',
+  //     code: '3610404',
+  //     swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+  //     className: 'Demo',
+  //     serviceName: 'getDemoRequest',
+  //     responseDataType: 'RegionInfoDemo',
+  //   });
+  //   console.log(result);
+  // });
 });
