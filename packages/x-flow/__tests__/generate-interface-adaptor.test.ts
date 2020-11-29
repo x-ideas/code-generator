@@ -115,6 +115,6 @@ describe('测试 genereateInterfaceAdaptor', () => {
       isConvertedFromFront: true,
     });
 
-    console.log(result);
+    expect(result).toMatchSnapshot();
   });
 });

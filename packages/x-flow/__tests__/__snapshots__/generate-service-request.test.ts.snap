@@ -1,0 +1,295 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试generate-service-request code 3610119 get 非数组/CommonResponse void 1`] = `
+"
+
+      export interface IFgetDemoRequestQueryParamsObject {
+    /**
+     * 城市编码
+     */
+    areaZip: number;
+}
+
+      
+
+      
+
+      export interface IBgetDemoRequestQueryParamsObject {
+    /**
+     * 城市编码
+     */
+    area_zip: number;
+}
+
+
+      
+
+      
+
+
+      function tovoidAdaptorFunc(bInfo: any) {
+  const result = plainToClass(void, bInfo, {
+    excludeExtraneousValues: true,
+    groups: [EExportGroup.Always]
+  });
+
+  if (result.isValid()) {
+    return result;
+  } else {
+    throw new Error(\`无效的数据\`);
+  }
+}
+
+
+      export async function getgetDemoRequest(replenishId: string,queryParams: IFgetDemoRequestQueryParamsObject): Promise<ICommonResponse<void>> {
+        const result = await http.get<ICommonResponse<unknown>>(microservice.javaAdmin + \`/admin/depot/replenish/export_store_list/\${replenishId}\`, {
+          params: toBIFgetDemoRequestQueryParamsObjectAdaptor(queryParams)
+        });
+
+        if (isRequestSucceed(result)) {
+          return {
+        ...result.data,
+        data: tovoidAdaptorFunc(result.data.data)
+      };
+        } else {
+          return Promise.reject(new Error(\`请求失败:(\${result?.data?.errmsg || '未知原因'})\`));
+        }
+      }
+    "
+`;
+
+exports[`测试generate-service-request code 3610404 put CommonResponse 1`] = `
+"
+
+      
+      export interface IFgetDemoRequestBodyParamsObject {
+    /**
+     * list
+     */
+    list?: List[];
+}
+
+/**
+ * 补货需求单补货数
+ */
+export interface List {
+    /**
+     * 商品id
+     */
+    productId?: string;
+    /**
+     * 补货数
+     */
+    replenishCount?: number;
+}
+
+
+      
+
+      
+
+      export interface IBgetDemoRequestBodyParamsObject {
+    /**
+     * list
+     */
+    list?: List[];
+}
+
+/**
+ * 补货需求单补货数
+ */
+export interface List {
+    /**
+     * 商品id
+     */
+    product_id?: string;
+    /**
+     * 补货数
+     */
+    replenish_count?: number;
+}
+
+
+      
+
+
+      
+
+
+      export async function updategetDemoRequest(id: string,bodyParams: IFgetDemoRequestBodyParamsObject): Promise<ICommonResponse<void>> {
+        const result = await http.put<ICommonResponse<unknown>>(microservice.javaAdmin + \`/admin/depot/apply/\${id}\`, toBIFgetDemoRequestBodyParamsObjectAdaptor(bodyParams));
+
+        if (isRequestSucceed(result)) {
+          return ;
+        } else {
+          return Promise.reject(new Error(\`请求失败:(\${result?.data?.errmsg || '未知原因'})\`));
+        }
+      }
+    "
+`;
+
+exports[`测试generate-service-request code 3610412 get 数组/CommonResponse 1`] = `
+"
+
+      
+      
+
+      /**
+ * DepotReplenishApplyDetailLogVO
+ */
+export interface IfRegionInfoDemoInfo {
+    applyDetailId?:         string;
+    applyId?:               string;
+    codeUpc?:               string;
+    dayArriveExpect?:       number;
+    daySale?:               number;
+    dcId?:                  string;
+    dcProductId?:           string;
+    id?:                    string;
+    isDelete?:              boolean;
+    numOnTheWay?:           number;
+    periodArrive?:          number;
+    productCode?:           number;
+    productId?:             string;
+    productName?:           string;
+    productPurchaseType?:   number;
+    productSaleUnit?:       string;
+    receiveCount?:          number;
+    receiveCountDiff?:      number;
+    replenishCoefficient?:  number;
+    replenishCountAdjust?:  number;
+    replenishCountCorrect?: number;
+    replenishCountHandled?: number;
+    replenishCountReal?:    number;
+    replenishCountSuggest?: number;
+    replenishId?:           string;
+    ruleDetailId?:          string;
+    ruleId?:                string;
+    saleNumDaySafe?:        number;
+    shelfCodes?:            string;
+    status?:                number;
+    stockQuantity?:         number;
+    storeId?:               string;
+    storeProductId?:        string;
+    timeApplyUpdate?:       number;
+    timeOperate?:           number;
+    timeUpdate?:            number;
+    userIdOperate?:         string;
+    userIdReply?:           string;
+    userIdUpdate?:          string;
+    userNameUpdate?:        string;
+}
+
+
+      
+
+      
+
+      /**
+ * DepotReplenishApplyDetailLogVO
+ */
+export interface IbRegionInfoDemoInfo {
+    apply_detail_id?:         string;
+    apply_id?:                string;
+    code_upc?:                string;
+    day_arrive_expect?:       number;
+    day_sale?:                number;
+    dc_id?:                   string;
+    dc_product_id?:           string;
+    id?:                      string;
+    is_delete?:               boolean;
+    num_on_the_way?:          number;
+    period_arrive?:           number;
+    product_code?:            number;
+    product_id?:              string;
+    product_name?:            string;
+    product_purchase_type?:   number;
+    product_sale_unit?:       string;
+    receive_count?:           number;
+    receive_count_diff?:      number;
+    replenish_coefficient?:   number;
+    replenish_count_adjust?:  number;
+    replenish_count_correct?: number;
+    replenish_count_handled?: number;
+    replenish_count_real?:    number;
+    replenish_count_suggest?: number;
+    replenish_id?:            string;
+    rule_detail_id?:          string;
+    rule_id?:                 string;
+    sale_num_day_safe?:       number;
+    shelf_codes?:             string;
+    status?:                  number;
+    stock_quantity?:          number;
+    store_id?:                string;
+    store_product_id?:        string;
+    time_apply_update?:       number;
+    time_operate?:            number;
+    time_update?:             number;
+    user_id_operate?:         string;
+    user_id_reply?:           string;
+    user_id_update?:          string;
+    user_name_update?:        string;
+}
+
+
+
+      function toFIbRegionInfoDemoInfoAdaptor(bInfo: IbRegionInfoDemoInfo): IfRegionInfoDemoInfo {
+    return {
+        applyDetailId: bInfo.apply_detail_id,
+        applyId: bInfo.apply_id,
+        codeUpc: bInfo.code_upc,
+        dayArriveExpect: bInfo.day_arrive_expect,
+        daySale: bInfo.day_sale,
+        dcId: bInfo.dc_id,
+        dcProductId: bInfo.dc_product_id,
+        id: bInfo.id,
+        isDelete: bInfo.is_delete,
+        numOnTheWay: bInfo.num_on_the_way,
+        periodArrive: bInfo.period_arrive,
+        productCode: bInfo.product_code,
+        productId: bInfo.product_id,
+        productName: bInfo.product_name,
+        productPurchaseType: bInfo.product_purchase_type,
+        productSaleUnit: bInfo.product_sale_unit,
+        receiveCount: bInfo.receive_count,
+        receiveCountDiff: bInfo.receive_count_diff,
+        replenishCoefficient: bInfo.replenish_coefficient,
+        replenishCountAdjust: bInfo.replenish_count_adjust,
+        replenishCountCorrect: bInfo.replenish_count_correct,
+        replenishCountHandled: bInfo.replenish_count_handled,
+        replenishCountReal: bInfo.replenish_count_real,
+        replenishCountSuggest: bInfo.replenish_count_suggest,
+        replenishId: bInfo.replenish_id,
+        ruleDetailId: bInfo.rule_detail_id,
+        ruleId: bInfo.rule_id,
+        saleNumDaySafe: bInfo.sale_num_day_safe,
+        shelfCodes: bInfo.shelf_codes,
+        status: bInfo.status,
+        stockQuantity: bInfo.stock_quantity,
+        storeId: bInfo.store_id,
+        storeProductId: bInfo.store_product_id,
+        timeApplyUpdate: bInfo.time_apply_update,
+        timeOperate: bInfo.time_operate,
+        timeUpdate: bInfo.time_update,
+        userIdOperate: bInfo.user_id_operate,
+        userIdReply: bInfo.user_id_reply,
+        userIdUpdate: bInfo.user_id_update,
+        userNameUpdate: bInfo.user_name_update
+    };
+}
+
+
+      export async function getDemoRequest(detailId: string): Promise<ICommonResponse<IfRegionInfoDemoInfo[]>> {
+        const result = await http.get<ICommonResponse<IbRegionInfoDemoInfo[]>>(microservice.javaAdmin + \`/admin/depot/apply/logs/\${detailId}\`, );
+
+        if (isRequestSucceed(result)) {
+          return {
+          ...result.data,
+          data: toFIbRegionInfoDemoInfoAdaptor(result.data.data)
+        };
+        } else {
+          return Promise.reject(new Error(\`请求失败:(\${result?.data?.errmsg || '未知原因'})\`));
+        }
+      }
+    "
+`;

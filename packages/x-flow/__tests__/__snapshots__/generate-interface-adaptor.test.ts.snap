@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试 genereateInterfaceAdaptor 属性中包含其他对象(数组) 1`] = `
+Object {
+  "funcStrs": Array [
+    "function toBGetDemoRequestBodyParamsObjectAdaptor(fInfo: GetDemoRequestBodyParamsObject): IBGetDemoRequestBodyParamsObject {
+    return {
+        list: fInfo.list(item => toBListAdaptor(item))
+    };
+}",
+    "function toBListAdaptor(fInfo: GetDemoRequestBodyParamsObject): IBGetDemoRequestBodyParamsObject {
+    return {
+        product_id: fInfo.productID,
+        replenish_count: fInfo.replenishCount
+    };
+}",
+  ],
+  "topFuncName": "toBGetDemoRequestBodyParamsObjectAdaptor",
+}
+`;

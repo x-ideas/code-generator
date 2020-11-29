@@ -360,51 +360,10 @@ describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
     fc.addUnit(frpUnit);
 
     const result = await fc.run();
-    expect(result.path).toEqual({
-      $schema: 'http://json-schema.org/draft-04/schema#',
-      description: '确认需求单，变更补货数: 3610404',
-      properties: {
-        id: {
-          description: 'id',
-          type: 'string',
-        },
-      },
-      required: ['id'],
-    });
+    expect(result.path).toMatchSnapshot();
+    expect(result.query).toMatchSnapshot();
 
-    expect(result.query).toEqual({
-      $schema: 'http://json-schema.org/draft-04/schema#',
-      description: '确认需求单，变更补货数: 3610404',
-      properties: {},
-      required: [],
-    });
-
-    expect(result.body).toEqual({
-      $schema: 'http://json-schema.org/draft-04/schema#',
-      description: '确认需求单，变更补货数: 3610404',
-      properties: {
-        list: {
-          description: 'list',
-          type: 'array',
-          items: {
-            type: 'object',
-            description: '补货需求单补货数',
-            properties: {
-              product_id: {
-                type: 'string',
-                description: '商品id',
-              },
-              replenish_count: {
-                type: 'integer',
-                description: '补货数',
-              },
-            },
-          },
-        },
-      },
-      // NOTE: 此时list是必须的，应该出现在requeired中
-      required: [],
-    });
+    expect(result.body).toMatchSnapshot();
   });
 
   test('不包含body和path', async () => {
@@ -429,60 +388,8 @@ describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
 
     const result = await fc.run();
 
-    expect(result.path).toEqual({
-      $schema: 'http://json-schema.org/draft-04/schema#',
-      description: '分页查找补货需求单: 3610401',
-      properties: {},
-      required: [],
-    });
-    expect(result.body).toEqual({
-      $schema: 'http://json-schema.org/draft-04/schema#',
-      description: '分页查找补货需求单: 3610401',
-      required: [],
-      properties: {},
-    });
-    expect(result.query).toEqual({
-      $schema: 'http://json-schema.org/draft-04/schema#',
-      description: '分页查找补货需求单: 3610401',
-      properties: {
-        applyNo: {
-          type: 'string',
-          description: '需求单号',
-        },
-        storeId: {
-          type: 'string',
-          description: '门店id',
-        },
-        status: {
-          type: 'integer',
-          description: '状态,-1=全部，1=草稿，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成 ，120=未完成  200=删除',
-        },
-        timeCreateFrom: {
-          type: 'integer',
-          description: '创建时间开始',
-        },
-        timeCreateTo: {
-          description: '创建时间结束',
-          type: 'integer',
-        },
-        page: {
-          description: '第几页(0..N)',
-          type: 'integer',
-        },
-        size: {
-          type: 'integer',
-          description: '每页大小',
-        },
-        sort: {
-          type: 'array',
-          description: '排序，格式: property(,asc|desc). 默认升序. ',
-          items: {
-            type: 'string',
-            description: 'item-暂无',
-          },
-        },
-      },
-      required: ['page', 'size'],
-    });
+    expect(result.path).toMatchSnapshot();
+    expect(result.body).toMatchSnapshot();
+    expect(result.query).toMatchSnapshot();
   });
 });

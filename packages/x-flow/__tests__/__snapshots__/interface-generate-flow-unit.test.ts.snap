@@ -1,0 +1,635 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 只有header的请求 1`] = `""`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 只有header的请求 2`] = `""`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 只有header的请求 3`] = `""`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 有header + query的请求 1`] = `""`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-id的请求 1`] = `
+"export interface DemoObject {
+    /**
+     * id
+     */
+    id: string;
+}
+"
+`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-id的请求 2`] = `""`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-id的请求 3`] = `""`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-非id的请求 1`] = `
+"export interface DemoObject {
+    /**
+     * 门店补货需求单明细ID
+     */
+    detailId: string;
+}
+"
+`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-非id的请求 2`] = `""`;
+
+exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-非id的请求 3`] = `""`;
+
+exports[`测试InterfaceGenerateFlowUnit-response 3601401-data 1`] = `
+"/**
+ * 分页查找补货需求单: 3610401
+ */
+export interface Demo {
+    count?: number;
+    data?:  Array<Datum[]>;
+    pager?: Pager;
+}
+
+/**
+ * 补货需求单，列表用
+ */
+export interface Datum {
+    /**
+     * 需求单号
+     */
+    apply_no?: string;
+    /**
+     * 补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)
+     */
+    apply_type?: number;
+    /**
+     * 计划到货时间段，10=白天，20=晚上
+     */
+    date_part_plan?: number;
+    /**
+     * 计划到货日期
+     */
+    date_plan?: number;
+    /**
+     * 总仓简称
+     */
+    dc_abbr_name?: string;
+    /**
+     * 总仓id
+     */
+    dc_id?: string;
+    /**
+     * 总仓名称
+     */
+    dc_name?: string;
+    /**
+     * id
+     */
+    id?: string;
+    /**
+     * 是否删除
+     */
+    is_delete?: boolean;
+    /**
+     * 计划品项数量
+     */
+    item_count_plan?: number;
+    /**
+     * 实际品项数量
+     */
+    item_count_real?: number;
+    /**
+     * 补货订单id
+     */
+    order_id?: string;
+    /**
+     * 状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成
+     */
+    status?: number;
+    /**
+     * 门店简称
+     */
+    store_abbr_name?: string;
+    /**
+     * 门店code
+     */
+    store_code?: number;
+    /**
+     * 门店id
+     */
+    store_id?: string;
+    /**
+     * 门店名称
+     */
+    store_name?: string;
+    /**
+     * 创建时间
+     */
+    time_create?: number;
+    /**
+     * 计划到货时间
+     */
+    time_plan?: number;
+    /**
+     * 实际到货时间
+     */
+    time_real?: number;
+    /**
+     * 更新时间
+     */
+    time_update?: number;
+    /**
+     * 更新人id
+     */
+    user_id_update?: string;
+    /**
+     * 更新人名称
+     */
+    user_name_update?: string;
+}
+
+export interface Pager {
+    first_item_on_page?: number;
+    has_next_page?:      boolean;
+    has_previous_page?:  boolean;
+    is_first_page?:      boolean;
+    is_last_page?:       boolean;
+    last_item_on_page?:  number;
+    page_count?:         number;
+    page_number?:        number;
+    page_size?:          number;
+    total_item_count?:   number;
+}
+"
+`;
+
+exports[`测试InterfaceGenerateFlowUnit-response 3610116的响应-循环引用 1`] = `
+"export interface DemoInfo {
+    data?: Data;
+}
+
+export interface Data {
+    applyCount?:       number;
+    applyCountFinish?: number;
+    /**
+     * 补货类型：20=总仓自动补货，30=DC仓采购补货
+     */
+    applyType?:    number;
+    batchCount?:   number;
+    batchType?:    number;
+    datePartPlan?: number;
+    datePlan?:     number;
+    dcId?:         string;
+    dcName?:       string;
+    hasDeleted?:   boolean;
+    id?:           string;
+    itemCount?:    number;
+    num?:          string;
+    /**
+     * 概览信息
+     */
+    overview?: Overview;
+    /**
+     * 进度
+     */
+    progress?:       Progress;
+    remark?:         string;
+    status?:         number;
+    timeCreate?:     number;
+    timePlan?:       number;
+    timeUpdate?:     number;
+    userIdCreate?:   string;
+    userIdUpdate?:   string;
+    userNameCreate?: string;
+    userNameUpdate?: string;
+}
+
+/**
+ * 概览信息
+ */
+export interface Overview {
+    /**
+     * 基本信息
+     */
+    baseInfo?: BaseInfo;
+    /**
+     * 进度动态
+     */
+    process?: Process;
+}
+
+/**
+ * 基本信息
+ */
+export interface BaseInfo {
+    /**
+     * 集货数
+     */
+    collectCount?: number;
+    /**
+     * 品项数
+     */
+    itemCount?: number;
+    /**
+     * 波次数
+     */
+    orderCount?: number;
+    /**
+     * 波次列表
+     */
+    orderList?: any[];
+    /**
+     * 门店数
+     */
+    storeCount?: number;
+    /**
+     * 小时
+     */
+    timeGroup?: number;
+    /**
+     * 体积(m³)
+     */
+    volume?: number;
+    /**
+     * 重量(g)
+     */
+    weight?: number;
+}
+
+/**
+ * 进度动态
+ */
+export interface Process {
+    /**
+     * 集货进度
+     */
+    collectProgress?: number;
+    /**
+     * 相对集货进度
+     */
+    collectProgressRelative?: number;
+    /**
+     * 校正集货数总和
+     */
+    collectSumCorrect?: number;
+    /**
+     * 待处理集货数总和
+     */
+    collectSumPending?: number;
+    /**
+     * 计划集货数总和
+     */
+    collectSumPlan?: number;
+    /**
+     * 实际集货数总和
+     */
+    collectSumReal?: number;
+    /**
+     * 出货进度
+     */
+    deliveryProgress?: number;
+    /**
+     * 相对出货进度
+     */
+    deliveryProgressRelative?: number;
+    /**
+     * 实际出货数总和
+     */
+    deliverySumReal?: number;
+    /**
+     * 分货进度
+     */
+    distributeProgress?: number;
+    /**
+     * 相对分货进度
+     */
+    distributeProgressRelative?: number;
+    /**
+     * 实际分货数总和
+     */
+    distributeSumReal?: number;
+    /**
+     * 波次创建进度
+     */
+    orderProgress?: number;
+    /**
+     * 收货进度
+     */
+    receiveProgress?: number;
+    /**
+     * 相对收货进度
+     */
+    receiveProgressRelative?: number;
+    /**
+     * 实际入库数总和
+     */
+    receiveSumReal?: number;
+}
+
+/**
+ * 进度
+ */
+export interface Progress {
+    /**
+     * 集货进度
+     */
+    collectProgress?: number;
+    /**
+     * 相对集货进度
+     */
+    collectProgressRelative?: number;
+    /**
+     * 校正集货数总和
+     */
+    collectSumCorrect?: number;
+    /**
+     * 待处理集货数总和
+     */
+    collectSumPending?: number;
+    /**
+     * 计划集货数总和
+     */
+    collectSumPlan?: number;
+    /**
+     * 实际集货数总和
+     */
+    collectSumReal?: number;
+    /**
+     * 出货进度
+     */
+    deliveryProgress?: number;
+    /**
+     * 相对出货进度
+     */
+    deliveryProgressRelative?: number;
+    /**
+     * 实际出货数总和
+     */
+    deliverySumReal?: number;
+    /**
+     * 分货进度
+     */
+    distributeProgress?: number;
+    /**
+     * 相对分货进度
+     */
+    distributeProgressRelative?: number;
+    /**
+     * 实际分货数总和
+     */
+    distributeSumReal?: number;
+    /**
+     * 波次创建进度
+     */
+    orderProgress?: number;
+    /**
+     * 收货进度
+     */
+    receiveProgress?: number;
+    /**
+     * 相对收货进度
+     */
+    receiveProgressRelative?: number;
+    /**
+     * 实际入库数总和
+     */
+    receiveSumReal?: number;
+}
+"
+`;
+
+exports[`测试InterfaceGenerateFlowUnit-response 3610401的响应-包含数组 1`] = `
+"export interface Demo {
+    count?: number;
+    data?:  Array<Datum[]>;
+    pager?: Pager;
+}
+
+/**
+ * 补货需求单，列表用
+ */
+export interface Datum {
+    /**
+     * 需求单号
+     */
+    apply_no?: string;
+    /**
+     * 补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)
+     */
+    apply_type?: number;
+    /**
+     * 计划到货时间段，10=白天，20=晚上
+     */
+    date_part_plan?: number;
+    /**
+     * 计划到货日期
+     */
+    date_plan?: number;
+    /**
+     * 总仓简称
+     */
+    dc_abbr_name?: string;
+    /**
+     * 总仓id
+     */
+    dc_id?: string;
+    /**
+     * 总仓名称
+     */
+    dc_name?: string;
+    /**
+     * id
+     */
+    id?: string;
+    /**
+     * 是否删除
+     */
+    is_delete?: boolean;
+    /**
+     * 计划品项数量
+     */
+    item_count_plan?: number;
+    /**
+     * 实际品项数量
+     */
+    item_count_real?: number;
+    /**
+     * 补货订单id
+     */
+    order_id?: string;
+    /**
+     * 状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成
+     */
+    status?: number;
+    /**
+     * 门店简称
+     */
+    store_abbr_name?: string;
+    /**
+     * 门店code
+     */
+    store_code?: number;
+    /**
+     * 门店id
+     */
+    store_id?: string;
+    /**
+     * 门店名称
+     */
+    store_name?: string;
+    /**
+     * 创建时间
+     */
+    time_create?: number;
+    /**
+     * 计划到货时间
+     */
+    time_plan?: number;
+    /**
+     * 实际到货时间
+     */
+    time_real?: number;
+    /**
+     * 更新时间
+     */
+    time_update?: number;
+    /**
+     * 更新人id
+     */
+    user_id_update?: string;
+    /**
+     * 更新人名称
+     */
+    user_name_update?: string;
+}
+
+export interface Pager {
+    first_item_on_page?: number;
+    has_next_page?:      boolean;
+    has_previous_page?:  boolean;
+    is_first_page?:      boolean;
+    is_last_page?:       boolean;
+    last_item_on_page?:  number;
+    page_count?:         number;
+    page_number?:        number;
+    page_size?:          number;
+    total_item_count?:   number;
+}
+"
+`;
+
+exports[`测试InterfaceGenerateFlowUnit-response 不修改property 1`] = `
+"export interface Demo {
+    count?: number;
+    data?:  Array<Datum[]>;
+    pager?: Pager;
+}
+
+/**
+ * 补货需求单，列表用
+ */
+export interface Datum {
+    /**
+     * 需求单号
+     */
+    apply_no?: string;
+    /**
+     * 补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)
+     */
+    apply_type?: number;
+    /**
+     * 计划到货时间段，10=白天，20=晚上
+     */
+    date_part_plan?: number;
+    /**
+     * 计划到货日期
+     */
+    date_plan?: number;
+    /**
+     * 总仓简称
+     */
+    dc_abbr_name?: string;
+    /**
+     * 总仓id
+     */
+    dc_id?: string;
+    /**
+     * 总仓名称
+     */
+    dc_name?: string;
+    /**
+     * id
+     */
+    id?: string;
+    /**
+     * 是否删除
+     */
+    is_delete?: boolean;
+    /**
+     * 计划品项数量
+     */
+    item_count_plan?: number;
+    /**
+     * 实际品项数量
+     */
+    item_count_real?: number;
+    /**
+     * 补货订单id
+     */
+    order_id?: string;
+    /**
+     * 状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成
+     */
+    status?: number;
+    /**
+     * 门店简称
+     */
+    store_abbr_name?: string;
+    /**
+     * 门店code
+     */
+    store_code?: number;
+    /**
+     * 门店id
+     */
+    store_id?: string;
+    /**
+     * 门店名称
+     */
+    store_name?: string;
+    /**
+     * 创建时间
+     */
+    time_create?: number;
+    /**
+     * 计划到货时间
+     */
+    time_plan?: number;
+    /**
+     * 实际到货时间
+     */
+    time_real?: number;
+    /**
+     * 更新时间
+     */
+    time_update?: number;
+    /**
+     * 更新人id
+     */
+    user_id_update?: string;
+    /**
+     * 更新人名称
+     */
+    user_name_update?: string;
+}
+
+export interface Pager {
+    first_item_on_page?: number;
+    has_next_page?:      boolean;
+    has_previous_page?:  boolean;
+    is_first_page?:      boolean;
+    is_last_page?:       boolean;
+    last_item_on_page?:  number;
+    page_count?:         number;
+    page_number?:        number;
+    page_size?:          number;
+    total_item_count?:   number;
+}
+"
+`;

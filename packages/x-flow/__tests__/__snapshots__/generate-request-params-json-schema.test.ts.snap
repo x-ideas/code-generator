@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试GenerateRequestParamsJsonSchemaFlowUnit path_body3610404 1`] = `
+Object {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "确认需求单，变更补货数: 3610404",
+  "properties": Object {
+    "id": Object {
+      "description": "id",
+      "type": "string",
+    },
+  },
+  "required": Array [
+    "id",
+  ],
+}
+`;
+
+exports[`测试GenerateRequestParamsJsonSchemaFlowUnit path_body3610404 2`] = `
+Object {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "确认需求单，变更补货数: 3610404",
+  "properties": Object {},
+  "required": Array [],
+}
+`;
+
+exports[`测试GenerateRequestParamsJsonSchemaFlowUnit path_body3610404 3`] = `
+Object {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "确认需求单，变更补货数: 3610404",
+  "properties": Object {
+    "list": Object {
+      "description": "list",
+      "items": Object {
+        "description": "补货需求单补货数",
+        "properties": Object {
+          "product_id": Object {
+            "description": "商品id",
+            "type": "string",
+          },
+          "replenish_count": Object {
+            "description": "补货数",
+            "type": "integer",
+          },
+        },
+        "type": "object",
+      },
+      "type": "array",
+    },
+  },
+  "required": Array [],
+}
+`;
+
+exports[`测试GenerateRequestParamsJsonSchemaFlowUnit 不包含body和path 1`] = `
+Object {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "分页查找补货需求单: 3610401",
+  "properties": Object {},
+  "required": Array [],
+}
+`;
+
+exports[`测试GenerateRequestParamsJsonSchemaFlowUnit 不包含body和path 2`] = `
+Object {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "分页查找补货需求单: 3610401",
+  "properties": Object {},
+  "required": Array [],
+}
+`;
+
+exports[`测试GenerateRequestParamsJsonSchemaFlowUnit 不包含body和path 3`] = `
+Object {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "分页查找补货需求单: 3610401",
+  "properties": Object {
+    "applyNo": Object {
+      "description": "需求单号",
+      "type": "string",
+    },
+    "page": Object {
+      "description": "第几页(0..N)",
+      "type": "integer",
+    },
+    "size": Object {
+      "description": "每页大小",
+      "type": "integer",
+    },
+    "sort": Object {
+      "description": "排序，格式: property(,asc|desc). 默认升序. ",
+      "items": Object {
+        "description": "item-暂无",
+        "type": "string",
+      },
+      "type": "array",
+    },
+    "status": Object {
+      "description": "状态,-1=全部，1=草稿，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成 ，120=未完成  200=删除",
+      "type": "integer",
+    },
+    "storeId": Object {
+      "description": "门店id",
+      "type": "string",
+    },
+    "timeCreateFrom": Object {
+      "description": "创建时间开始",
+      "type": "integer",
+    },
+    "timeCreateTo": Object {
+      "description": "创建时间结束",
+      "type": "integer",
+    },
+  },
+  "required": Array [
+    "page",
+    "size",
+  ],
+}
+`;

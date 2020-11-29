@@ -30,5 +30,6 @@ describe('测试 open api to json schema', () => {
     fc.addUnit(openAPIToJsonSchemaUnit);
 
     const result: JSONSchema4 = await fc.run();
+    expect(result).toMatchSnapshot();
   });
 });

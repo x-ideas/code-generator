@@ -24,7 +24,7 @@ describe('测试InterfaceGenerateFlowUnit-response', () => {
       topName: 'Demo',
     });
 
-    expect(result.length).toBeGreaterThan(0);
+    expect(result.join('\n')).toMatchSnapshot();
   });
 
   it('不修改property', async () => {
@@ -56,7 +56,7 @@ describe('测试InterfaceGenerateFlowUnit-response', () => {
     fc.addUnit(backendInterfaceGenerate);
 
     const result: string[] = await fc.run();
-    expect(result.length).toBeGreaterThan(0);
+    expect(result.join('\n')).toMatchSnapshot();
   });
 
   test('3610401的响应-包含数组', async () => {
@@ -88,7 +88,7 @@ describe('测试InterfaceGenerateFlowUnit-response', () => {
     fc.addUnit(backendInterfaceGenerate);
 
     const result: string[] = await fc.run();
-    expect(result.length).toBeGreaterThan(0);
+    expect(result.join('\n')).toMatchSnapshot();
   });
 
   test('3610116的响应-循环引用', async () => {
@@ -107,9 +107,9 @@ describe('测试InterfaceGenerateFlowUnit-response', () => {
 
     const wrapUnit = new WrapDataFlowUnit('jsonSchema');
     const moUnit = new MergeOutputFlowUnit({
-      topName: 'Demo',
+      topName: 'DemoInfo',
     });
-    const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
+    const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
@@ -120,7 +120,8 @@ describe('测试InterfaceGenerateFlowUnit-response', () => {
     fc.addUnit(backendInterfaceGenerate);
 
     const result: string[] = await fc.run();
-    expect(result.length).toBeGreaterThan(0);
+
+    expect(result.join('\n')).toMatchSnapshot();
   });
 });
 
@@ -156,13 +157,13 @@ describe('测试InterfaceGenerateFlowUnit--请求参数', () => {
     const requestParamsSchema = await fc.run();
 
     const pathLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.path, topName: 'Demo' });
-    expect(pathLines.length).toBe(0);
+    expect(pathLines.join('\n')).toMatchSnapshot();
 
     const queryLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.query, topName: 'Demo' });
-    expect(queryLines.length).toBe(0);
+    expect(queryLines.join('\n')).toMatchSnapshot();
 
     const bodyLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.body, topName: 'Demo' });
-    expect(bodyLines.length).toBe(0);
+    expect(bodyLines.join('\n')).toMatchSnapshot();
   });
 
   test('有header+path-id的请求', async () => {
@@ -196,13 +197,13 @@ describe('测试InterfaceGenerateFlowUnit--请求参数', () => {
     const requestParamsSchema = await fc.run();
 
     const pathLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.path, topName: 'Demo' });
-    expect(pathLines.length).not.toBe(0);
+    expect(pathLines.join('\n')).toMatchSnapshot();
 
     const queryLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.query, topName: 'Demo' });
-    expect(queryLines.length).toBe(0);
+    expect(queryLines.join('\n')).toMatchSnapshot();
 
     const bodyLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.body, topName: 'Demo' });
-    expect(bodyLines.length).toBe(0);
+    expect(bodyLines.join('\n')).toMatchSnapshot();
   });
 
   test('有header+path-非id的请求', async () => {
@@ -234,13 +235,13 @@ describe('测试InterfaceGenerateFlowUnit--请求参数', () => {
 
     const requestParamsSchema = await fc.run();
     const pathLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.path, topName: 'Demo' });
-    expect(pathLines.length).not.toBe(0);
+    expect(pathLines.join('\n')).toMatchSnapshot();
 
     const queryLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.query, topName: 'Demo' });
-    expect(queryLines.length).toBe(0);
+    expect(queryLines.join('\n')).toMatchSnapshot();
 
     const bodyLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.body, topName: 'Demo' });
-    expect(bodyLines.length).toBe(0);
+    expect(bodyLines.join('\n')).toMatchSnapshot();
   });
 
   test('有header + query的请求', async () => {
@@ -277,6 +278,6 @@ describe('测试InterfaceGenerateFlowUnit--请求参数', () => {
     expect(queryLines.length).not.toBe(0);
 
     const bodyLines = await binterUnit.doWork({ jsonSchema: requestParamsSchema.body, topName: 'Demo' });
-    expect(bodyLines.length).toBe(0);
+    expect(bodyLines.join('\n')).toMatchSnapshot();
   });
 });

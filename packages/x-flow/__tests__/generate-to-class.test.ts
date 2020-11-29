@@ -6,6 +6,6 @@ describe('测试generate-to-class-adaptor', () => {
 
     const result = await unit.doWork({ className: 'Demo', isArray: true });
 
-    console.log(result);
+    expect(result).toMatchSnapshot();
   });
 });

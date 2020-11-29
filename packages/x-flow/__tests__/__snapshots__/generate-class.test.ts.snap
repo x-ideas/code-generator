@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试 generate class 一个interface 1`] = `
+"export class Crogress {
+  /**
+   * 集货进度
+   */
+  @Expose({
+    name: \\"collect_progress\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  collectProgress: number | undefined;
+
+  /**
+   * 相对集货进度
+   */
+  @Expose({
+    name: \\"collect_progress_relative\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  collectProgressRelative: number | undefined;
+
+  /**
+   * 校正集货数总和
+   */
+  @Expose({
+    name: \\"collect_sum_correct\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  collectSumCorrect: number | undefined;
+
+  /**
+   * 待处理集货数总和
+   */
+  @Expose({
+    name: \\"collect_sum_pending\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  collectSumPending: number | undefined;
+
+  /**
+   * 计划集货数总和
+   */
+  @Expose({
+    name: \\"collect_sum_plan\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  collectSumPlan: number | undefined;
+
+  /**
+   * 实际集货数总和
+   */
+  @Expose({
+    name: \\"collect_sum_real\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  collectSumReal: number | undefined;
+
+  /**
+   * 出货进度
+   */
+  @Expose({
+    name: \\"delivery_progress\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  deliveryProgress: number | undefined;
+
+  /**
+   * 相对出货进度
+   */
+  @Expose({
+    name: \\"delivery_progress_relative\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  deliveryProgressRelative: number | undefined;
+
+  /**
+   * 实际出货数总和
+   */
+  @Expose({
+    name: \\"delivery_sum_real\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  deliverySumReal: number | undefined;
+
+  /**
+   * 分货进度
+   */
+  @Expose({
+    name: \\"distribute_progress\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  distributeProgress: number | undefined;
+
+  /**
+   * 相对分货进度
+   */
+  @Expose({
+    name: \\"distribute_progress_relative\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  distributeProgressRelative: number | undefined;
+
+  /**
+   * 实际分货数总和
+   */
+  @Expose({
+    name: \\"distribute_sum_real\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  distributeSumReal: number | undefined;
+
+  /**
+   * 波次创建进度
+   */
+  @Expose({
+    name: \\"order_progress\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  orderProgress: number | undefined;
+
+  /**
+   * 收货进度
+   */
+  @Expose({
+    name: \\"receive_progress\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  receiveProgress: number | undefined;
+
+  /**
+   * 相对收货进度
+   */
+  @Expose({
+    name: \\"receive_progress_relative\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  receiveProgressRelative: number | undefined;
+
+  /**
+   * 实际入库数总和
+   */
+  @Expose({
+    name: \\"receive_sum_real\\"
+  })
+  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
+  getDefaultValidNum())
+  receiveSumReal: number | undefined;
+}"
+`;

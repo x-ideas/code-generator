@@ -30,7 +30,7 @@ describe('测试swagger-parse', () => {
     fc.addUnit(swaggerParseUnit);
 
     const result: OpenAPIV2.Document = await fc.run();
-    expect(result.paths).toHaveProperty('/admin/depot/apply');
+    expect(result).toMatchSnapshot();
   });
 
   it('解析3610412 code对应的openAPI', async () => {
@@ -53,8 +53,7 @@ describe('测试swagger-parse', () => {
     fc.addUnit(swaggerParseUnit);
 
     const result: OpenAPIV2.Document = await fc.run();
-
-    expect(result.paths).toHaveProperty('/admin/depot/apply/logs/{detail_id}');
+    expect(result).toMatchSnapshot();
   });
 
   test('3610412', async () => {
@@ -62,7 +61,6 @@ describe('测试swagger-parse', () => {
     const unit = new SwaggerParseFlowUnit();
     // @ts-ignore
     const result = await unit.doWork(Demo3610412Data);
-
-    expect(result).toBeDefined();
+    expect(result).toMatchSnapshot();
   });
 });

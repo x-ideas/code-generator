@@ -1,0 +1,1674 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试swagger-parse 3610412 1`] = `
+Object {
+  "definitions": Object {
+    "DepotReplenishApplyDetailLogVO": Object {
+      "properties": Object {
+        "apply_detail_id": Object {
+          "type": "string",
+        },
+        "apply_id": Object {
+          "type": "string",
+        },
+        "code_upc": Object {
+          "type": "string",
+        },
+        "day_arrive_expect": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "day_sale": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "dc_id": Object {
+          "type": "string",
+        },
+        "dc_product_id": Object {
+          "type": "string",
+        },
+        "id": Object {
+          "type": "string",
+        },
+        "is_delete": Object {
+          "type": "boolean",
+        },
+        "num_on_the_way": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "period_arrive": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "product_code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "product_id": Object {
+          "type": "string",
+        },
+        "product_name": Object {
+          "type": "string",
+        },
+        "product_purchase_type": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "product_sale_unit": Object {
+          "type": "string",
+        },
+        "receive_count": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "receive_count_diff": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_coefficient": Object {
+          "format": "double",
+          "type": "number",
+        },
+        "replenish_count_adjust": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_count_correct": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_count_handled": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_count_real": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_count_suggest": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_id": Object {
+          "type": "string",
+        },
+        "rule_detail_id": Object {
+          "type": "string",
+        },
+        "rule_id": Object {
+          "type": "string",
+        },
+        "sale_num_day_safe": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "shelf_codes": Object {
+          "type": "string",
+        },
+        "status": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "stock_quantity": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "store_id": Object {
+          "type": "string",
+        },
+        "store_product_id": Object {
+          "type": "string",
+        },
+        "time_apply_update": Object {
+          "format": "int64",
+          "type": "integer",
+        },
+        "time_operate": Object {
+          "format": "int64",
+          "type": "integer",
+        },
+        "time_update": Object {
+          "format": "int64",
+          "type": "integer",
+        },
+        "user_id_operate": Object {
+          "type": "string",
+        },
+        "user_id_reply": Object {
+          "type": "string",
+        },
+        "user_id_update": Object {
+          "type": "string",
+        },
+        "user_name_update": Object {
+          "type": "string",
+        },
+      },
+      "title": "DepotReplenishApplyDetailLogVO",
+      "type": "object",
+    },
+    "PupuResponseListDepotReplenishApplyDetailLogVO": Object {
+      "properties": Object {
+        "data": Object {
+          "items": Object {
+            "properties": Object {
+              "apply_detail_id": Object {
+                "type": "string",
+              },
+              "apply_id": Object {
+                "type": "string",
+              },
+              "code_upc": Object {
+                "type": "string",
+              },
+              "day_arrive_expect": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "day_sale": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "dc_id": Object {
+                "type": "string",
+              },
+              "dc_product_id": Object {
+                "type": "string",
+              },
+              "id": Object {
+                "type": "string",
+              },
+              "is_delete": Object {
+                "type": "boolean",
+              },
+              "num_on_the_way": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "period_arrive": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "product_code": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "product_id": Object {
+                "type": "string",
+              },
+              "product_name": Object {
+                "type": "string",
+              },
+              "product_purchase_type": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "product_sale_unit": Object {
+                "type": "string",
+              },
+              "receive_count": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "receive_count_diff": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_coefficient": Object {
+                "format": "double",
+                "type": "number",
+              },
+              "replenish_count_adjust": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_count_correct": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_count_handled": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_count_real": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_count_suggest": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_id": Object {
+                "type": "string",
+              },
+              "rule_detail_id": Object {
+                "type": "string",
+              },
+              "rule_id": Object {
+                "type": "string",
+              },
+              "sale_num_day_safe": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "shelf_codes": Object {
+                "type": "string",
+              },
+              "status": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "stock_quantity": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "store_id": Object {
+                "type": "string",
+              },
+              "store_product_id": Object {
+                "type": "string",
+              },
+              "time_apply_update": Object {
+                "format": "int64",
+                "type": "integer",
+              },
+              "time_operate": Object {
+                "format": "int64",
+                "type": "integer",
+              },
+              "time_update": Object {
+                "format": "int64",
+                "type": "integer",
+              },
+              "user_id_operate": Object {
+                "type": "string",
+              },
+              "user_id_reply": Object {
+                "type": "string",
+              },
+              "user_id_update": Object {
+                "type": "string",
+              },
+              "user_name_update": Object {
+                "type": "string",
+              },
+            },
+            "title": "DepotReplenishApplyDetailLogVO",
+            "type": "object",
+          },
+          "type": "array",
+        },
+        "errcode": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "errmsg": Object {
+          "type": "string",
+        },
+      },
+      "title": "PupuResponse«List«DepotReplenishApplyDetailLogVO»»",
+      "type": "object",
+    },
+  },
+  "info": Object {
+    "description": "朴朴java服务端接口文档，遵循RESTful规范",
+    "title": "admin-scm",
+    "version": "0.0.1",
+  },
+  "paths": Object {
+    "/admin/depot/apply/logs/{detail_id}": Object {
+      "get": Object {
+        "operationId": "listApplyDetailLogsUsingGET",
+        "parameters": Array [
+          Object {
+            "description": "用户签名，JWT Bearer",
+            "in": "header",
+            "name": "Authorization",
+            "required": false,
+            "type": "string",
+          },
+          Object {
+            "description": "门店补货需求单明细ID",
+            "in": "path",
+            "name": "detail_id",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "produces": Array [
+          "*/*",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "OK",
+            "schema": Object {
+              "properties": Object {
+                "data": Object {
+                  "items": Object {
+                    "properties": Object {
+                      "apply_detail_id": Object {
+                        "type": "string",
+                      },
+                      "apply_id": Object {
+                        "type": "string",
+                      },
+                      "code_upc": Object {
+                        "type": "string",
+                      },
+                      "day_arrive_expect": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "day_sale": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "dc_id": Object {
+                        "type": "string",
+                      },
+                      "dc_product_id": Object {
+                        "type": "string",
+                      },
+                      "id": Object {
+                        "type": "string",
+                      },
+                      "is_delete": Object {
+                        "type": "boolean",
+                      },
+                      "num_on_the_way": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "period_arrive": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "product_code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "product_id": Object {
+                        "type": "string",
+                      },
+                      "product_name": Object {
+                        "type": "string",
+                      },
+                      "product_purchase_type": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "product_sale_unit": Object {
+                        "type": "string",
+                      },
+                      "receive_count": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "receive_count_diff": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_coefficient": Object {
+                        "format": "double",
+                        "type": "number",
+                      },
+                      "replenish_count_adjust": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_count_correct": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_count_handled": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_count_real": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_count_suggest": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_id": Object {
+                        "type": "string",
+                      },
+                      "rule_detail_id": Object {
+                        "type": "string",
+                      },
+                      "rule_id": Object {
+                        "type": "string",
+                      },
+                      "sale_num_day_safe": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "shelf_codes": Object {
+                        "type": "string",
+                      },
+                      "status": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "stock_quantity": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "store_id": Object {
+                        "type": "string",
+                      },
+                      "store_product_id": Object {
+                        "type": "string",
+                      },
+                      "time_apply_update": Object {
+                        "format": "int64",
+                        "type": "integer",
+                      },
+                      "time_operate": Object {
+                        "format": "int64",
+                        "type": "integer",
+                      },
+                      "time_update": Object {
+                        "format": "int64",
+                        "type": "integer",
+                      },
+                      "user_id_operate": Object {
+                        "type": "string",
+                      },
+                      "user_id_reply": Object {
+                        "type": "string",
+                      },
+                      "user_id_update": Object {
+                        "type": "string",
+                      },
+                      "user_name_update": Object {
+                        "type": "string",
+                      },
+                    },
+                    "title": "DepotReplenishApplyDetailLogVO",
+                    "type": "object",
+                  },
+                  "type": "array",
+                },
+                "errcode": Object {
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "errmsg": Object {
+                  "type": "string",
+                },
+              },
+              "title": "PupuResponse«List«DepotReplenishApplyDetailLogVO»»",
+              "type": "object",
+            },
+          },
+          "401": Object {
+            "description": "Unauthorized",
+          },
+          "403": Object {
+            "description": "Forbidden",
+          },
+          "404": Object {
+            "description": "Not Found",
+          },
+        },
+        "summary": "查找需求单明细修改日志: 3610412",
+        "tags": Array [
+          "depot-apply-controller",
+        ],
+      },
+    },
+  },
+  "swagger": "2.0",
+}
+`;
+
+exports[`测试swagger-parse 解析3610401 code对应的openAPI 1`] = `
+Object {
+  "definitions": Object {
+    "Pager": Object {
+      "properties": Object {
+        "first_item_on_page": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "has_next_page": Object {
+          "type": "boolean",
+        },
+        "has_previous_page": Object {
+          "type": "boolean",
+        },
+        "is_first_page": Object {
+          "type": "boolean",
+        },
+        "is_last_page": Object {
+          "type": "boolean",
+        },
+        "last_item_on_page": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "page_count": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "page_number": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "page_size": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "total_item_count": Object {
+          "format": "int64",
+          "type": "integer",
+        },
+      },
+      "title": "Pager",
+      "type": "object",
+    },
+    "PupuPagerDataResponse«List«补货需求单，列表用»»": Object {
+      "properties": Object {
+        "count": Object {
+          "format": "int64",
+          "type": "integer",
+        },
+        "data": Object {
+          "items": Object {
+            "items": Object {
+              "properties": Object {
+                "apply_no": Object {
+                  "description": "需求单号",
+                  "type": "string",
+                },
+                "apply_type": Object {
+                  "description": "补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)",
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "date_part_plan": Object {
+                  "description": "计划到货时间段，10=白天，20=晚上",
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "date_plan": Object {
+                  "description": "计划到货日期",
+                  "format": "int64",
+                  "type": "integer",
+                },
+                "dc_abbr_name": Object {
+                  "description": "总仓简称",
+                  "type": "string",
+                },
+                "dc_id": Object {
+                  "description": "总仓id",
+                  "type": "string",
+                },
+                "dc_name": Object {
+                  "description": "总仓名称",
+                  "type": "string",
+                },
+                "id": Object {
+                  "description": "id",
+                  "type": "string",
+                },
+                "is_delete": Object {
+                  "description": "是否删除",
+                  "example": false,
+                  "type": "boolean",
+                },
+                "item_count_plan": Object {
+                  "description": "计划品项数量",
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "item_count_real": Object {
+                  "description": "实际品项数量",
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "order_id": Object {
+                  "description": "补货订单id",
+                  "type": "string",
+                },
+                "status": Object {
+                  "description": "状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成",
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "store_abbr_name": Object {
+                  "description": "门店简称",
+                  "type": "string",
+                },
+                "store_code": Object {
+                  "description": "门店code",
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "store_id": Object {
+                  "description": "门店id",
+                  "type": "string",
+                },
+                "store_name": Object {
+                  "description": "门店名称",
+                  "type": "string",
+                },
+                "time_create": Object {
+                  "description": "创建时间",
+                  "format": "int64",
+                  "type": "integer",
+                },
+                "time_plan": Object {
+                  "description": "计划到货时间",
+                  "format": "int64",
+                  "type": "integer",
+                },
+                "time_real": Object {
+                  "description": "实际到货时间",
+                  "format": "int64",
+                  "type": "integer",
+                },
+                "time_update": Object {
+                  "description": "更新时间",
+                  "format": "int64",
+                  "type": "integer",
+                },
+                "user_id_update": Object {
+                  "description": "更新人id",
+                  "type": "string",
+                },
+                "user_name_update": Object {
+                  "description": "更新人名称",
+                  "type": "string",
+                },
+              },
+              "title": "补货需求单，列表用",
+              "type": "object",
+            },
+            "type": "array",
+          },
+          "type": "array",
+        },
+        "errcode": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "errmsg": Object {
+          "type": "string",
+        },
+        "pager": Object {
+          "properties": Object {
+            "first_item_on_page": Object {
+              "format": "int32",
+              "type": "integer",
+            },
+            "has_next_page": Object {
+              "type": "boolean",
+            },
+            "has_previous_page": Object {
+              "type": "boolean",
+            },
+            "is_first_page": Object {
+              "type": "boolean",
+            },
+            "is_last_page": Object {
+              "type": "boolean",
+            },
+            "last_item_on_page": Object {
+              "format": "int32",
+              "type": "integer",
+            },
+            "page_count": Object {
+              "format": "int32",
+              "type": "integer",
+            },
+            "page_number": Object {
+              "format": "int32",
+              "type": "integer",
+            },
+            "page_size": Object {
+              "format": "int32",
+              "type": "integer",
+            },
+            "total_item_count": Object {
+              "format": "int64",
+              "type": "integer",
+            },
+          },
+          "title": "Pager",
+          "type": "object",
+        },
+      },
+      "title": "PupuPagerDataResponse«List«补货需求单，列表用»»",
+      "type": "object",
+    },
+    "补货需求单，列表用": Object {
+      "properties": Object {
+        "apply_no": Object {
+          "description": "需求单号",
+          "type": "string",
+        },
+        "apply_type": Object {
+          "description": "补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)",
+          "format": "int32",
+          "type": "integer",
+        },
+        "date_part_plan": Object {
+          "description": "计划到货时间段，10=白天，20=晚上",
+          "format": "int32",
+          "type": "integer",
+        },
+        "date_plan": Object {
+          "description": "计划到货日期",
+          "format": "int64",
+          "type": "integer",
+        },
+        "dc_abbr_name": Object {
+          "description": "总仓简称",
+          "type": "string",
+        },
+        "dc_id": Object {
+          "description": "总仓id",
+          "type": "string",
+        },
+        "dc_name": Object {
+          "description": "总仓名称",
+          "type": "string",
+        },
+        "id": Object {
+          "description": "id",
+          "type": "string",
+        },
+        "is_delete": Object {
+          "description": "是否删除",
+          "example": false,
+          "type": "boolean",
+        },
+        "item_count_plan": Object {
+          "description": "计划品项数量",
+          "format": "int32",
+          "type": "integer",
+        },
+        "item_count_real": Object {
+          "description": "实际品项数量",
+          "format": "int32",
+          "type": "integer",
+        },
+        "order_id": Object {
+          "description": "补货订单id",
+          "type": "string",
+        },
+        "status": Object {
+          "description": "状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成",
+          "format": "int32",
+          "type": "integer",
+        },
+        "store_abbr_name": Object {
+          "description": "门店简称",
+          "type": "string",
+        },
+        "store_code": Object {
+          "description": "门店code",
+          "format": "int32",
+          "type": "integer",
+        },
+        "store_id": Object {
+          "description": "门店id",
+          "type": "string",
+        },
+        "store_name": Object {
+          "description": "门店名称",
+          "type": "string",
+        },
+        "time_create": Object {
+          "description": "创建时间",
+          "format": "int64",
+          "type": "integer",
+        },
+        "time_plan": Object {
+          "description": "计划到货时间",
+          "format": "int64",
+          "type": "integer",
+        },
+        "time_real": Object {
+          "description": "实际到货时间",
+          "format": "int64",
+          "type": "integer",
+        },
+        "time_update": Object {
+          "description": "更新时间",
+          "format": "int64",
+          "type": "integer",
+        },
+        "user_id_update": Object {
+          "description": "更新人id",
+          "type": "string",
+        },
+        "user_name_update": Object {
+          "description": "更新人名称",
+          "type": "string",
+        },
+      },
+      "title": "补货需求单，列表用",
+      "type": "object",
+    },
+  },
+  "info": Object {
+    "description": "朴朴java服务端接口文档，遵循RESTful规范",
+    "title": "admin-scm",
+    "version": "0.0.1",
+  },
+  "paths": Object {
+    "/admin/depot/apply": Object {
+      "get": Object {
+        "operationId": "pageApplyUsingGET",
+        "parameters": Array [
+          Object {
+            "description": "用户签名，JWT Bearer",
+            "in": "header",
+            "name": "Authorization",
+            "required": false,
+            "type": "string",
+          },
+          Object {
+            "description": "需求单号",
+            "in": "query",
+            "name": "applyNo",
+            "required": false,
+            "type": "string",
+          },
+          Object {
+            "description": "门店id",
+            "in": "query",
+            "name": "storeId",
+            "required": false,
+            "type": "string",
+          },
+          Object {
+            "description": "状态,-1=全部，1=草稿，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成 ，120=未完成  200=删除",
+            "format": "int32",
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "type": "integer",
+          },
+          Object {
+            "description": "创建时间开始",
+            "format": "int64",
+            "in": "query",
+            "name": "timeCreateFrom",
+            "required": false,
+            "type": "integer",
+          },
+          Object {
+            "description": "创建时间结束",
+            "format": "int64",
+            "in": "query",
+            "name": "timeCreateTo",
+            "required": false,
+            "type": "integer",
+          },
+          Object {
+            "default": 0,
+            "description": "第几页(0..N)",
+            "format": "int32",
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "type": "integer",
+          },
+          Object {
+            "default": 20,
+            "description": "每页大小",
+            "format": "int32",
+            "in": "query",
+            "name": "size",
+            "required": true,
+            "type": "integer",
+          },
+          Object {
+            "collectionFormat": "multi",
+            "description": "排序，格式: property(,asc|desc). 默认升序. ",
+            "in": "query",
+            "items": Object {
+              "type": "string",
+            },
+            "name": "sort",
+            "required": false,
+            "type": "array",
+          },
+        ],
+        "produces": Array [
+          "*/*",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "OK",
+            "schema": Object {
+              "properties": Object {
+                "count": Object {
+                  "format": "int64",
+                  "type": "integer",
+                },
+                "data": Object {
+                  "items": Object {
+                    "items": Object {
+                      "properties": Object {
+                        "apply_no": Object {
+                          "description": "需求单号",
+                          "type": "string",
+                        },
+                        "apply_type": Object {
+                          "description": "补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)",
+                          "format": "int32",
+                          "type": "integer",
+                        },
+                        "date_part_plan": Object {
+                          "description": "计划到货时间段，10=白天，20=晚上",
+                          "format": "int32",
+                          "type": "integer",
+                        },
+                        "date_plan": Object {
+                          "description": "计划到货日期",
+                          "format": "int64",
+                          "type": "integer",
+                        },
+                        "dc_abbr_name": Object {
+                          "description": "总仓简称",
+                          "type": "string",
+                        },
+                        "dc_id": Object {
+                          "description": "总仓id",
+                          "type": "string",
+                        },
+                        "dc_name": Object {
+                          "description": "总仓名称",
+                          "type": "string",
+                        },
+                        "id": Object {
+                          "description": "id",
+                          "type": "string",
+                        },
+                        "is_delete": Object {
+                          "description": "是否删除",
+                          "example": false,
+                          "type": "boolean",
+                        },
+                        "item_count_plan": Object {
+                          "description": "计划品项数量",
+                          "format": "int32",
+                          "type": "integer",
+                        },
+                        "item_count_real": Object {
+                          "description": "实际品项数量",
+                          "format": "int32",
+                          "type": "integer",
+                        },
+                        "order_id": Object {
+                          "description": "补货订单id",
+                          "type": "string",
+                        },
+                        "status": Object {
+                          "description": "状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成",
+                          "format": "int32",
+                          "type": "integer",
+                        },
+                        "store_abbr_name": Object {
+                          "description": "门店简称",
+                          "type": "string",
+                        },
+                        "store_code": Object {
+                          "description": "门店code",
+                          "format": "int32",
+                          "type": "integer",
+                        },
+                        "store_id": Object {
+                          "description": "门店id",
+                          "type": "string",
+                        },
+                        "store_name": Object {
+                          "description": "门店名称",
+                          "type": "string",
+                        },
+                        "time_create": Object {
+                          "description": "创建时间",
+                          "format": "int64",
+                          "type": "integer",
+                        },
+                        "time_plan": Object {
+                          "description": "计划到货时间",
+                          "format": "int64",
+                          "type": "integer",
+                        },
+                        "time_real": Object {
+                          "description": "实际到货时间",
+                          "format": "int64",
+                          "type": "integer",
+                        },
+                        "time_update": Object {
+                          "description": "更新时间",
+                          "format": "int64",
+                          "type": "integer",
+                        },
+                        "user_id_update": Object {
+                          "description": "更新人id",
+                          "type": "string",
+                        },
+                        "user_name_update": Object {
+                          "description": "更新人名称",
+                          "type": "string",
+                        },
+                      },
+                      "title": "补货需求单，列表用",
+                      "type": "object",
+                    },
+                    "type": "array",
+                  },
+                  "type": "array",
+                },
+                "errcode": Object {
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "errmsg": Object {
+                  "type": "string",
+                },
+                "pager": Object {
+                  "properties": Object {
+                    "first_item_on_page": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "has_next_page": Object {
+                      "type": "boolean",
+                    },
+                    "has_previous_page": Object {
+                      "type": "boolean",
+                    },
+                    "is_first_page": Object {
+                      "type": "boolean",
+                    },
+                    "is_last_page": Object {
+                      "type": "boolean",
+                    },
+                    "last_item_on_page": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "page_count": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "page_number": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "page_size": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "total_item_count": Object {
+                      "format": "int64",
+                      "type": "integer",
+                    },
+                  },
+                  "title": "Pager",
+                  "type": "object",
+                },
+              },
+              "title": "PupuPagerDataResponse«List«补货需求单，列表用»»",
+              "type": "object",
+            },
+          },
+          "401": Object {
+            "description": "Unauthorized",
+          },
+          "403": Object {
+            "description": "Forbidden",
+          },
+          "404": Object {
+            "description": "Not Found",
+          },
+        },
+        "summary": "分页查找补货需求单: 3610401",
+        "tags": Array [
+          "depot-apply-controller",
+        ],
+      },
+    },
+  },
+  "swagger": "2.0",
+}
+`;
+
+exports[`测试swagger-parse 解析3610412 code对应的openAPI 1`] = `
+Object {
+  "definitions": Object {
+    "DepotReplenishApplyDetailLogVO": Object {
+      "properties": Object {
+        "apply_detail_id": Object {
+          "type": "string",
+        },
+        "apply_id": Object {
+          "type": "string",
+        },
+        "code_upc": Object {
+          "type": "string",
+        },
+        "day_arrive_expect": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "day_sale": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "dc_id": Object {
+          "type": "string",
+        },
+        "dc_product_id": Object {
+          "type": "string",
+        },
+        "id": Object {
+          "type": "string",
+        },
+        "is_delete": Object {
+          "type": "boolean",
+        },
+        "num_on_the_way": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "period_arrive": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "product_code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "product_id": Object {
+          "type": "string",
+        },
+        "product_name": Object {
+          "type": "string",
+        },
+        "product_purchase_type": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "product_sale_unit": Object {
+          "type": "string",
+        },
+        "receive_count": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "receive_count_diff": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_coefficient": Object {
+          "format": "double",
+          "type": "number",
+        },
+        "replenish_count_adjust": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_count_correct": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_count_handled": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_count_real": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_count_suggest": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "replenish_id": Object {
+          "type": "string",
+        },
+        "rule_detail_id": Object {
+          "type": "string",
+        },
+        "rule_id": Object {
+          "type": "string",
+        },
+        "sale_num_day_safe": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "shelf_codes": Object {
+          "type": "string",
+        },
+        "status": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "stock_quantity": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "store_id": Object {
+          "type": "string",
+        },
+        "store_product_id": Object {
+          "type": "string",
+        },
+        "time_apply_update": Object {
+          "format": "int64",
+          "type": "integer",
+        },
+        "time_operate": Object {
+          "format": "int64",
+          "type": "integer",
+        },
+        "time_update": Object {
+          "format": "int64",
+          "type": "integer",
+        },
+        "user_id_operate": Object {
+          "type": "string",
+        },
+        "user_id_reply": Object {
+          "type": "string",
+        },
+        "user_id_update": Object {
+          "type": "string",
+        },
+        "user_name_update": Object {
+          "type": "string",
+        },
+      },
+      "title": "DepotReplenishApplyDetailLogVO",
+      "type": "object",
+    },
+    "PupuResponse«List«DepotReplenishApplyDetailLogVO»»": Object {
+      "properties": Object {
+        "data": Object {
+          "items": Object {
+            "properties": Object {
+              "apply_detail_id": Object {
+                "type": "string",
+              },
+              "apply_id": Object {
+                "type": "string",
+              },
+              "code_upc": Object {
+                "type": "string",
+              },
+              "day_arrive_expect": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "day_sale": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "dc_id": Object {
+                "type": "string",
+              },
+              "dc_product_id": Object {
+                "type": "string",
+              },
+              "id": Object {
+                "type": "string",
+              },
+              "is_delete": Object {
+                "type": "boolean",
+              },
+              "num_on_the_way": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "period_arrive": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "product_code": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "product_id": Object {
+                "type": "string",
+              },
+              "product_name": Object {
+                "type": "string",
+              },
+              "product_purchase_type": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "product_sale_unit": Object {
+                "type": "string",
+              },
+              "receive_count": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "receive_count_diff": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_coefficient": Object {
+                "format": "double",
+                "type": "number",
+              },
+              "replenish_count_adjust": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_count_correct": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_count_handled": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_count_real": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_count_suggest": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "replenish_id": Object {
+                "type": "string",
+              },
+              "rule_detail_id": Object {
+                "type": "string",
+              },
+              "rule_id": Object {
+                "type": "string",
+              },
+              "sale_num_day_safe": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "shelf_codes": Object {
+                "type": "string",
+              },
+              "status": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "stock_quantity": Object {
+                "format": "int32",
+                "type": "integer",
+              },
+              "store_id": Object {
+                "type": "string",
+              },
+              "store_product_id": Object {
+                "type": "string",
+              },
+              "time_apply_update": Object {
+                "format": "int64",
+                "type": "integer",
+              },
+              "time_operate": Object {
+                "format": "int64",
+                "type": "integer",
+              },
+              "time_update": Object {
+                "format": "int64",
+                "type": "integer",
+              },
+              "user_id_operate": Object {
+                "type": "string",
+              },
+              "user_id_reply": Object {
+                "type": "string",
+              },
+              "user_id_update": Object {
+                "type": "string",
+              },
+              "user_name_update": Object {
+                "type": "string",
+              },
+            },
+            "title": "DepotReplenishApplyDetailLogVO",
+            "type": "object",
+          },
+          "type": "array",
+        },
+        "errcode": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "errmsg": Object {
+          "type": "string",
+        },
+      },
+      "title": "PupuResponse«List«DepotReplenishApplyDetailLogVO»»",
+      "type": "object",
+    },
+  },
+  "info": Object {
+    "description": "朴朴java服务端接口文档，遵循RESTful规范",
+    "title": "admin-scm",
+    "version": "0.0.1",
+  },
+  "paths": Object {
+    "/admin/depot/apply/logs/{detail_id}": Object {
+      "get": Object {
+        "operationId": "listApplyDetailLogsUsingGET",
+        "parameters": Array [
+          Object {
+            "description": "用户签名，JWT Bearer",
+            "in": "header",
+            "name": "Authorization",
+            "required": false,
+            "type": "string",
+          },
+          Object {
+            "description": "门店补货需求单明细ID",
+            "in": "path",
+            "name": "detail_id",
+            "required": true,
+            "type": "string",
+          },
+        ],
+        "produces": Array [
+          "*/*",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "OK",
+            "schema": Object {
+              "properties": Object {
+                "data": Object {
+                  "items": Object {
+                    "properties": Object {
+                      "apply_detail_id": Object {
+                        "type": "string",
+                      },
+                      "apply_id": Object {
+                        "type": "string",
+                      },
+                      "code_upc": Object {
+                        "type": "string",
+                      },
+                      "day_arrive_expect": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "day_sale": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "dc_id": Object {
+                        "type": "string",
+                      },
+                      "dc_product_id": Object {
+                        "type": "string",
+                      },
+                      "id": Object {
+                        "type": "string",
+                      },
+                      "is_delete": Object {
+                        "type": "boolean",
+                      },
+                      "num_on_the_way": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "period_arrive": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "product_code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "product_id": Object {
+                        "type": "string",
+                      },
+                      "product_name": Object {
+                        "type": "string",
+                      },
+                      "product_purchase_type": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "product_sale_unit": Object {
+                        "type": "string",
+                      },
+                      "receive_count": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "receive_count_diff": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_coefficient": Object {
+                        "format": "double",
+                        "type": "number",
+                      },
+                      "replenish_count_adjust": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_count_correct": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_count_handled": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_count_real": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_count_suggest": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "replenish_id": Object {
+                        "type": "string",
+                      },
+                      "rule_detail_id": Object {
+                        "type": "string",
+                      },
+                      "rule_id": Object {
+                        "type": "string",
+                      },
+                      "sale_num_day_safe": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "shelf_codes": Object {
+                        "type": "string",
+                      },
+                      "status": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "stock_quantity": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "store_id": Object {
+                        "type": "string",
+                      },
+                      "store_product_id": Object {
+                        "type": "string",
+                      },
+                      "time_apply_update": Object {
+                        "format": "int64",
+                        "type": "integer",
+                      },
+                      "time_operate": Object {
+                        "format": "int64",
+                        "type": "integer",
+                      },
+                      "time_update": Object {
+                        "format": "int64",
+                        "type": "integer",
+                      },
+                      "user_id_operate": Object {
+                        "type": "string",
+                      },
+                      "user_id_reply": Object {
+                        "type": "string",
+                      },
+                      "user_id_update": Object {
+                        "type": "string",
+                      },
+                      "user_name_update": Object {
+                        "type": "string",
+                      },
+                    },
+                    "title": "DepotReplenishApplyDetailLogVO",
+                    "type": "object",
+                  },
+                  "type": "array",
+                },
+                "errcode": Object {
+                  "format": "int32",
+                  "type": "integer",
+                },
+                "errmsg": Object {
+                  "type": "string",
+                },
+              },
+              "title": "PupuResponse«List«DepotReplenishApplyDetailLogVO»»",
+              "type": "object",
+            },
+          },
+          "401": Object {
+            "description": "Unauthorized",
+          },
+          "403": Object {
+            "description": "Forbidden",
+          },
+          "404": Object {
+            "description": "Not Found",
+          },
+        },
+        "summary": "查找需求单明细修改日志: 3610412",
+        "tags": Array [
+          "depot-apply-controller",
+        ],
+      },
+    },
+  },
+  "swagger": "2.0",
+}
+`;

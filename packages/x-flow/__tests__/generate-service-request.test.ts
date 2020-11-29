@@ -31,45 +31,42 @@ describe('测试generate-service-request', () => {
       toClass: false,
     });
 
-    // fs.writeFileSync('./demo.ts', result);
-    expect(1).toBe(2);
-
-    // console.log(result);
+    expect(result).toMatchSnapshot();
   });
-  // test('code 3610401 get 数组/ ListResponse ', async () => {
-  //   const unit = new GenerateServiceRequestFlowUnit();
-  //   const result = await unit.doWork({
-  //     requestUrl: 'http://ja.api.dev.pupuvip.com',
-  //     code: '3610401',
-  //     swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
-  //     className: 'Demo',
-  //     serviceName: 'getDemoRequest',
-  //     responseDataType: 'RegionInfoDemo',
-  //   });
-  //   console.log(result);
-  // });
-  // test('code 3610119 get 非数组/CommonResponse void', async () => {
-  //   const unit = new GenerateServiceRequestFlowUnit();
-  //   const result = await unit.doWork({
-  //     requestUrl: 'http://ja.api.dev.pupuvip.com',
-  //     code: '3610119',
-  //     swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
-  //     className: 'Demo',
-  //     serviceName: 'getDemoRequest',
-  //     responseDataType: 'RegionInfoDemo',
-  //   });
-  //   console.log(result);
-  // });
-  // test('code 3610404 put CommonResponse', async () => {
-  //   const unit = new GenerateServiceRequestFlowUnit();
-  //   const result = await unit.doWork({
-  //     requestUrl: 'http://ja.api.dev.pupuvip.com',
-  //     code: '3610404',
-  //     swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
-  //     className: 'Demo',
-  //     serviceName: 'getDemoRequest',
-  //     responseDataType: 'RegionInfoDemo',
-  //   });
-  //   console.log(result);
-  // });
+
+  test('code 3610401 get 数组/ ListResponse ', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610401',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'getDemoRequest',
+      responseDataType: 'RegionInfoDemo',
+
+      toClass: false,
+    });
+    console.log(result);
+  });
+  test('code 3610119 get 非数组/CommonResponse void', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610119',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'getDemoRequest',
+      responseDataType: 'RegionInfoDemo',
+      toClass: true,
+    });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610404 put CommonResponse', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610404',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'getDemoRequest',
+      responseDataType: 'RegionInfoDemo',
+      toClass: false,
+    });
+    expect(result).toMatchSnapshot();
+  });
 });
