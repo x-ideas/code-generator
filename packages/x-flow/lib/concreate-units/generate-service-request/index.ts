@@ -7,7 +7,6 @@
 
 import assert from 'assert';
 import lodash from 'lodash';
-import * as babelParser from '@babel/parser';
 import prettier from 'prettier';
 import jscodeshift from 'jscodeshift';
 import { JSONSchema4 } from 'json-schema';
@@ -22,6 +21,7 @@ import { OpenAPIV2 } from 'openapi-types';
 import { GenerateClassFlowUnit } from '../generate-class';
 import { GenerateInterfaceAdaptor } from '../generate-interface-adaptor';
 import { GenerateToClassAdaptorFlowUnit } from '../generate-to-class-adaptor';
+import { parserConfig } from '../../utils/jscodeshift-parser';
 
 interface IGenerateServiceRequestFlowUnitParams {
   /**
@@ -132,29 +132,9 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     }
   }
 
-  private _getTopInterfaeType(interfaces: string[]): string {
-    const collection = jscodeshift(interfaces.join('\n'), {
-      parser: {
-        parse(source: string) {
-          return babelParser.parse(source, {
-            sourceType: 'module',
-            // 支持typescript, jsx
-            plugins: [
-              'estree',
-              'typescript',
-              [
-                'decorators',
-                {
-                  decoratorsBeforeExport: true,
-                },
-              ],
-              'exportDefaultFrom',
-              'classProperties',
-              'classPrivateProperties',
-            ],
-          });
-        },
-      },
+  private _getTopInterfaeType(interfaces: string): string {
+    const collection = jscodeshift(interfaces, {
+      parser: parserConfig(),
     });
 
     const value = collection.find(jscodeshift.TSInterfaceDeclaration).get('0').node.id.name;
@@ -176,8 +156,8 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
   ): Promise<{
     name: string;
     type: string;
-    fInterfaceStrs: string[];
-    bInterfaceStrs: string[];
+    fInterfaceStrs: string;
+    bInterfaceStrs: string;
   }> {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
     const result = await unit.doWork({
@@ -214,18 +194,18 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
   ): Promise<{
     name?: string;
     type: string;
-    fInterfaceStrs: string[];
-    bInterfaceStrs: string[];
+    fInterfaceStrs: string;
+    bInterfaceStrs: string;
   }> {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
     const result = await unit.doWork({
-      topName: `IF${params.serviceName}BodyParams`,
+      topName: `${params.serviceName}BodyParams`,
       jsonSchema: body,
     });
 
     const bUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
     const bResult = await bUnit.doWork({
-      topName: `IB${params.serviceName}BodyParams`,
+      topName: `${params.serviceName}BodyParams`,
       jsonSchema: body,
     });
 
@@ -246,14 +226,14 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     const result = await unit.doWork({
-      topName: `IF${params.responseDataType}Info`,
+      topName: `${params.responseDataType}Info`,
       jsonSchema: (responseSchema.properties ?? {}).data,
     });
 
     const buUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
 
     const bResult = await buUnit.doWork({
-      topName: `IB${params.responseDataType}Info`,
+      topName: `${params.responseDataType}Info`,
       jsonSchema: (responseSchema.properties ?? {}).data,
     });
 
@@ -304,9 +284,9 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     // query的适配
     const queryAdaptorInfo = await this._generateAdaptors({
       fromType: result.fQueryType,
-      from: result.fQueryInterface.join('\n'),
+      from: result.fQueryInterface,
       toType: result.bQueryType,
-      // to: result.bQueryInterface.join('\n'),
+      // to: result.bQueryInterface,
       isToClass: false,
       isConvertedFromFront: true,
       // type: 'QueryParams',
@@ -314,11 +294,11 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
     // body的适配
     const bodyAdaptorInfo = await this._generateAdaptors({
-      from: result.fBodyInterface.join('\n'),
+      from: result.fBodyInterface,
       fromType: result.fBodyType,
 
       toType: result.bBodyType,
-      // to: result.bBodyInterface.join('\n'),
+      // to: result.bBodyInterface,
       isToClass: false,
       // type: 'BodyParams',
       isConvertedFromFront: true,
@@ -359,48 +339,55 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       fBodyType: result.fBodyType,
     });
 
-    const responseAdaptorInfo = await this._generateAdaptors({
-      from: result.bResponseInterface.join('\n'),
-      fromType: result.bResponseInfoType,
-
-      // to: toClass ? classDefines : result.fResponseInterface.join('\n'),
-      toType: result.fResponseInfoType,
-
-      isToClass: toClass,
-      isConvertedFromFront: false,
-
-      isArray: result.isReturnArray,
-    });
-
+    const isResponseVoid = result.fResponseInfoType === 'void';
     // response的适配
     let returnData = '';
-    if (options.method === 'get') {
-      returnData = result.isReturnArray
-        ? `{
+    let responseAdaptorFunc = '';
+    if (!isResponseVoid) {
+      const responseAdaptorInfo = await this._generateAdaptors({
+        from: result.bResponseInterface,
+        fromType: result.bResponseInfoType,
+
+        // to: toClass ? classDefines : result.fResponseInterface,
+        toType: result.fResponseInfoType,
+
+        isToClass: toClass,
+        isConvertedFromFront: false,
+
+        isArray: result.isReturnArray,
+      });
+
+      responseAdaptorFunc = responseAdaptorInfo.func;
+      if (options.method === 'get') {
+        returnData = result.isReturnArray
+          ? `{
           ...result.data,
           data: ${responseAdaptorInfo.funcName}(result.data.data)
         }`
-        : `{
+          : `{
         ...result.data,
         data: ${responseAdaptorInfo.funcName}(result.data.data)
       }`;
+      }
+    } else {
+      returnData = 'result.data';
     }
 
     return `
 
-      ${result.fQueryInterface.join('\n')}
-      ${result.fBodyInterface.join('\n')}
+      ${result.fQueryInterface}
+      ${result.fBodyInterface}
 
-      ${toClass ? classDefines : result.fResponseInterface.join('\n')}
+      ${toClass ? classDefines : result.fResponseInterface}
 
-      ${result.bQueryInterface.join('\n')}
+      ${result.bQueryInterface}
 
-      ${result.bBodyInterface.join('\n')}
+      ${result.bBodyInterface}
 
-      ${result.bResponseInterface.join('\n')}
+      ${result.bResponseInterface}
 
 
-      ${responseAdaptorInfo.func}
+      ${isResponseVoid ? responseAdaptorFunc : ''}
 
 
       export async function ${generateName}(${funcParams}): Promise<${result.fResponseDataType}> {
@@ -508,7 +495,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
     return {
       funcName: result.topFuncName,
-      func: result.funcStrs.join('\n'),
+      func: result.funcStrs,
     };
   }
 
@@ -522,21 +509,21 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     fQueryType: string;
     bQueryType: string;
     fQueryName?: string;
-    fQueryInterface: string[];
-    bQueryInterface: string[];
+    fQueryInterface: string;
+    bQueryInterface: string;
 
     fBodyType: string;
     bBodyType: string;
     fBodyName?: string;
-    fBodyInterface: string[];
-    bBodyInterface: string[];
+    fBodyInterface: string;
+    bBodyInterface: string;
 
     // 响应有关
     isReturnArray: boolean;
     isPager: boolean;
 
-    fResponseInterface: string[];
-    bResponseInterface: string[];
+    fResponseInterface: string;
+    bResponseInterface: string;
 
     fResponseInfoType: string;
     bResponseInfoType: string;
@@ -631,14 +618,14 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       toClass: params.toClass,
     });
 
-    // return prettier.format(result, {
-    //   tabWidth: 2,
-    //   semi: true,
-    //   printWidth: 150,
-    //   singleQuote: true,
-    //   jsxSingleQuote: false,
-    //   arrowParens: 'avoid',
-    // });
-    return result;
+    return prettier.format(result, {
+      tabWidth: 2,
+      semi: true,
+      printWidth: 150,
+      singleQuote: true,
+      jsxSingleQuote: false,
+      arrowParens: 'avoid',
+      parser: 'typescript',
+    });
   }
 }

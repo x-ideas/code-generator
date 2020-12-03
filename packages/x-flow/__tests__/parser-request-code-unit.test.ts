@@ -135,7 +135,7 @@ describe('测试ParseRequestCodeFlowUnit', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const result = await prcfu.doWork(['3610404', OpenAPIData]);
-    console.warn(result);
+    expect(result).toMatchSnapshot();
   });
 
   it('解析3610116-循环code', async () => {

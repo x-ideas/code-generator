@@ -9,7 +9,7 @@ exports[`测试InterfaceGenerateFlowUnit--请求参数 只有header的请求 3`]
 exports[`测试InterfaceGenerateFlowUnit--请求参数 有header + query的请求 1`] = `""`;
 
 exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-id的请求 1`] = `
-"export interface DemoObject {
+"export interface IFRegionInfoObject {
     /**
      * id
      */
@@ -23,7 +23,7 @@ exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-id的请�
 exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-id的请求 3`] = `""`;
 
 exports[`测试InterfaceGenerateFlowUnit--请求参数 有header+path-非id的请求 1`] = `
-"export interface DemoObject {
+"export interface IFRegionInfoObject {
     /**
      * 门店补货需求单明细ID
      */
@@ -40,16 +40,16 @@ exports[`测试InterfaceGenerateFlowUnit-response 3601401-data 1`] = `
 "/**
  * 分页查找补货需求单: 3610401
  */
-export interface Demo {
+export interface IBDemo {
     count?: number;
-    data?:  Array<Datum[]>;
-    pager?: Pager;
+    data?:  IBArray<IBDatum[]>;
+    pager?: IBPager;
 }
 
 /**
  * 补货需求单，列表用
  */
-export interface Datum {
+export interface IBDatum {
     /**
      * 需求单号
      */
@@ -144,7 +144,7 @@ export interface Datum {
     user_name_update?: string;
 }
 
-export interface Pager {
+export interface IBPager {
     first_item_on_page?: number;
     has_next_page?:      boolean;
     has_previous_page?:  boolean;
@@ -160,11 +160,11 @@ export interface Pager {
 `;
 
 exports[`测试InterfaceGenerateFlowUnit-response 3610116的响应-循环引用 1`] = `
-"export interface DemoInfo {
-    data?: Data;
+"export interface IFRegionInfo {
+    data?: IFData;
 }
 
-export interface Data {
+export interface IFData {
     applyCount?:       number;
     applyCountFinish?: number;
     /**
@@ -184,11 +184,11 @@ export interface Data {
     /**
      * 概览信息
      */
-    overview?: Overview;
+    overview?: IFOverview;
     /**
      * 进度
      */
-    progress?:       Progress;
+    progress?:       IFProgress;
     remark?:         string;
     status?:         number;
     timeCreate?:     number;
@@ -203,21 +203,21 @@ export interface Data {
 /**
  * 概览信息
  */
-export interface Overview {
+export interface IFOverview {
     /**
      * 基本信息
      */
-    baseInfo?: BaseInfo;
+    baseInfo?: IFBaseInfo;
     /**
      * 进度动态
      */
-    process?: Process;
+    process?: IFProcess;
 }
 
 /**
  * 基本信息
  */
-export interface BaseInfo {
+export interface IFBaseInfo {
     /**
      * 集货数
      */
@@ -255,7 +255,7 @@ export interface BaseInfo {
 /**
  * 进度动态
  */
-export interface Process {
+export interface IFProcess {
     /**
      * 集货进度
      */
@@ -325,7 +325,7 @@ export interface Process {
 /**
  * 进度
  */
-export interface Progress {
+export interface IFProgress {
     /**
      * 集货进度
      */
@@ -395,16 +395,16 @@ export interface Progress {
 `;
 
 exports[`测试InterfaceGenerateFlowUnit-response 3610401的响应-包含数组 1`] = `
-"export interface Demo {
+"export interface IBDemo {
     count?: number;
-    data?:  Array<Datum[]>;
-    pager?: Pager;
+    data?:  IBArray<IBDatum[]>;
+    pager?: IBPager;
 }
 
 /**
  * 补货需求单，列表用
  */
-export interface Datum {
+export interface IBDatum {
     /**
      * 需求单号
      */
@@ -499,7 +499,7 @@ export interface Datum {
     user_name_update?: string;
 }
 
-export interface Pager {
+export interface IBPager {
     first_item_on_page?: number;
     has_next_page?:      boolean;
     has_previous_page?:  boolean;
@@ -515,16 +515,16 @@ export interface Pager {
 `;
 
 exports[`测试InterfaceGenerateFlowUnit-response 不修改property 1`] = `
-"export interface Demo {
+"export interface IBDemo {
     count?: number;
-    data?:  Array<Datum[]>;
-    pager?: Pager;
+    data?:  IBArray<IBDatum[]>;
+    pager?: IBPager;
 }
 
 /**
  * 补货需求单，列表用
  */
-export interface Datum {
+export interface IBDatum {
     /**
      * 需求单号
      */
@@ -619,7 +619,7 @@ export interface Datum {
     user_name_update?: string;
 }
 
-export interface Pager {
+export interface IBPager {
     first_item_on_page?: number;
     has_next_page?:      boolean;
     has_previous_page?:  boolean;

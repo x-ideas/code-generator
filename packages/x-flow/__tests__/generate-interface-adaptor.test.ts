@@ -19,8 +19,6 @@ describe('测试 genereateInterfaceAdaptor', () => {
 
       isConvertedFromFront: true,
     });
-
-    console.log(result);
   });
   test('属性中未包含其他对象', async () => {
     const gUnit = new GenerateInterfaceAdaptor();
@@ -40,8 +38,6 @@ describe('测试 genereateInterfaceAdaptor', () => {
 
       isConvertedFromFront: false,
     });
-
-    console.log(result);
   });
 
   test('属性中包含其他对象(非数组)', async () => {
@@ -77,8 +73,6 @@ describe('测试 genereateInterfaceAdaptor', () => {
 
       isConvertedFromFront: true,
     });
-
-    console.log(result);
   });
 
   test('属性中包含其他对象(数组)', async () => {

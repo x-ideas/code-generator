@@ -70,7 +70,7 @@ describe('测试 generate class', () => {
            * 实际入库数总和
            */
           receive_sum_real?: number;
-      }`.split('\n');
+      }`;
 
     const unit = new GenerateClassFlowUnit({ convertedFromNiceFormat: false });
 

@@ -74,8 +74,6 @@ describe('测试GenerateRequestParamsJsonSchemaFlowUnit', () => {
 
     const result: JSONSchema4 = await fc.run();
 
-    console.log(result);
-
     expect(result.body).toEqual({
       $schema: 'http://json-schema.org/draft-04/schema#',
       description: '取消补货订单: 3610111',

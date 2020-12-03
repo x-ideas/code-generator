@@ -5,6 +5,7 @@ import lodash from 'lodash';
 
 import jscodeshift, { ASTPath } from 'jscodeshift';
 import { Collection } from 'jscodeshift/src/Collection';
+import { parserConfig } from '../../utils/jscodeshift-parser';
 
 interface IGenerateInterfaceAdaptorOptions {
   fromType: string;
@@ -17,7 +18,7 @@ interface IGenerateInterfaceAdaptorOptions {
 }
 
 export class GenerateInterfaceAdaptor extends XFlowUnit {
-  _getFuncName(name: string, options: IGenerateInterfaceAdaptorOptions) {
+  _getFuncName(name: string, options: IGenerateInterfaceAdaptorOptions): string {
     return `to${options.isConvertedFromFront ? 'B' : 'F'}${name}Adaptor`;
   }
 
@@ -75,29 +76,9 @@ export class GenerateInterfaceAdaptor extends XFlowUnit {
     return result;
   }
 
-  async doWork(options: IGenerateInterfaceAdaptorOptions) {
+  async doWork(options: IGenerateInterfaceAdaptorOptions): Promise<{ topFuncName: string; funcStrs: string }> {
     const collection: Collection<jscodeshift.ASTNode> = jscodeshift(options.from, {
-      parser: {
-        parse(source: string) {
-          return babelParser.parse(source, {
-            sourceType: 'module',
-            // 支持typescript, jsx
-            plugins: [
-              'estree',
-              'typescript',
-              [
-                'decorators',
-                {
-                  decoratorsBeforeExport: true,
-                },
-              ],
-              'exportDefaultFrom',
-              'classProperties',
-              'classPrivateProperties',
-            ],
-          });
-        },
-      },
+      parser: parserConfig(),
     });
 
     const funcStr: string[] = [];
@@ -142,7 +123,7 @@ export class GenerateInterfaceAdaptor extends XFlowUnit {
 
     return {
       topFuncName: topFuncName,
-      funcStrs: funcStr,
+      funcStrs: funcStr.join('\n'),
     };
   }
 }

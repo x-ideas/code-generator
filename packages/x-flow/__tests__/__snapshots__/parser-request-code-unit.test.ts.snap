@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试ParseRequestCodeFlowUnit 解析3610404-code 1`] = `
+Object {
+  "definitions": Object {
+    "PupuResponse": Object {
+      "properties": Object {
+        "data": Object {
+          "type": "object",
+        },
+        "errcode": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "errmsg": Object {
+          "type": "string",
+        },
+      },
+      "title": "PupuResponse",
+      "type": "object",
+    },
+    "补货需求单补货数": Object {
+      "properties": Object {
+        "product_id": Object {
+          "description": "商品id",
+          "type": "string",
+        },
+        "replenish_count": Object {
+          "description": "补货数",
+          "format": "int32",
+          "type": "integer",
+        },
+      },
+      "title": "补货需求单补货数",
+      "type": "object",
+    },
+  },
+  "info": Object {
+    "description": "朴朴java服务端接口文档，遵循RESTful规范",
+    "title": "admin-scm",
+    "version": "0.0.1",
+  },
+  "paths": Object {
+    "/admin/depot/apply/{id}": Object {
+      "put": Object {
+        "consumes": Array [
+          "application/json",
+        ],
+        "operationId": "editRuleDetailUsingPUT",
+        "parameters": Array [
+          Object {
+            "description": "用户签名，JWT Bearer",
+            "in": "header",
+            "name": "Authorization",
+            "required": false,
+            "type": "string",
+          },
+          Object {
+            "description": "id",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+          },
+          Object {
+            "description": "list",
+            "in": "body",
+            "name": "list",
+            "required": true,
+            "schema": Object {
+              "items": Object {
+                "$ref": "#/definitions/补货需求单补货数",
+              },
+              "type": "array",
+            },
+          },
+        ],
+        "produces": Array [
+          "*/*",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "OK",
+            "schema": Object {
+              "$ref": "#/definitions/PupuResponse",
+            },
+          },
+          "201": Object {
+            "description": "Created",
+          },
+          "401": Object {
+            "description": "Unauthorized",
+          },
+          "403": Object {
+            "description": "Forbidden",
+          },
+          "404": Object {
+            "description": "Not Found",
+          },
+        },
+        "summary": "确认需求单，变更补货数: 3610404",
+        "tags": Array [
+          "depot-apply-controller",
+        ],
+      },
+    },
+  },
+  "swagger": "2.0",
+}
+`;

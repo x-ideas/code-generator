@@ -13,6 +13,7 @@ import { XFlowUnit } from '../../flow-unit';
 import jscodeshift from 'jscodeshift';
 import { Collection } from 'jscodeshift/src/Collection';
 import * as K from 'jscodeshift/node_modules/ast-types/gen/kinds';
+import { parserConfig } from '../../utils/jscodeshift-parser';
 
 export class GenerateClassFlowUnit extends XFlowUnit {
   #convertedFromNiceFormat: boolean;
@@ -43,29 +44,9 @@ export class GenerateClassFlowUnit extends XFlowUnit {
     return newCollection;
   }
 
-  async doWork(interfaceSources: string[]): Promise<string> {
-    const collection: Collection<jscodeshift.ASTNode> = jscodeshift(interfaceSources.join('\n'), {
-      parser: {
-        parse(source: string) {
-          return babelParser.parse(source, {
-            sourceType: 'module',
-            // 支持typescript, jsx
-            plugins: [
-              'estree',
-              'typescript',
-              [
-                'decorators',
-                {
-                  decoratorsBeforeExport: true,
-                },
-              ],
-              'exportDefaultFrom',
-              'classProperties',
-              'classPrivateProperties',
-            ],
-          });
-        },
-      },
+  async doWork(interfaceSources: string): Promise<string> {
+    const collection: Collection<jscodeshift.ASTNode> = jscodeshift(interfaceSources, {
+      parser: parserConfig(),
     });
     // const a = collection.find(jscodeshift.TSInterfaceDeclaration).get('body').get('body');
     // // console.log(collection.find(jscodeshift.TSInterfaceDeclaration).length);
