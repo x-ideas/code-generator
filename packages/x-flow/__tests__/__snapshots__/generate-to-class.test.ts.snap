@@ -5,10 +5,10 @@ Object {
   "func": "function toDemoAdaptorFunc(bInfo: any[]) {
   const result = plainToClass(Demo, bInfo, {
     excludeExtraneousValues: true,
-    groups: [EExportGroup.Always]
+    groups: \\"always\\"
   });
 
-  return result.filter(item => item.isValid());
+  return result.filter(item => item.isParsedCorrect());
 }",
   "funcName": "toDemoAdaptorFunc",
 }

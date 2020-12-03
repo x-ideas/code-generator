@@ -100,8 +100,13 @@ function generateValidateDecorator(property: jscodeshift.TSPropertySignature): j
   //   return null;
   // }
 
+  if (property.optional) {
+    return null;
+  }
+
   if (property.typeAnnotation && jscodeshift.TSTypeAnnotation.check(property.typeAnnotation)) {
     // TODO: 根据类型和name生成对应的call expression
+
     switch (property.typeAnnotation.typeAnnotation.type) {
       // number, enum当作number
       case 'TSNumberKeyword': {
@@ -148,7 +153,19 @@ function generateValidateDecorator(property: jscodeshift.TSPropertySignature): j
         );
 
       case 'TSArrayType':
-        // 数组
+        {
+          if (property.typeAnnotation.typeAnnotation.elementType.type === 'TSTypeReference') {
+            const typeName = property.typeAnnotation.typeAnnotation.elementType.typeName;
+            if (jscodeshift.Identifier.check(typeName)) {
+              return jscodeshift.decorator(
+                jscodeshift.callExpression(jscodeshift.identifier('Type'), [
+                  jscodeshift.arrowFunctionExpression([], jscodeshift.identifier(typeName.name)),
+                ])
+              );
+            }
+          }
+        }
+
         break;
 
       default:

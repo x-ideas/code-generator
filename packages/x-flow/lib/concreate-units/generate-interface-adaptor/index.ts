@@ -19,7 +19,9 @@ interface IGenerateInterfaceAdaptorOptions {
 
 export class GenerateInterfaceAdaptor extends XFlowUnit {
   _getFuncName(name: string, options: IGenerateInterfaceAdaptorOptions): string {
-    return `to${options.isConvertedFromFront ? 'B' : 'F'}${name}Adaptor`;
+    const rName = name.replace(/^IB/i, '').replace(/^IF/i, '');
+
+    return `to${options.isConvertedFromFront ? 'B' : 'F'}${rName}Adaptor`;
   }
 
   _generateInterfaceAdaptor(

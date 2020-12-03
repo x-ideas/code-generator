@@ -30,16 +30,17 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
                 jscodeshift.property(
                   'init',
                   jscodeshift.identifier('groups'),
-                  jscodeshift.arrayExpression([
-                    jscodeshift.memberExpression(jscodeshift.identifier('EExportGroup'), jscodeshift.identifier('Always')),
-                  ])
+                  jscodeshift.stringLiteral('always')
+                  // jscodeshift.arrayExpression([
+                  //   jscodeshift.memberExpression(jscodeshift.identifier('EExportGroup'), jscodeshift.identifier('Always')),
+                  // ])
                 ),
               ]),
             ])
           ),
         ]),
         jscodeshift.ifStatement(
-          jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('result'), jscodeshift.identifier('isValid')), []),
+          jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('result'), jscodeshift.identifier('isParsedCorrect')), []),
           jscodeshift.blockStatement([jscodeshift.returnStatement(jscodeshift.identifier('result'))]),
           jscodeshift.blockStatement([
             jscodeshift.throwStatement(
@@ -66,7 +67,7 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
     [
       jscodeshift.arrowFunctionExpression(
         [jscodeshift.identifier('item')],
-        jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('item'), jscodeshift.identifier('isValid')), [])
+        jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('item'), jscodeshift.identifier('isParsedCorrect')), [])
       ),
     ];
 
@@ -96,9 +97,10 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
                 jscodeshift.property(
                   'init',
                   jscodeshift.identifier('groups'),
-                  jscodeshift.arrayExpression([
-                    jscodeshift.memberExpression(jscodeshift.identifier('EExportGroup'), jscodeshift.identifier('Always')),
-                  ])
+                  jscodeshift.stringLiteral('always')
+                  // jscodeshift.arrayExpression([
+                  //   jscodeshift.memberExpression(jscodeshift.identifier('EExportGroup'), jscodeshift.identifier('Always')),
+                  // ])
                 ),
               ]),
             ])
@@ -108,7 +110,7 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
           jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('result'), jscodeshift.identifier('filter')), [
             jscodeshift.arrowFunctionExpression(
               [jscodeshift.identifier('item')],
-              jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('item'), jscodeshift.identifier('isValid')), [])
+              jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('item'), jscodeshift.identifier('isParsedCorrect')), [])
             ),
           ])
         ),
@@ -118,7 +120,7 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
     [
       jscodeshift.arrowFunctionExpression(
         [jscodeshift.identifier('item')],
-        jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('item'), jscodeshift.identifier('isValid')), [])
+        jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('item'), jscodeshift.identifier('isParsedCorrect')), [])
       ),
     ];
 

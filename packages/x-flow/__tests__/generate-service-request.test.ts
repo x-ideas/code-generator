@@ -16,7 +16,21 @@ beforeEach(() => {
 });
 
 describe('测试generate-service-request', () => {
-  test('code 3610412 get 数组/CommonResponse', async () => {
+  test('code 3610412 get 数组/CommonResponse--不启用adapt', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610412',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+
+      serviceName: 'DemoRequest',
+
+      responseDataType: 'RegionInfoDemo',
+    });
+
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610412 get 数组/CommonResponse--interface adaptr', async () => {
     const unit = new GenerateServiceRequestFlowUnit();
     const result = await unit.doWork({
       code: '3610412',
@@ -26,13 +40,41 @@ describe('测试generate-service-request', () => {
 
       responseDataType: 'RegionInfoDemo',
 
-      toClass: false,
+      adaptType: 'interface',
     });
 
     expect(result).toMatchSnapshot();
   });
 
-  test('code 3610401 get 数组/ ListResponse ', async () => {
+  test('code 3610412 get 数组/CommonResponse--class adaptr', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610412',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+
+      serviceName: 'DemoRequest',
+
+      responseDataType: 'RegionInfoDemo',
+
+      adaptType: 'class',
+    });
+
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610401 get 数组/ ListResponse --不启用adapt', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610401',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'DemoRequest',
+      responseDataType: 'RegionInfoDemo',
+    });
+
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610401 get 数组/ ListResponse --interface adapt', async () => {
     const unit = new GenerateServiceRequestFlowUnit();
     const result = await unit.doWork({
       code: '3610401',
@@ -40,32 +82,92 @@ describe('测试generate-service-request', () => {
       serviceName: 'DemoRequest',
       responseDataType: 'RegionInfoDemo',
 
-      toClass: false,
+      adaptType: 'interface',
     });
 
     expect(result).toMatchSnapshot();
   });
 
-  test('code 3610119 get 非数组/CommonResponse void', async () => {
+  test('code 3610401 get 数组/ ListResponse --class adapt', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610401',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'DemoRequest',
+      responseDataType: 'RegionInfoDemo',
+
+      adaptType: 'class',
+    });
+
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610119 get 非数组/CommonResponse void-不启用adapt', async () => {
     const unit = new GenerateServiceRequestFlowUnit();
     const result = await unit.doWork({
       code: '3610119',
       swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
       serviceName: 'DemoRequest',
       responseDataType: 'RegionInfoDemo',
-      toClass: true,
     });
     expect(result).toMatchSnapshot();
   });
 
-  test('code 3610404 put CommonResponse', async () => {
+  test('code 3610119 get 非数组/CommonResponse void- interface adapt', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610119',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'DemoRequest',
+      responseDataType: 'RegionInfoDemo',
+      adaptType: 'interface',
+    });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610119 get 非数组/CommonResponse void- class adapt', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610119',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'DemoRequest',
+      responseDataType: 'RegionInfoDemo',
+      adaptType: 'class',
+    });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610404 put CommonResponse--不启用adapt', async () => {
     const unit = new GenerateServiceRequestFlowUnit();
     const result = await unit.doWork({
       code: '3610404',
       swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
       serviceName: 'DemoRequest',
       responseDataType: 'RegionInfoDemo',
-      toClass: false,
+    });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610404 put CommonResponse--interface adapt', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610404',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'DemoRequest',
+      responseDataType: 'RegionInfoDemo',
+      adaptType: 'interface',
+    });
+    expect(result).toMatchSnapshot();
+  });
+
+  test('code 3610404 put CommonResponse--class adapt', async () => {
+    const unit = new GenerateServiceRequestFlowUnit();
+    const result = await unit.doWork({
+      code: '3610404',
+      swaggerSite: 'http://10.99.244.137:7076/v2/api-docs',
+      serviceName: 'DemoRequest',
+      responseDataType: 'RegionInfoDemo',
+      adaptType: 'class',
     });
     expect(result).toMatchSnapshot();
   });

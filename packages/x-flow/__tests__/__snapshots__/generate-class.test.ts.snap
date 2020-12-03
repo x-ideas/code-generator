@@ -8,8 +8,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"collect_progress\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   collectProgress: number | undefined;
 
   /**
@@ -18,8 +16,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"collect_progress_relative\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   collectProgressRelative: number | undefined;
 
   /**
@@ -28,8 +24,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"collect_sum_correct\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   collectSumCorrect: number | undefined;
 
   /**
@@ -38,8 +32,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"collect_sum_pending\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   collectSumPending: number | undefined;
 
   /**
@@ -48,8 +40,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"collect_sum_plan\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   collectSumPlan: number | undefined;
 
   /**
@@ -58,8 +48,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"collect_sum_real\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   collectSumReal: number | undefined;
 
   /**
@@ -68,8 +56,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"delivery_progress\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   deliveryProgress: number | undefined;
 
   /**
@@ -78,8 +64,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"delivery_progress_relative\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   deliveryProgressRelative: number | undefined;
 
   /**
@@ -88,8 +72,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"delivery_sum_real\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   deliverySumReal: number | undefined;
 
   /**
@@ -98,8 +80,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"distribute_progress\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   distributeProgress: number | undefined;
 
   /**
@@ -108,8 +88,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"distribute_progress_relative\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   distributeProgressRelative: number | undefined;
 
   /**
@@ -118,8 +96,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"distribute_sum_real\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   distributeSumReal: number | undefined;
 
   /**
@@ -128,8 +104,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"order_progress\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   orderProgress: number | undefined;
 
   /**
@@ -138,8 +112,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"receive_progress\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   receiveProgress: number | undefined;
 
   /**
@@ -148,8 +120,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"receive_progress_relative\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   receiveProgressRelative: number | undefined;
 
   /**
@@ -158,8 +128,6 @@ exports[`测试 generate class 一个interface 1`] = `
   @Expose({
     name: \\"receive_sum_real\\"
   })
-  @ValidateValue(/*NOTE: 判断为number的属性可能为枚举，如果为枚举，请手动增加一个枚举定义并替换该属性的类型*/
-  getDefaultValidNum())
   receiveSumReal: number | undefined;
 }"
 `;

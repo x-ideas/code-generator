@@ -61,9 +61,12 @@ interface IGenerateServiceRequestFlowUnitParams {
   responseDataType: string;
 
   /**
-   * 是否转换成class
+   * 适配器的类型
+   * undefined为不启用适配器
+   * @type {('interface' | 'class')}
+   * @memberof IGenerateServiceRequestFlowUnitParams
    */
-  toClass: boolean;
+  adaptType?: 'interface' | 'class';
 }
 
 type RequestMethod = 'get' | 'post' | 'delete' | 'put';
@@ -87,7 +90,7 @@ interface IGenerateFuncOptions {
   /**
    * 是否转换成class
    */
-  toClass: boolean;
+  adaptType?: 'interface' | 'class';
 }
 
 export class GenerateServiceRequestFlowUnit extends XFlowUnit {
@@ -222,7 +225,10 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
    * @param responseSchema
    * @param params
    */
-  private async _generateResponseInterface(responseSchema: IGenerateResponseDataSchemaFlowUnitResult, params: { responseDataType: string }) {
+  private async _generateResponseInterface(
+    responseSchema: IGenerateResponseDataSchemaFlowUnitResult,
+    params: { responseDataType: string; disableAdapt: boolean }
+  ) {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     const result = await unit.doWork({
@@ -240,14 +246,14 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     const isNotVoid = result.length > 0;
 
     const fType = isNotVoid ? this._getTopInterfaeType(result) : 'void';
-    const bType = isNotVoid ? this._getTopInterfaeType(bResult) : 'unknown';
+    const bType = isNotVoid ? this._getTopInterfaeType(bResult) : 'void';
 
     // 判断是否ListResponse，还是CommonResponse
     const isListResponse = responseSchema.isPageList;
-    const isArray = responseSchema.dataSchema.type === 'array';
+    const isArray = isListResponse || responseSchema.dataSchema.type === 'array';
 
-    const templateType = isArray ? `${fType}[]` : `${fType}`;
-    const bTemplateType = isArray ? `${bType}[]` : `${bType}`;
+    const templateType = isNotVoid && isArray ? `${fType}[]` : `${fType}`;
+    const bTemplateType = isNotVoid && isArray ? `${bType}[]` : `${bType}`;
 
     return {
       fType: fType,
@@ -267,6 +273,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     // 适配函数
     // class定义
 
+    const disableAdapt = options.adaptType === undefined;
     const result = await this._generataDefinitions({
       querySchema: options.querySchema,
       bodySchema: options.bodySchema,
@@ -275,21 +282,22 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       serviceName: options.funcName,
 
       responseType: options.responseType,
+      disableAdapt: disableAdapt,
     });
 
     const pathParams = this._generateRequestPathParams(options.pathSchema, options.requestPath);
 
-    const toClass = options.toClass && options.method === 'get';
+    const isClassAdapt = options.adaptType === 'class'; // && options.method === 'get';
+    const isInterfaceAdapt = options.adaptType === 'interface';
 
     // query的适配
     const queryAdaptorInfo = await this._generateAdaptors({
       fromType: result.fQueryType,
       from: result.fQueryInterface,
       toType: result.bQueryType,
-      // to: result.bQueryInterface,
-      isToClass: false,
+
+      adaptType: 'interface',
       isConvertedFromFront: true,
-      // type: 'QueryParams',
     });
 
     // body的适配
@@ -298,9 +306,8 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       fromType: result.fBodyType,
 
       toType: result.bBodyType,
-      // to: result.bBodyInterface,
-      isToClass: false,
-      // type: 'BodyParams',
+
+      adaptType: 'interface',
       isConvertedFromFront: true,
     });
 
@@ -310,22 +317,15 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
     // axis请求的参数
     const axisRequestParams: string[] = [];
-    if (options.method === 'get') {
-      if (result.fQueryName) {
-        axisRequestParams.push(`{
-          params: ${queryAdaptorInfo.funcName}(${result.fQueryName})
-        }`);
-      }
-    } else {
-      if (result.fBodyName) {
-        axisRequestParams.push(`${bodyAdaptorInfo.funcName}(${result.fBodyName})`);
-      }
 
-      if (result.fQueryName) {
-        axisRequestParams.push(`{
+    if (result.fQueryName && !disableAdapt) {
+      axisRequestParams.push(`{
           params: ${queryAdaptorInfo.funcName}(${result.fQueryName})
         }`);
-      }
+    }
+
+    if (result.fBodyName && !disableAdapt) {
+      axisRequestParams.unshift(`${bodyAdaptorInfo.funcName}(${result.fBodyName})`);
     }
 
     const errorStr = "new Error(`请求失败:(${result?.data?.errmsg || '未知原因'})`)";
@@ -344,22 +344,25 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     let returnData = '';
     let responseAdaptorFunc = '';
     if (!isResponseVoid) {
+      if (disableAdapt) {
+        returnData = 'result.data';
+      }
+
       // 有返回值，则进行一次转换
       const responseAdaptorInfo = await this._generateAdaptors({
         from: result.bResponseInterface,
         fromType: result.bResponseInfoType,
 
-        // to: toClass ? classDefines : result.fResponseInterface,
         toType: result.fResponseInfoType,
 
-        isToClass: toClass,
+        adaptType: options.adaptType === 'class' ? 'class' : 'interface',
         isConvertedFromFront: false,
 
         isArray: result.isReturnArray,
       });
 
       responseAdaptorFunc = responseAdaptorInfo.func;
-      if (options.method === 'get') {
+      if (!disableAdapt) {
         // 只对get请求做一次适配
         returnData = result.isReturnArray
           ? `{
@@ -379,22 +382,23 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
     return `
 
-      ${result.fQueryInterface}
-      ${result.fBodyInterface}
-
-      ${toClass ? classDefines : result.fResponseInterface}
-
+      ${!disableAdapt ? result.fQueryInterface : ''}
       ${result.bQueryInterface}
 
+
+      ${!disableAdapt ? result.fBodyInterface : ''}
       ${result.bBodyInterface}
+
+      ${isClassAdapt ? classDefines : ''}
+      ${isInterfaceAdapt ? result.fResponseInterface : ''}
 
       ${result.bResponseInterface}
 
 
-      ${isResponseVoid ? responseAdaptorFunc : ''}
+      ${!disableAdapt ? responseAdaptorFunc : ''}
 
 
-      export async function ${generateName}(${funcParams}): Promise<${result.fResponseDataType}> {
+      export async function ${generateName}(${funcParams}): Promise<${!disableAdapt ? result.fResponseDataType : result.bResponseDataType}> {
         const result = await http.${options.method}<${result.bResponseDataType}>(microservice.javaAdmin + \`${
       pathParams.requestUrl
     }\`, ${axisRequestParams.join(',')});
@@ -474,12 +478,12 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     from: string;
     toType: string;
     // to: string;
-    isToClass: boolean;
+    adaptType: 'interface' | 'class';
     // type: string;
     isConvertedFromFront: boolean;
     isArray?: boolean;
   }): Promise<{ funcName: string; func: string }> {
-    if (options.isToClass) {
+    if (options.adaptType === 'class') {
       const gcUnit = new GenerateToClassAdaptorFlowUnit();
       const result = await gcUnit.doWork({ className: options.toType, isArray: options.isArray ?? false });
       return {
@@ -509,6 +513,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     responseSchema: IGenerateResponseDataSchemaFlowUnitResult;
     serviceName: string;
     responseType: string;
+    disableAdapt: boolean;
   }): Promise<{
     fQueryType: string;
     bQueryType: string;
@@ -537,7 +542,10 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
   }> {
     const queryParams = await this._generateReuqestQueryParams(options.querySchema, { serviceName: options.serviceName });
     const bodyParams = await this._generateRequestBodyParams(options.bodySchema, { serviceName: options.serviceName });
-    const responseTypeInfo = await this._generateResponseInterface(options.responseSchema, { responseDataType: options.responseType });
+    const responseTypeInfo = await this._generateResponseInterface(options.responseSchema, {
+      responseDataType: options.responseType,
+      disableAdapt: options.disableAdapt,
+    });
 
     return {
       fQueryName: queryParams.name,
@@ -619,7 +627,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       bodySchema: paramsSchema.body,
       responseSchema: responseSchemaInfo,
       responseType: params.responseDataType,
-      toClass: params.toClass,
+      adaptType: params.adaptType,
     });
 
     return prettier.format(result, {

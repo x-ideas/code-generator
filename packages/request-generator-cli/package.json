@@ -32,7 +32,7 @@
     "chalk": "^4.1.0",
     "commander": "^6.2.0",
     "inquirer": "^7.3.3",
-    "x-flow": "^1.0.0"
+    "xxx-flow": "^1.0.0"
   },
   "devDependencies": {
     "@types/inquirer": "^7.3.1"
