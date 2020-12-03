@@ -227,14 +227,14 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
     const result = await unit.doWork({
       topName: `${params.responseDataType}Info`,
-      jsonSchema: (responseSchema.dataSchema.properties ?? {}).data,
+      jsonSchema: responseSchema.dataSchema,
     });
 
     const buUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
 
     const bResult = await buUnit.doWork({
       topName: `${params.responseDataType}Info`,
-      jsonSchema: (responseSchema.dataSchema.properties ?? {}).data,
+      jsonSchema: responseSchema.dataSchema,
     });
 
     const isNotVoid = result.length > 0;
@@ -344,6 +344,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     let returnData = '';
     let responseAdaptorFunc = '';
     if (!isResponseVoid) {
+      // 有返回值，则进行一次转换
       const responseAdaptorInfo = await this._generateAdaptors({
         from: result.bResponseInterface,
         fromType: result.bResponseInfoType,
@@ -359,6 +360,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
 
       responseAdaptorFunc = responseAdaptorInfo.func;
       if (options.method === 'get') {
+        // 只对get请求做一次适配
         returnData = result.isReturnArray
           ? `{
           ...result.data,
@@ -368,9 +370,11 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
         ...result.data,
         data: ${responseAdaptorInfo.funcName}(result.data.data)
       }`;
+      } else {
+        returnData = 'result.data';
       }
     } else {
-      returnData = 'result.data';
+      returnData = '';
     }
 
     return `

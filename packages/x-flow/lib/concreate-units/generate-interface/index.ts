@@ -87,7 +87,7 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
       })
       .toSource();
 
-    return jscodeshift(replace1, {
+    const replace2 = jscodeshift(replace1, {
       parser: parserConfig(),
     })
       .find(jscodeshift.TSTypeReference)
@@ -99,5 +99,11 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
         }
       })
       .toSource();
+
+    if (this.#options.nicePropertyName) {
+      return replace2;
+    } else {
+      return replace2.replace(/export/g, '');
+    }
   }
 }

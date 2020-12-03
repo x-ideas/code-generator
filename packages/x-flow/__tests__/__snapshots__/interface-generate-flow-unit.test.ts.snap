@@ -40,7 +40,7 @@ exports[`测试InterfaceGenerateFlowUnit-response 3601401-data 1`] = `
 "/**
  * 分页查找补货需求单: 3610401
  */
-export interface IBDemo {
+ interface IBDemo {
     count?: number;
     data?:  IBArray<IBDatum[]>;
     pager?: IBPager;
@@ -49,7 +49,7 @@ export interface IBDemo {
 /**
  * 补货需求单，列表用
  */
-export interface IBDatum {
+ interface IBDatum {
     /**
      * 需求单号
      */
@@ -144,7 +144,7 @@ export interface IBDatum {
     user_name_update?: string;
 }
 
-export interface IBPager {
+ interface IBPager {
     first_item_on_page?: number;
     has_next_page?:      boolean;
     has_previous_page?:  boolean;
@@ -394,7 +394,7 @@ exports[`测试InterfaceGenerateFlowUnit-response 3610401的响应-包含数组 
 "/**
  * 补货需求单，列表用
  */
-export interface IBRegionIndo {
+ interface IBRegionIndo {
     /**
      * 需求单号
      */
@@ -495,7 +495,7 @@ exports[`测试InterfaceGenerateFlowUnit-response 不修改property 1`] = `
 "/**
  * 补货需求单，列表用
  */
-export interface IBRegionIndo {
+ interface IBRegionIndo {
     /**
      * 需求单号
      */
