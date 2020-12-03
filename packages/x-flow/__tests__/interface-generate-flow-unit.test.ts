@@ -8,7 +8,7 @@ import { XFlowController } from '../lib/flow-controller';
 
 import OpenAPIData from './assets/openAPI.json';
 import { GenerateRequestParamsJsonSchemaFlowUnit } from '../lib/concreate-units/generate-request-params-json-schema';
-import { GenerateResponseDataSchemaFlowUnit } from '../lib/concreate-units/generate-response-data-schema';
+import { GenerateResponseDataSchemaFlowUnit, IGenerateResponseDataSchemaFlowUnitResult } from '../lib/concreate-units/generate-response-data-schema';
 import { MergeOutputFlowUnit } from '../lib/merge-output-flow-unit';
 
 import Swagger3601401Data from './assets/3610401.json';
@@ -40,22 +40,25 @@ describe('测试InterfaceGenerateFlowUnit-response', () => {
     const swaggerParseUnit = new SwaggerParseFlowUnit();
     const frpUnit = new GenerateResponseDataSchemaFlowUnit();
 
-    const wrapUnit = new WrapDataFlowUnit('jsonSchema');
-    const moUnit = new MergeOutputFlowUnit({
-      topName: 'Demo',
-    });
+    // const wrapUnit = new WrapDataFlowUnit('jsonSchema');
+    // const moUnit = new MergeOutputFlowUnit({
+    //   topName: 'Demo',
+    // });
     const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
     fc.addUnit(frpUnit);
-    fc.addUnit(wrapUnit);
-    fc.addUnit(moUnit);
-    fc.addUnit(backendInterfaceGenerate);
+    // fc.addUnit(wrapUnit);
+    // fc.addUnit(moUnit);
+    // fc.addUnit(backendInterfaceGenerate);
 
-    const result: string[] = await fc.run();
-    expect(result).toMatchSnapshot();
+    const result: IGenerateResponseDataSchemaFlowUnitResult = await fc.run();
+
+    const interfaceResult = await backendInterfaceGenerate.doWork({ jsonSchema: result.dataSchema, topName: 'RegionIndo' });
+
+    expect(interfaceResult).toMatchSnapshot();
   });
 
   test('3610401的响应-包含数组', async () => {
@@ -72,22 +75,18 @@ describe('测试InterfaceGenerateFlowUnit-response', () => {
     const swaggerParseUnit = new SwaggerParseFlowUnit();
     const frpUnit = new GenerateResponseDataSchemaFlowUnit();
 
-    const wrapUnit = new WrapDataFlowUnit('jsonSchema');
-    const moUnit = new MergeOutputFlowUnit({
-      topName: 'Demo',
-    });
     const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
     fc.addUnit(frpUnit);
-    fc.addUnit(wrapUnit);
-    fc.addUnit(moUnit);
-    fc.addUnit(backendInterfaceGenerate);
 
-    const result: string[] = await fc.run();
-    expect(result).toMatchSnapshot();
+    const result: IGenerateResponseDataSchemaFlowUnitResult = await fc.run();
+
+    const interfaceResult = await backendInterfaceGenerate.doWork({ jsonSchema: result.dataSchema, topName: 'RegionIndo' });
+
+    expect(interfaceResult).toMatchSnapshot();
   });
 
   test('3610116的响应-循环引用', async () => {
@@ -104,23 +103,19 @@ describe('测试InterfaceGenerateFlowUnit-response', () => {
     const swaggerParseUnit = new SwaggerParseFlowUnit();
     const frpUnit = new GenerateResponseDataSchemaFlowUnit();
 
-    const wrapUnit = new WrapDataFlowUnit('jsonSchema');
-    const moUnit = new MergeOutputFlowUnit({
-      topName: 'RegionInfo',
-    });
     const backendInterfaceGenerate = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
     fc.addUnit(swaggerParseUnit);
     fc.addUnit(frpUnit);
-    fc.addUnit(wrapUnit);
-    fc.addUnit(moUnit);
-    fc.addUnit(backendInterfaceGenerate);
 
-    const result: string[] = await fc.run();
+    const result: IGenerateResponseDataSchemaFlowUnitResult = await fc.run();
 
-    expect(result).toMatchSnapshot();
+    const interfaceResult = await backendInterfaceGenerate.doWork({ jsonSchema: result.dataSchema, topName: 'RegionIndo' });
+
+    expect(result.isPageList).toBe(false);
+    expect(interfaceResult).toMatchSnapshot();
   });
 });
 

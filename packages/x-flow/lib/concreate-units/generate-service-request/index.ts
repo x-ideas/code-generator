@@ -12,7 +12,7 @@ import jscodeshift from 'jscodeshift';
 import { JSONSchema4 } from 'json-schema';
 import { XFlowUnit } from '../../flow-unit';
 import { GenerateRequestParamsJsonSchemaFlowUnit } from '../generate-request-params-json-schema';
-import { GenerateResponseDataSchemaFlowUnit } from '../generate-response-data-schema';
+import { GenerateResponseDataSchemaFlowUnit, IGenerateResponseDataSchemaFlowUnitResult } from '../generate-response-data-schema';
 import { RequestSwaggerFlowUnit } from '../request-swagger/request-swagger-unit';
 import { SwaggerParseFlowUnit } from '../swagger-parse';
 import { ParseRequestCodeFlowUnit } from './../parse-request-code/parser-request-code-unit';
@@ -77,7 +77,7 @@ interface IGenerateFuncOptions {
   pathSchema: JSONSchema4;
   querySchema: JSONSchema4;
   bodySchema: JSONSchema4;
-  responseSchema: JSONSchema4;
+  responseSchema: IGenerateResponseDataSchemaFlowUnitResult;
 
   /**
    * 返回的数据类型
@@ -161,13 +161,13 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
   }> {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
     const result = await unit.doWork({
-      topName: `IF${params.serviceName}QueryParams`,
+      topName: `${params.serviceName}QueryParams`,
       jsonSchema: query,
     });
 
     const bUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
     const bResult = await bUnit.doWork({
-      topName: `IB${params.serviceName}QueryParams`,
+      topName: `${params.serviceName}QueryParams`,
       jsonSchema: query,
     });
 
@@ -222,19 +222,19 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
    * @param responseSchema
    * @param params
    */
-  private async _generateResponseInterface(responseSchema: JSONSchema4, params: { responseDataType: string }) {
+  private async _generateResponseInterface(responseSchema: IGenerateResponseDataSchemaFlowUnitResult, params: { responseDataType: string }) {
     const unit = new InterfaceGenerateFlowUnit({ nicePropertyName: true });
 
     const result = await unit.doWork({
       topName: `${params.responseDataType}Info`,
-      jsonSchema: (responseSchema.properties ?? {}).data,
+      jsonSchema: (responseSchema.dataSchema.properties ?? {}).data,
     });
 
     const buUnit = new InterfaceGenerateFlowUnit({ nicePropertyName: false });
 
     const bResult = await buUnit.doWork({
       topName: `${params.responseDataType}Info`,
-      jsonSchema: (responseSchema.properties ?? {}).data,
+      jsonSchema: (responseSchema.dataSchema.properties ?? {}).data,
     });
 
     const isNotVoid = result.length > 0;
@@ -243,8 +243,8 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     const bType = isNotVoid ? this._getTopInterfaeType(bResult) : 'unknown';
 
     // 判断是否ListResponse，还是CommonResponse
-    const isListResponse = !!(responseSchema.properties ?? {})['pager'];
-    const isArray = (responseSchema.properties ?? {})['data']['type'] === 'array';
+    const isListResponse = responseSchema.isPageList;
+    const isArray = responseSchema.dataSchema.type === 'array';
 
     const templateType = isArray ? `${fType}[]` : `${fType}`;
     const bTemplateType = isArray ? `${bType}[]` : `${bType}`;
@@ -502,7 +502,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
   private async _generataDefinitions(options: {
     querySchema: JSONSchema4;
     bodySchema: JSONSchema4;
-    responseSchema: JSONSchema4;
+    responseSchema: IGenerateResponseDataSchemaFlowUnitResult;
     serviceName: string;
     responseType: string;
   }): Promise<{
@@ -604,7 +604,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     assert(method, 'method应该存在的');
 
     const paramsSchema = await grpsFlowUnit.doWork(parsedSwaggerDoc);
-    const responseSchema = await grdFlowUnit.doWork(parsedSwaggerDoc);
+    const responseSchemaInfo = await grdFlowUnit.doWork(parsedSwaggerDoc);
 
     const result = await this._generateGetRequestFunction({
       funcName: params.serviceName,
@@ -613,7 +613,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       pathSchema: paramsSchema.path,
       querySchema: paramsSchema.query,
       bodySchema: paramsSchema.body,
-      responseSchema: responseSchema,
+      responseSchema: responseSchemaInfo,
       responseType: params.responseDataType,
       toClass: params.toClass,
     });

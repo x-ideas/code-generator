@@ -11,6 +11,11 @@ function isSchemaRefObj(obj: OpenAPIV2.Schema): obj is OpenAPIV2.ReferenceObject
   return '$ref' in obj;
 }
 
+export interface IGenerateResponseDataSchemaFlowUnitResult {
+  isPageList: boolean;
+  dataSchema: JSONSchema4;
+}
+
 export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
   /**
    * 获取描述
@@ -206,7 +211,106 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
     return {};
   }
 
-  async doWork(operationObj: OpenAPIV2.Document): Promise<JSONSchema4> {
+  private findDataSchemaFromRef(
+    ref: string,
+    defs: OpenAPIV2.DefinitionsObject
+  ): {
+    data: OpenAPIV2.SchemaObject;
+    isPageList: boolean;
+  } {
+    if (!ref.startsWith('#')) {
+      // 暂时不支持外链
+      throw Error('暂时还不支持ref是绝对路径');
+    }
+
+    const elements = ref.split('/');
+    const key = elements[elements.length - 1];
+
+    if (key) {
+      const schema = defs[key];
+      return this.findDataSchemeFromSchemaObject(schema, defs);
+    }
+
+    return {
+      data: {},
+      isPageList: false,
+    };
+  }
+
+  private findDataSchemeFromSchema(
+    obj: OpenAPIV2.Schema,
+    defs: OpenAPIV2.DefinitionsObject
+  ): {
+    data: OpenAPIV2.SchemaObject;
+    isPageList: boolean;
+  } {
+    if (isSchemaRefObj(obj)) {
+      return this.findDataSchemaFromRef(obj.$ref, defs);
+    } else {
+      return this.findDataSchemeFromSchemaObject(obj, defs);
+    }
+  }
+
+  private findDataSchemeFromSchemaObject(
+    schemaObj: OpenAPIV2.SchemaObject,
+    defs: OpenAPIV2.DefinitionsObject
+  ): {
+    data: OpenAPIV2.SchemaObject;
+    isPageList: boolean;
+  } {
+    if (schemaObj.$ref) {
+      return this.findDataSchemaFromRef(schemaObj.$ref, defs);
+    }
+
+    let isPageList = false;
+    let schema: OpenAPIV2.SchemaObject | undefined = undefined;
+    // 我们只考虑perperties
+    for (const key of Object.keys(schemaObj.properties ?? {})) {
+      if (key === 'pager') {
+        isPageList = true;
+      }
+
+      if (key === 'data') {
+        schema = (schemaObj.properties ?? {})['data'];
+      }
+    }
+
+    return {
+      data: schema ? schema : {},
+      isPageList: isPageList,
+    };
+  }
+
+  /**
+   * 找到响应的数据定义
+   * @private
+   * @param {OpenAPIV2.Response} response
+   * @returns {{
+   *     data: OpenAPIV2.SchemaObject;
+   *     isPageList: boolean;
+   *   }}
+   * @memberof GenerateResponseDataSchemaFlowUnit
+   */
+  private findResponseData(
+    response: OpenAPIV2.Response,
+    defs: OpenAPIV2.DefinitionsObject
+  ): {
+    data: OpenAPIV2.SchemaObject;
+    isPageList: boolean;
+  } {
+    if (isResponseRefObj(response)) {
+      return this.findDataSchemaFromRef(response.$ref, defs);
+    } else if (response.schema) {
+      return this.findDataSchemeFromSchema(response.schema, defs);
+    } else {
+      return {
+        data: {},
+        isPageList: false,
+      };
+    }
+  }
+
+  async doWork(operationObj: OpenAPIV2.Document): Promise<IGenerateResponseDataSchemaFlowUnitResult> {
     const path = this.findRequestInPath(operationObj);
     if (!path) {
       throw Error('没有找到请求path');
@@ -218,17 +322,15 @@ export class GenerateResponseDataSchemaFlowUnit extends XFlowUnit {
       throw Error('没有找到成功的响应');
     }
 
+    // 我们只要找到data对应的schema
     const refs: string[] = [];
-    // const result: JSONSchema4 = {
-    //   $schema: 'http://json-schema.org/draft-04/schema#',
-    //   description: this.getDescription(path),
-    //   ...this.convertResponse(response, operationObj.definitions ?? {}, refs),
-    //   // required: [],
-    //   // required: this.getRequeiredR((requestDef.parameters ?? []) as OpenAPIV2.Parameter[]),
-    // };
 
-    const result = this.convertResponse(response, operationObj.definitions ?? {}, refs);
+    const dataInfo = this.findResponseData(response, operationObj.definitions ?? {});
 
-    return result;
+    // const result = this.convertResponse(response, operationObj.definitions ?? {}, refs);
+    return {
+      isPageList: dataInfo.isPageList,
+      dataSchema: this.generateJSonSchemaFromOpenAPISchema(dataInfo.data, operationObj.definitions ?? {}, refs),
+    };
   }
 }

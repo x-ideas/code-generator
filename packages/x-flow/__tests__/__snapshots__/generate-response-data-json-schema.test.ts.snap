@@ -2,885 +2,1233 @@
 
 exports[`测试Generate Response Data JsonSchemaFlowUnit list 1`] = `
 Object {
-  "properties": Object {
-    "count": Object {
-      "default": undefined,
-      "description": "",
-      "required": undefined,
-      "type": "integer",
-    },
-    "data": Object {
-      "description": "",
+  "dataSchema": Object {
+    "description": undefined,
+    "items": Object {
       "items": Object {
-        "items": Object {
-          "description": "补货需求单，列表用",
-          "properties": Object {
-            "apply_no": Object {
-              "default": undefined,
-              "description": "需求单号",
-              "required": undefined,
-              "type": "string",
-            },
-            "apply_type": Object {
-              "default": undefined,
-              "description": "补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)",
-              "required": undefined,
-              "type": "integer",
-            },
-            "date_part_plan": Object {
-              "default": undefined,
-              "description": "计划到货时间段，10=白天，20=晚上",
-              "required": undefined,
-              "type": "integer",
-            },
-            "date_plan": Object {
-              "default": undefined,
-              "description": "计划到货日期",
-              "required": undefined,
-              "type": "integer",
-            },
-            "dc_abbr_name": Object {
-              "default": undefined,
-              "description": "总仓简称",
-              "required": undefined,
-              "type": "string",
-            },
-            "dc_id": Object {
-              "default": undefined,
-              "description": "总仓id",
-              "required": undefined,
-              "type": "string",
-            },
-            "dc_name": Object {
-              "default": undefined,
-              "description": "总仓名称",
-              "required": undefined,
-              "type": "string",
-            },
-            "id": Object {
-              "default": undefined,
-              "description": "id",
-              "required": undefined,
-              "type": "string",
-            },
-            "is_delete": Object {
-              "default": undefined,
-              "description": "是否删除",
-              "required": undefined,
-              "type": "boolean",
-            },
-            "item_count_plan": Object {
-              "default": undefined,
-              "description": "计划品项数量",
-              "required": undefined,
-              "type": "integer",
-            },
-            "item_count_real": Object {
-              "default": undefined,
-              "description": "实际品项数量",
-              "required": undefined,
-              "type": "integer",
-            },
-            "order_id": Object {
-              "default": undefined,
-              "description": "补货订单id",
-              "required": undefined,
-              "type": "string",
-            },
-            "status": Object {
-              "default": undefined,
-              "description": "状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成",
-              "required": undefined,
-              "type": "integer",
-            },
-            "store_abbr_name": Object {
-              "default": undefined,
-              "description": "门店简称",
-              "required": undefined,
-              "type": "string",
-            },
-            "store_code": Object {
-              "default": undefined,
-              "description": "门店code",
-              "required": undefined,
-              "type": "integer",
-            },
-            "store_id": Object {
-              "default": undefined,
-              "description": "门店id",
-              "required": undefined,
-              "type": "string",
-            },
-            "store_name": Object {
-              "default": undefined,
-              "description": "门店名称",
-              "required": undefined,
-              "type": "string",
-            },
-            "time_create": Object {
-              "default": undefined,
-              "description": "创建时间",
-              "required": undefined,
-              "type": "integer",
-            },
-            "time_plan": Object {
-              "default": undefined,
-              "description": "计划到货时间",
-              "required": undefined,
-              "type": "integer",
-            },
-            "time_real": Object {
-              "default": undefined,
-              "description": "实际到货时间",
-              "required": undefined,
-              "type": "integer",
-            },
-            "time_update": Object {
-              "default": undefined,
-              "description": "更新时间",
-              "required": undefined,
-              "type": "integer",
-            },
-            "user_id_update": Object {
-              "default": undefined,
-              "description": "更新人id",
-              "required": undefined,
-              "type": "string",
-            },
-            "user_name_update": Object {
-              "default": undefined,
-              "description": "更新人名称",
-              "required": undefined,
-              "type": "string",
-            },
+        "description": "补货需求单，列表用",
+        "properties": Object {
+          "apply_no": Object {
+            "default": undefined,
+            "description": "需求单号",
+            "required": undefined,
+            "type": "string",
           },
-          "type": "object",
+          "apply_type": Object {
+            "default": undefined,
+            "description": "补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)",
+            "required": undefined,
+            "type": "integer",
+          },
+          "date_part_plan": Object {
+            "default": undefined,
+            "description": "计划到货时间段，10=白天，20=晚上",
+            "required": undefined,
+            "type": "integer",
+          },
+          "date_plan": Object {
+            "default": undefined,
+            "description": "计划到货日期",
+            "required": undefined,
+            "type": "integer",
+          },
+          "dc_abbr_name": Object {
+            "default": undefined,
+            "description": "总仓简称",
+            "required": undefined,
+            "type": "string",
+          },
+          "dc_id": Object {
+            "default": undefined,
+            "description": "总仓id",
+            "required": undefined,
+            "type": "string",
+          },
+          "dc_name": Object {
+            "default": undefined,
+            "description": "总仓名称",
+            "required": undefined,
+            "type": "string",
+          },
+          "id": Object {
+            "default": undefined,
+            "description": "id",
+            "required": undefined,
+            "type": "string",
+          },
+          "is_delete": Object {
+            "default": undefined,
+            "description": "是否删除",
+            "required": undefined,
+            "type": "boolean",
+          },
+          "item_count_plan": Object {
+            "default": undefined,
+            "description": "计划品项数量",
+            "required": undefined,
+            "type": "integer",
+          },
+          "item_count_real": Object {
+            "default": undefined,
+            "description": "实际品项数量",
+            "required": undefined,
+            "type": "integer",
+          },
+          "order_id": Object {
+            "default": undefined,
+            "description": "补货订单id",
+            "required": undefined,
+            "type": "string",
+          },
+          "status": Object {
+            "default": undefined,
+            "description": "状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成",
+            "required": undefined,
+            "type": "integer",
+          },
+          "store_abbr_name": Object {
+            "default": undefined,
+            "description": "门店简称",
+            "required": undefined,
+            "type": "string",
+          },
+          "store_code": Object {
+            "default": undefined,
+            "description": "门店code",
+            "required": undefined,
+            "type": "integer",
+          },
+          "store_id": Object {
+            "default": undefined,
+            "description": "门店id",
+            "required": undefined,
+            "type": "string",
+          },
+          "store_name": Object {
+            "default": undefined,
+            "description": "门店名称",
+            "required": undefined,
+            "type": "string",
+          },
+          "time_create": Object {
+            "default": undefined,
+            "description": "创建时间",
+            "required": undefined,
+            "type": "integer",
+          },
+          "time_plan": Object {
+            "default": undefined,
+            "description": "计划到货时间",
+            "required": undefined,
+            "type": "integer",
+          },
+          "time_real": Object {
+            "default": undefined,
+            "description": "实际到货时间",
+            "required": undefined,
+            "type": "integer",
+          },
+          "time_update": Object {
+            "default": undefined,
+            "description": "更新时间",
+            "required": undefined,
+            "type": "integer",
+          },
+          "user_id_update": Object {
+            "default": undefined,
+            "description": "更新人id",
+            "required": undefined,
+            "type": "string",
+          },
+          "user_name_update": Object {
+            "default": undefined,
+            "description": "更新人名称",
+            "required": undefined,
+            "type": "string",
+          },
         },
-        "type": "array",
+        "type": "object",
       },
       "type": "array",
     },
-    "pager": Object {
-      "description": "",
-      "properties": Object {
-        "first_item_on_page": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "has_next_page": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "boolean",
-        },
-        "has_previous_page": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "boolean",
-        },
-        "is_first_page": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "boolean",
-        },
-        "is_last_page": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "boolean",
-        },
-        "last_item_on_page": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "page_count": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "page_number": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "page_size": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "total_item_count": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-      },
-      "type": "object",
-    },
+    "type": "array",
   },
-  "type": "object",
+  "isPageList": true,
 }
 `;
 
 exports[`测试Generate Response Data JsonSchemaFlowUnit 不包含body和path 1`] = `
 Object {
-  "body": Object {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "分页查找补货需求单: 3610401",
-    "properties": Object {},
-    "required": Array [],
+  "dataSchema": Object {
+    "description": undefined,
+    "items": Object {
+      "items": Object {
+        "description": "补货需求单，列表用",
+        "properties": Object {
+          "apply_no": Object {
+            "default": undefined,
+            "description": "需求单号",
+            "required": undefined,
+            "type": "string",
+          },
+          "apply_type": Object {
+            "default": undefined,
+            "description": "补货类型,10=旧版采购补货,20=总仓自动补货,30=DC仓采购补货(手动)",
+            "required": undefined,
+            "type": "integer",
+          },
+          "date_part_plan": Object {
+            "default": undefined,
+            "description": "计划到货时间段，10=白天，20=晚上",
+            "required": undefined,
+            "type": "integer",
+          },
+          "date_plan": Object {
+            "default": undefined,
+            "description": "计划到货日期",
+            "required": undefined,
+            "type": "integer",
+          },
+          "dc_abbr_name": Object {
+            "default": undefined,
+            "description": "总仓简称",
+            "required": undefined,
+            "type": "string",
+          },
+          "dc_id": Object {
+            "default": undefined,
+            "description": "总仓id",
+            "required": undefined,
+            "type": "string",
+          },
+          "dc_name": Object {
+            "default": undefined,
+            "description": "总仓名称",
+            "required": undefined,
+            "type": "string",
+          },
+          "id": Object {
+            "default": undefined,
+            "description": "id",
+            "required": undefined,
+            "type": "string",
+          },
+          "is_delete": Object {
+            "default": undefined,
+            "description": "是否删除",
+            "required": undefined,
+            "type": "boolean",
+          },
+          "item_count_plan": Object {
+            "default": undefined,
+            "description": "计划品项数量",
+            "required": undefined,
+            "type": "integer",
+          },
+          "item_count_real": Object {
+            "default": undefined,
+            "description": "实际品项数量",
+            "required": undefined,
+            "type": "integer",
+          },
+          "order_id": Object {
+            "default": undefined,
+            "description": "补货订单id",
+            "required": undefined,
+            "type": "string",
+          },
+          "status": Object {
+            "default": undefined,
+            "description": "状态，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成",
+            "required": undefined,
+            "type": "integer",
+          },
+          "store_abbr_name": Object {
+            "default": undefined,
+            "description": "门店简称",
+            "required": undefined,
+            "type": "string",
+          },
+          "store_code": Object {
+            "default": undefined,
+            "description": "门店code",
+            "required": undefined,
+            "type": "integer",
+          },
+          "store_id": Object {
+            "default": undefined,
+            "description": "门店id",
+            "required": undefined,
+            "type": "string",
+          },
+          "store_name": Object {
+            "default": undefined,
+            "description": "门店名称",
+            "required": undefined,
+            "type": "string",
+          },
+          "time_create": Object {
+            "default": undefined,
+            "description": "创建时间",
+            "required": undefined,
+            "type": "integer",
+          },
+          "time_plan": Object {
+            "default": undefined,
+            "description": "计划到货时间",
+            "required": undefined,
+            "type": "integer",
+          },
+          "time_real": Object {
+            "default": undefined,
+            "description": "实际到货时间",
+            "required": undefined,
+            "type": "integer",
+          },
+          "time_update": Object {
+            "default": undefined,
+            "description": "更新时间",
+            "required": undefined,
+            "type": "integer",
+          },
+          "user_id_update": Object {
+            "default": undefined,
+            "description": "更新人id",
+            "required": undefined,
+            "type": "string",
+          },
+          "user_name_update": Object {
+            "default": undefined,
+            "description": "更新人名称",
+            "required": undefined,
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+      "type": "array",
+    },
+    "type": "array",
   },
-  "path": Object {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "分页查找补货需求单: 3610401",
-    "properties": Object {},
-    "required": Array [],
-  },
-  "query": Object {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "分页查找补货需求单: 3610401",
-    "properties": Object {
-      "applyNo": Object {
-        "description": "需求单号",
-        "type": "string",
-      },
-      "page": Object {
-        "description": "第几页(0..N)",
-        "type": "integer",
-      },
-      "size": Object {
-        "description": "每页大小",
-        "type": "integer",
-      },
-      "sort": Object {
-        "description": "排序，格式: property(,asc|desc). 默认升序. ",
-        "items": Object {
-          "description": "item-暂无",
+  "isPageList": true,
+}
+`;
+
+exports[`测试Generate Response Data JsonSchemaFlowUnit 分页list响应 1`] = `
+Object {
+  "dataSchema": Object {
+    "description": undefined,
+    "items": Object {
+      "description": "AfterSaleBoxListVO",
+      "properties": Object {
+        "box_mark": Object {
+          "default": undefined,
+          "description": "箱号，如1/3",
+          "required": undefined,
           "type": "string",
         },
-        "type": "array",
+        "box_num": Object {
+          "default": undefined,
+          "description": "退货箱编号",
+          "required": undefined,
+          "type": "string",
+        },
+        "box_status": Object {
+          "default": undefined,
+          "description": "处理状态，10=待装车，20=已装车，30=待接收，40=已接收，50=已存放，60=待取货，70=已取货，80=已退换",
+          "required": undefined,
+          "type": "integer",
+        },
+        "id": Object {
+          "default": undefined,
+          "description": "退货箱id",
+          "required": undefined,
+          "type": "string",
+        },
+        "service_id": Object {
+          "default": undefined,
+          "description": "售后单id",
+          "required": undefined,
+          "type": "string",
+        },
+        "service_num": Object {
+          "default": undefined,
+          "description": "售后单编号",
+          "required": undefined,
+          "type": "string",
+        },
+        "service_type": Object {
+          "default": undefined,
+          "description": "退换类型，0=换货,20=退货",
+          "required": undefined,
+          "type": "integer",
+        },
+        "shelf_code": Object {
+          "default": undefined,
+          "description": "存放库位",
+          "required": undefined,
+          "type": "string",
+        },
+        "status_after_sale": Object {
+          "default": undefined,
+          "description": "售后方式，10=门店处理，20=总仓处理",
+          "required": undefined,
+          "type": "integer",
+        },
+        "supplier_code": Object {
+          "default": undefined,
+          "description": "供应商编号",
+          "required": undefined,
+          "type": "integer",
+        },
+        "supplier_id": Object {
+          "default": undefined,
+          "description": "供应商ID",
+          "required": undefined,
+          "type": "string",
+        },
+        "supplier_name": Object {
+          "default": undefined,
+          "description": "供应商名称",
+          "required": undefined,
+          "type": "string",
+        },
+        "supplier_name_abbr": Object {
+          "default": undefined,
+          "description": "供应商简称",
+          "required": undefined,
+          "type": "string",
+        },
       },
-      "status": Object {
-        "description": "状态,-1=全部，1=草稿，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成 ，120=未完成  200=删除",
-        "type": "integer",
-      },
-      "storeId": Object {
-        "description": "门店id",
-        "type": "string",
-      },
-      "timeCreateFrom": Object {
-        "description": "创建时间开始",
-        "type": "integer",
-      },
-      "timeCreateTo": Object {
-        "description": "创建时间结束",
-        "type": "integer",
-      },
+      "type": "object",
     },
-    "required": Array [
-      "page",
-      "size",
-    ],
+    "type": "array",
   },
+  "isPageList": true,
 }
 `;
 
 exports[`测试Generate Response Data JsonSchemaFlowUnit 只包含body+header 1`] = `
 Object {
-  "body": Object {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "新增补货订单: 3610116",
+  "dataSchema": Object {
+    "description": undefined,
     "properties": Object {
-      "saveRo": Object {
-        "description": "saveRo",
+      "apply_count": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "apply_count_finish": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "apply_type": Object {
+        "default": undefined,
+        "description": "补货类型：20=总仓自动补货，30=DC仓采购补货",
+        "required": undefined,
+        "type": "integer",
+      },
+      "batch_count": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "batch_type": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "date_part_plan": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "date_plan": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "dc_id": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "dc_name": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "has_deleted": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "boolean",
+      },
+      "id": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "item_count": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "num": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "overview": Object {
+        "description": "概览信息",
         "properties": Object {
-          "batch_type": Object {
-            "description": "商品批次类型，0正常商品/10优惠品",
-            "type": "integer",
-          },
-          "dc_id": Object {
-            "description": "总仓id",
-            "type": "string",
-          },
-          "remark": Object {
-            "description": "备注",
-            "type": "string",
-          },
-          "replenish_store_list": Object {
-            "description": "门店补货计划",
-            "items": Object {
-              "description": "门店补货商品",
-              "properties": Object {
-                "apply_detail_id": Object {
-                  "description": "需求明细id",
-                  "type": "string",
-                },
-                "day_arrive_expect": Object {
-                  "description": "到货周期/预计到货天数",
-                  "type": "integer",
-                },
-                "day_arrive_sale_sum": Object {
-                  "description": "到货期内的销量",
-                  "type": "integer",
-                },
-                "day_sale": Object {
-                  "description": "售卖周期/售卖天数",
-                  "type": "integer",
-                },
-                "is_query_cache": Object {
-                  "description": "是否缓存数据",
-                  "type": "boolean",
-                },
-                "num_on_the_way": Object {
-                  "description": "在途数",
-                  "type": "integer",
-                },
-                "num_on_the_way_old": Object {
-                  "description": "在途数",
-                  "type": "integer",
-                },
-                "period_arrive": Object {
-                  "description": "到货时间段",
-                  "type": "integer",
-                },
-                "product_count_correct": Object {
-                  "description": "校正补货数",
-                  "type": "integer",
-                },
-                "product_id": Object {
-                  "description": "商品id",
-                  "type": "string",
-                },
-                "replenish_coefficient": Object {
-                  "description": "补货系数",
-                  "type": "number",
-                },
-                "replenish_count": Object {
-                  "description": "补货数",
-                  "type": "integer",
-                },
-                "replenish_count_adjust": Object {
-                  "description": "调整后补货数",
-                  "type": "integer",
-                },
-                "replenish_count_correct": Object {
-                  "description": "校正补货数",
-                  "type": "integer",
-                },
-                "replenish_count_handled": Object {
-                  "description": "已操作数",
-                  "type": "integer",
-                },
-                "replenish_count_suggest": Object {
-                  "description": "建议补货数",
-                  "type": "integer",
-                },
-                "sale_num_day_safe": Object {
-                  "description": "每天预计销量/安全销量",
-                  "type": "number",
-                },
-                "sale_num_sum": Object {
-                  "description": "总预计销量/总安全销量",
-                  "type": "integer",
-                },
-                "sale_recently_week": Object {
-                  "description": "近7天销量",
-                  "type": "integer",
-                },
-                "sale_yesterday": Object {
-                  "description": "昨日销量",
-                  "type": "integer",
-                },
-                "stock_quantity": Object {
-                  "description": "当前库存",
-                  "type": "integer",
-                },
-                "stock_quantity_old": Object {
-                  "description": "当时库存",
-                  "type": "integer",
-                },
-                "store_abbr_name": Object {
-                  "description": "门店简称",
-                  "type": "string",
-                },
-                "store_code": Object {
-                  "description": "门店code",
-                  "type": "integer",
-                },
-                "store_id": Object {
-                  "description": "门店id",
-                  "type": "string",
-                },
-                "store_name": Object {
-                  "description": "门店名称",
-                  "type": "string",
-                },
-                "store_product_id": Object {
-                  "description": "网点商品id",
-                  "type": "string",
-                },
+          "base_info": Object {
+            "description": "基本信息",
+            "properties": Object {
+              "collect_count": Object {
+                "default": undefined,
+                "description": "集货数",
+                "required": undefined,
+                "type": "integer",
               },
-              "type": "object",
+              "item_count": Object {
+                "default": undefined,
+                "description": "品项数",
+                "required": undefined,
+                "type": "integer",
+              },
+              "order_count": Object {
+                "default": undefined,
+                "description": "波次数",
+                "required": undefined,
+                "type": "integer",
+              },
+              "order_list": Object {
+                "description": "波次列表",
+                "items": undefined,
+                "type": "array",
+              },
+              "store_count": Object {
+                "default": undefined,
+                "description": "门店数",
+                "required": undefined,
+                "type": "integer",
+              },
+              "time_group": Object {
+                "default": undefined,
+                "description": "小时",
+                "required": undefined,
+                "type": "integer",
+              },
+              "volume": Object {
+                "default": undefined,
+                "description": "体积(m³)",
+                "required": undefined,
+                "type": "integer",
+              },
+              "weight": Object {
+                "default": undefined,
+                "description": "重量(g)",
+                "required": undefined,
+                "type": "integer",
+              },
             },
-            "type": "array",
+            "type": "object",
           },
-          "status": Object {
-            "description": "状态，0=草稿，10=确认/待集货",
+          "process": Object {
+            "description": "进度动态",
+            "properties": Object {
+              "collect_progress": Object {
+                "default": undefined,
+                "description": "集货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "collect_progress_relative": Object {
+                "default": undefined,
+                "description": "相对集货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "collect_sum_correct": Object {
+                "default": undefined,
+                "description": "校正集货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "collect_sum_pending": Object {
+                "default": undefined,
+                "description": "待处理集货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "collect_sum_plan": Object {
+                "default": undefined,
+                "description": "计划集货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "collect_sum_real": Object {
+                "default": undefined,
+                "description": "实际集货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "delivery_progress": Object {
+                "default": undefined,
+                "description": "出货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "delivery_progress_relative": Object {
+                "default": undefined,
+                "description": "相对出货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "delivery_sum_real": Object {
+                "default": undefined,
+                "description": "实际出货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "distribute_progress": Object {
+                "default": undefined,
+                "description": "分货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "distribute_progress_relative": Object {
+                "default": undefined,
+                "description": "相对分货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "distribute_sum_real": Object {
+                "default": undefined,
+                "description": "实际分货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "order_progress": Object {
+                "default": undefined,
+                "description": "波次创建进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "receive_progress": Object {
+                "default": undefined,
+                "description": "收货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "receive_progress_relative": Object {
+                "default": undefined,
+                "description": "相对收货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "receive_sum_real": Object {
+                "default": undefined,
+                "description": "实际入库数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+            },
+            "type": "object",
+          },
+        },
+        "type": "object",
+      },
+      "progress": Object {
+        "description": "进度",
+        "properties": Object {
+          "collect_progress": Object {
+            "default": undefined,
+            "description": "集货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "collect_progress_relative": Object {
+            "default": undefined,
+            "description": "相对集货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "collect_sum_correct": Object {
+            "default": undefined,
+            "description": "校正集货数总和",
+            "required": undefined,
             "type": "integer",
           },
-          "time_plan_arrival": Object {
-            "description": "计划送达时间",
+          "collect_sum_pending": Object {
+            "default": undefined,
+            "description": "待处理集货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "collect_sum_plan": Object {
+            "default": undefined,
+            "description": "计划集货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "collect_sum_real": Object {
+            "default": undefined,
+            "description": "实际集货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "delivery_progress": Object {
+            "default": undefined,
+            "description": "出货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "delivery_progress_relative": Object {
+            "default": undefined,
+            "description": "相对出货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "delivery_sum_real": Object {
+            "default": undefined,
+            "description": "实际出货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "distribute_progress": Object {
+            "default": undefined,
+            "description": "分货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "distribute_progress_relative": Object {
+            "default": undefined,
+            "description": "相对分货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "distribute_sum_real": Object {
+            "default": undefined,
+            "description": "实际分货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "order_progress": Object {
+            "default": undefined,
+            "description": "波次创建进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "receive_progress": Object {
+            "default": undefined,
+            "description": "收货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "receive_progress_relative": Object {
+            "default": undefined,
+            "description": "相对收货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "receive_sum_real": Object {
+            "default": undefined,
+            "description": "实际入库数总和",
+            "required": undefined,
             "type": "integer",
           },
         },
         "type": "object",
       },
+      "remark": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "status": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "time_create": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "time_plan": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "time_update": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "user_id_create": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "user_id_update": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "user_name_create": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "user_name_update": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
     },
-    "required": Array [],
+    "type": "object",
   },
-  "path": Object {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "新增补货订单: 3610116",
-    "properties": Object {},
-    "required": Array [],
-  },
-  "query": Object {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "新增补货订单: 3610116",
-    "properties": Object {},
-    "required": Array [],
-  },
+  "isPageList": false,
 }
 `;
 
 exports[`测试Generate Response Data JsonSchemaFlowUnit 循环-3610116 1`] = `
 Object {
-  "description": "",
-  "properties": Object {
-    "data": Object {
-      "description": undefined,
-      "properties": Object {
-        "apply_count": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "apply_count_finish": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "apply_type": Object {
-          "default": undefined,
-          "description": "补货类型：20=总仓自动补货，30=DC仓采购补货",
-          "required": undefined,
-          "type": "integer",
-        },
-        "batch_count": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "batch_type": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "date_part_plan": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "date_plan": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "dc_id": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
-        "dc_name": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
-        "has_deleted": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "boolean",
-        },
-        "id": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
-        "item_count": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "num": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
-        "overview": Object {
-          "description": "概览信息",
-          "properties": Object {
-            "base_info": Object {
-              "description": "基本信息",
-              "properties": Object {
-                "collect_count": Object {
-                  "default": undefined,
-                  "description": "集货数",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "item_count": Object {
-                  "default": undefined,
-                  "description": "品项数",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "order_count": Object {
-                  "default": undefined,
-                  "description": "波次数",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "order_list": Object {
-                  "description": "波次列表",
-                  "items": undefined,
-                  "type": "array",
-                },
-                "store_count": Object {
-                  "default": undefined,
-                  "description": "门店数",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "time_group": Object {
-                  "default": undefined,
-                  "description": "小时",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "volume": Object {
-                  "default": undefined,
-                  "description": "体积(m³)",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "weight": Object {
-                  "default": undefined,
-                  "description": "重量(g)",
-                  "required": undefined,
-                  "type": "integer",
-                },
-              },
-              "type": "object",
-            },
-            "process": Object {
-              "description": "进度动态",
-              "properties": Object {
-                "collect_progress": Object {
-                  "default": undefined,
-                  "description": "集货进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "collect_progress_relative": Object {
-                  "default": undefined,
-                  "description": "相对集货进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "collect_sum_correct": Object {
-                  "default": undefined,
-                  "description": "校正集货数总和",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "collect_sum_pending": Object {
-                  "default": undefined,
-                  "description": "待处理集货数总和",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "collect_sum_plan": Object {
-                  "default": undefined,
-                  "description": "计划集货数总和",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "collect_sum_real": Object {
-                  "default": undefined,
-                  "description": "实际集货数总和",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "delivery_progress": Object {
-                  "default": undefined,
-                  "description": "出货进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "delivery_progress_relative": Object {
-                  "default": undefined,
-                  "description": "相对出货进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "delivery_sum_real": Object {
-                  "default": undefined,
-                  "description": "实际出货数总和",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "distribute_progress": Object {
-                  "default": undefined,
-                  "description": "分货进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "distribute_progress_relative": Object {
-                  "default": undefined,
-                  "description": "相对分货进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "distribute_sum_real": Object {
-                  "default": undefined,
-                  "description": "实际分货数总和",
-                  "required": undefined,
-                  "type": "integer",
-                },
-                "order_progress": Object {
-                  "default": undefined,
-                  "description": "波次创建进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "receive_progress": Object {
-                  "default": undefined,
-                  "description": "收货进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "receive_progress_relative": Object {
-                  "default": undefined,
-                  "description": "相对收货进度",
-                  "required": undefined,
-                  "type": "number",
-                },
-                "receive_sum_real": Object {
-                  "default": undefined,
-                  "description": "实际入库数总和",
-                  "required": undefined,
-                  "type": "integer",
-                },
-              },
-              "type": "object",
-            },
-          },
-          "type": "object",
-        },
-        "progress": Object {
-          "description": "进度",
-          "properties": Object {
-            "collect_progress": Object {
-              "default": undefined,
-              "description": "集货进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "collect_progress_relative": Object {
-              "default": undefined,
-              "description": "相对集货进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "collect_sum_correct": Object {
-              "default": undefined,
-              "description": "校正集货数总和",
-              "required": undefined,
-              "type": "integer",
-            },
-            "collect_sum_pending": Object {
-              "default": undefined,
-              "description": "待处理集货数总和",
-              "required": undefined,
-              "type": "integer",
-            },
-            "collect_sum_plan": Object {
-              "default": undefined,
-              "description": "计划集货数总和",
-              "required": undefined,
-              "type": "integer",
-            },
-            "collect_sum_real": Object {
-              "default": undefined,
-              "description": "实际集货数总和",
-              "required": undefined,
-              "type": "integer",
-            },
-            "delivery_progress": Object {
-              "default": undefined,
-              "description": "出货进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "delivery_progress_relative": Object {
-              "default": undefined,
-              "description": "相对出货进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "delivery_sum_real": Object {
-              "default": undefined,
-              "description": "实际出货数总和",
-              "required": undefined,
-              "type": "integer",
-            },
-            "distribute_progress": Object {
-              "default": undefined,
-              "description": "分货进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "distribute_progress_relative": Object {
-              "default": undefined,
-              "description": "相对分货进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "distribute_sum_real": Object {
-              "default": undefined,
-              "description": "实际分货数总和",
-              "required": undefined,
-              "type": "integer",
-            },
-            "order_progress": Object {
-              "default": undefined,
-              "description": "波次创建进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "receive_progress": Object {
-              "default": undefined,
-              "description": "收货进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "receive_progress_relative": Object {
-              "default": undefined,
-              "description": "相对收货进度",
-              "required": undefined,
-              "type": "number",
-            },
-            "receive_sum_real": Object {
-              "default": undefined,
-              "description": "实际入库数总和",
-              "required": undefined,
-              "type": "integer",
-            },
-          },
-          "type": "object",
-        },
-        "remark": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
-        "status": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "time_create": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "time_plan": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "time_update": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "integer",
-        },
-        "user_id_create": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
-        "user_id_update": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
-        "user_name_create": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
-        "user_name_update": Object {
-          "default": undefined,
-          "description": "",
-          "required": undefined,
-          "type": "string",
-        },
+  "dataSchema": Object {
+    "description": undefined,
+    "properties": Object {
+      "apply_count": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
       },
-      "type": "object",
+      "apply_count_finish": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "apply_type": Object {
+        "default": undefined,
+        "description": "补货类型：20=总仓自动补货，30=DC仓采购补货",
+        "required": undefined,
+        "type": "integer",
+      },
+      "batch_count": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "batch_type": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "date_part_plan": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "date_plan": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "dc_id": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "dc_name": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "has_deleted": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "boolean",
+      },
+      "id": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "item_count": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "num": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "overview": Object {
+        "description": "概览信息",
+        "properties": Object {
+          "base_info": Object {
+            "description": "基本信息",
+            "properties": Object {
+              "collect_count": Object {
+                "default": undefined,
+                "description": "集货数",
+                "required": undefined,
+                "type": "integer",
+              },
+              "item_count": Object {
+                "default": undefined,
+                "description": "品项数",
+                "required": undefined,
+                "type": "integer",
+              },
+              "order_count": Object {
+                "default": undefined,
+                "description": "波次数",
+                "required": undefined,
+                "type": "integer",
+              },
+              "order_list": Object {
+                "description": "波次列表",
+                "items": undefined,
+                "type": "array",
+              },
+              "store_count": Object {
+                "default": undefined,
+                "description": "门店数",
+                "required": undefined,
+                "type": "integer",
+              },
+              "time_group": Object {
+                "default": undefined,
+                "description": "小时",
+                "required": undefined,
+                "type": "integer",
+              },
+              "volume": Object {
+                "default": undefined,
+                "description": "体积(m³)",
+                "required": undefined,
+                "type": "integer",
+              },
+              "weight": Object {
+                "default": undefined,
+                "description": "重量(g)",
+                "required": undefined,
+                "type": "integer",
+              },
+            },
+            "type": "object",
+          },
+          "process": Object {
+            "description": "进度动态",
+            "properties": Object {
+              "collect_progress": Object {
+                "default": undefined,
+                "description": "集货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "collect_progress_relative": Object {
+                "default": undefined,
+                "description": "相对集货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "collect_sum_correct": Object {
+                "default": undefined,
+                "description": "校正集货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "collect_sum_pending": Object {
+                "default": undefined,
+                "description": "待处理集货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "collect_sum_plan": Object {
+                "default": undefined,
+                "description": "计划集货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "collect_sum_real": Object {
+                "default": undefined,
+                "description": "实际集货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "delivery_progress": Object {
+                "default": undefined,
+                "description": "出货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "delivery_progress_relative": Object {
+                "default": undefined,
+                "description": "相对出货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "delivery_sum_real": Object {
+                "default": undefined,
+                "description": "实际出货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "distribute_progress": Object {
+                "default": undefined,
+                "description": "分货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "distribute_progress_relative": Object {
+                "default": undefined,
+                "description": "相对分货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "distribute_sum_real": Object {
+                "default": undefined,
+                "description": "实际分货数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+              "order_progress": Object {
+                "default": undefined,
+                "description": "波次创建进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "receive_progress": Object {
+                "default": undefined,
+                "description": "收货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "receive_progress_relative": Object {
+                "default": undefined,
+                "description": "相对收货进度",
+                "required": undefined,
+                "type": "number",
+              },
+              "receive_sum_real": Object {
+                "default": undefined,
+                "description": "实际入库数总和",
+                "required": undefined,
+                "type": "integer",
+              },
+            },
+            "type": "object",
+          },
+        },
+        "type": "object",
+      },
+      "progress": Object {
+        "description": "进度",
+        "properties": Object {
+          "collect_progress": Object {
+            "default": undefined,
+            "description": "集货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "collect_progress_relative": Object {
+            "default": undefined,
+            "description": "相对集货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "collect_sum_correct": Object {
+            "default": undefined,
+            "description": "校正集货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "collect_sum_pending": Object {
+            "default": undefined,
+            "description": "待处理集货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "collect_sum_plan": Object {
+            "default": undefined,
+            "description": "计划集货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "collect_sum_real": Object {
+            "default": undefined,
+            "description": "实际集货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "delivery_progress": Object {
+            "default": undefined,
+            "description": "出货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "delivery_progress_relative": Object {
+            "default": undefined,
+            "description": "相对出货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "delivery_sum_real": Object {
+            "default": undefined,
+            "description": "实际出货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "distribute_progress": Object {
+            "default": undefined,
+            "description": "分货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "distribute_progress_relative": Object {
+            "default": undefined,
+            "description": "相对分货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "distribute_sum_real": Object {
+            "default": undefined,
+            "description": "实际分货数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+          "order_progress": Object {
+            "default": undefined,
+            "description": "波次创建进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "receive_progress": Object {
+            "default": undefined,
+            "description": "收货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "receive_progress_relative": Object {
+            "default": undefined,
+            "description": "相对收货进度",
+            "required": undefined,
+            "type": "number",
+          },
+          "receive_sum_real": Object {
+            "default": undefined,
+            "description": "实际入库数总和",
+            "required": undefined,
+            "type": "integer",
+          },
+        },
+        "type": "object",
+      },
+      "remark": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "status": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "time_create": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "time_plan": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "time_update": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "integer",
+      },
+      "user_id_create": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "user_id_update": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "user_name_create": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
+      "user_name_update": Object {
+        "default": undefined,
+        "description": "",
+        "required": undefined,
+        "type": "string",
+      },
     },
+    "type": "object",
   },
-  "type": "object",
+  "isPageList": false,
 }
 `;
 
 exports[`测试Generate Response Data JsonSchemaFlowUnit 非list 1`] = `
 Object {
-  "properties": Object {
-    "data": Object {
-      "description": "",
-      "properties": Object {},
-      "type": "object",
-    },
+  "dataSchema": Object {
+    "description": undefined,
+    "properties": Object {},
+    "type": "object",
   },
-  "type": "object",
+  "isPageList": false,
 }
 `;

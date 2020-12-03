@@ -160,11 +160,7 @@ export interface IBPager {
 `;
 
 exports[`测试InterfaceGenerateFlowUnit-response 3610116的响应-循环引用 1`] = `
-"export interface IFRegionInfo {
-    data?: IFData;
-}
-
-export interface IFData {
+"export interface IFRegionIndo {
     applyCount?:       number;
     applyCountFinish?: number;
     /**
@@ -395,16 +391,10 @@ export interface IFProgress {
 `;
 
 exports[`测试InterfaceGenerateFlowUnit-response 3610401的响应-包含数组 1`] = `
-"export interface IBDemo {
-    count?: number;
-    data?:  IBArray<IBDatum[]>;
-    pager?: IBPager;
-}
-
-/**
+"/**
  * 补货需求单，列表用
  */
-export interface IBDatum {
+export interface IBRegionIndo {
     /**
      * 需求单号
      */
@@ -497,34 +487,15 @@ export interface IBDatum {
      * 更新人名称
      */
     user_name_update?: string;
-}
-
-export interface IBPager {
-    first_item_on_page?: number;
-    has_next_page?:      boolean;
-    has_previous_page?:  boolean;
-    is_first_page?:      boolean;
-    is_last_page?:       boolean;
-    last_item_on_page?:  number;
-    page_count?:         number;
-    page_number?:        number;
-    page_size?:          number;
-    total_item_count?:   number;
 }
 "
 `;
 
 exports[`测试InterfaceGenerateFlowUnit-response 不修改property 1`] = `
-"export interface IBDemo {
-    count?: number;
-    data?:  IBArray<IBDatum[]>;
-    pager?: IBPager;
-}
-
-/**
+"/**
  * 补货需求单，列表用
  */
-export interface IBDatum {
+export interface IBRegionIndo {
     /**
      * 需求单号
      */
@@ -617,19 +588,6 @@ export interface IBDatum {
      * 更新人名称
      */
     user_name_update?: string;
-}
-
-export interface IBPager {
-    first_item_on_page?: number;
-    has_next_page?:      boolean;
-    has_previous_page?:  boolean;
-    is_first_page?:      boolean;
-    is_last_page?:       boolean;
-    last_item_on_page?:  number;
-    page_count?:         number;
-    page_number?:        number;
-    page_size?:          number;
-    total_item_count?:   number;
 }
 "
 `;

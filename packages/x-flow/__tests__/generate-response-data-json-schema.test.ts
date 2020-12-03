@@ -95,7 +95,7 @@ describe('测试Generate Response Data JsonSchemaFlowUnit', () => {
     const codeParseUnit = new ParseRequestCodeFlowUnit();
     const swaggerParseUnit = new SwaggerParseFlowUnit();
 
-    const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
+    const frpUnit = new GenerateResponseDataSchemaFlowUnit();
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
@@ -119,7 +119,31 @@ describe('测试Generate Response Data JsonSchemaFlowUnit', () => {
     const codeParseUnit = new ParseRequestCodeFlowUnit();
     const swaggerParseUnit = new SwaggerParseFlowUnit();
 
-    const frpUnit = new GenerateRequestParamsJsonSchemaFlowUnit();
+    const frpUnit = new GenerateResponseDataSchemaFlowUnit();
+
+    fc.addUnit(collectOutputUnit);
+    fc.addUnit(codeParseUnit);
+    fc.addUnit(swaggerParseUnit);
+    fc.addUnit(frpUnit);
+
+    const result = await fc.run();
+    expect(result).toMatchSnapshot();
+  });
+
+  test('分页list响应', async () => {
+    const fc = new XFlowController();
+
+    const collectOutputUnit = new CollectOutputFlowUnit();
+
+    const outputCodeUnit = new SpecialOutputFlowUnit('3783510');
+    const outputOpenAPIUnit = new SpecialOutputFlowUnit(OpenAPIData);
+    collectOutputUnit.addUnit(outputCodeUnit);
+    collectOutputUnit.addUnit(outputOpenAPIUnit);
+
+    const codeParseUnit = new ParseRequestCodeFlowUnit();
+    const swaggerParseUnit = new SwaggerParseFlowUnit();
+
+    const frpUnit = new GenerateResponseDataSchemaFlowUnit();
 
     fc.addUnit(collectOutputUnit);
     fc.addUnit(codeParseUnit);
