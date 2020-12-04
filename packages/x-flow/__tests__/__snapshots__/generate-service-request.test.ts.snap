@@ -79,77 +79,9 @@ export async function getDemoRequest(replenishId: string, queryParams: IFDemoReq
 `;
 
 exports[`测试generate-service-request code 3610401 get 数组/ ListResponse --class adapt 1`] = `
-"export interface IFDemoRequestQueryParamsObject {
-  /**
-   * 需求单号
-   */
-  applyNo?: string;
-  /**
-   * 第几页(0..N)
-   */
-  page: number;
-  /**
-   * 每页大小
-   */
-  size: number;
-  /**
-   * 排序，格式: property(,asc|desc). 默认升序.
-   */
-  sort?: string[];
-  /**
-   * 状态,-1=全部，1=草稿，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成 ，120=未完成  200=删除
-   */
-  status?: number;
-  /**
-   * 门店id
-   */
-  storeId?: string;
-  /**
-   * 创建时间开始
-   */
-  timeCreateFrom?: number;
-  /**
-   * 创建时间结束
-   */
-  timeCreateTo?: number;
-}
+"import lodash from 'lodash';
 
-interface IBDemoRequestQueryParamsObject {
-  /**
-   * 需求单号
-   */
-  applyNo?: string;
-  /**
-   * 第几页(0..N)
-   */
-  page: number;
-  /**
-   * 每页大小
-   */
-  size: number;
-  /**
-   * 排序，格式: property(,asc|desc). 默认升序.
-   */
-  sort?: string[];
-  /**
-   * 状态,-1=全部，1=草稿，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成 ，120=未完成  200=删除
-   */
-  status?: number;
-  /**
-   * 门店id
-   */
-  storeId?: string;
-  /**
-   * 创建时间开始
-   */
-  timeCreateFrom?: number;
-  /**
-   * 创建时间结束
-   */
-  timeCreateTo?: number;
-}
-
-export class CFRegionInfoDemoInfo {
+export class CFRegionInfoDemoInfo extends CBasicModel {
   /**
    * 需求单号
    */
@@ -333,6 +265,80 @@ export class CFRegionInfoDemoInfo {
     name: 'user_name_update',
   })
   userNameUpdate: string | undefined;
+
+  clone(): this {
+    return lodash.cloneDeep(this);
+  }
+}
+
+export interface IFDemoRequestQueryParamsObject {
+  /**
+   * 需求单号
+   */
+  applyNo?: string;
+  /**
+   * 第几页(0..N)
+   */
+  page: number;
+  /**
+   * 每页大小
+   */
+  size: number;
+  /**
+   * 排序，格式: property(,asc|desc). 默认升序.
+   */
+  sort?: string[];
+  /**
+   * 状态,-1=全部，1=草稿，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成 ，120=未完成  200=删除
+   */
+  status?: number;
+  /**
+   * 门店id
+   */
+  storeId?: string;
+  /**
+   * 创建时间开始
+   */
+  timeCreateFrom?: number;
+  /**
+   * 创建时间结束
+   */
+  timeCreateTo?: number;
+}
+
+interface IBDemoRequestQueryParamsObject {
+  /**
+   * 需求单号
+   */
+  applyNo?: string;
+  /**
+   * 第几页(0..N)
+   */
+  page: number;
+  /**
+   * 每页大小
+   */
+  size: number;
+  /**
+   * 排序，格式: property(,asc|desc). 默认升序.
+   */
+  sort?: string[];
+  /**
+   * 状态,-1=全部，1=草稿，10=待发送，20=待发货，30=待收货，40=到货中，50=已完成 ，120=未完成  200=删除
+   */
+  status?: number;
+  /**
+   * 门店id
+   */
+  storeId?: string;
+  /**
+   * 创建时间开始
+   */
+  timeCreateFrom?: number;
+  /**
+   * 创建时间结束
+   */
+  timeCreateTo?: number;
 }
 
 /**
@@ -436,7 +442,6 @@ interface IBRegionInfoDemoInfo {
 function toIFRegionInfoDemoInfoAdaptorFunc(bInfo: any[]) {
   const result = plainToClass(IFRegionInfoDemoInfo, bInfo, {
     excludeExtraneousValues: true,
-    groups: 'always',
   });
 
   return result.filter(item => item.isParsedCorrect());
@@ -1068,7 +1073,9 @@ export async function updateDemoRequest(id: string, bodyParams: IFDemoRequestBod
 `;
 
 exports[`测试generate-service-request code 3610412 get 数组/CommonResponse--class adaptr 1`] = `
-"export class CFRegionInfoDemoInfo {
+"import lodash from 'lodash';
+
+export class CFRegionInfoDemoInfo extends CBasicModel {
   @Expose({
     name: 'apply_detail_id',
   })
@@ -1268,6 +1275,10 @@ exports[`测试generate-service-request code 3610412 get 数组/CommonResponse--
     name: 'user_name_update',
   })
   userNameUpdate: string | undefined;
+
+  clone(): this {
+    return lodash.cloneDeep(this);
+  }
 }
 
 /**
@@ -1319,7 +1330,6 @@ interface IBRegionInfoDemoInfo {
 function toIFRegionInfoDemoInfoAdaptorFunc(bInfo: any[]) {
   const result = plainToClass(IFRegionInfoDemoInfo, bInfo, {
     excludeExtraneousValues: true,
-    groups: 'always',
   });
 
   return result.filter(item => item.isParsedCorrect());

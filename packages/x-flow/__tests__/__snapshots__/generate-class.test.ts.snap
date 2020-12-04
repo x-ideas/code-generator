@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`测试 generate class 一个interface 1`] = `
-"export class Crogress {
+"import lodash from \\"lodash\\";
+
+export class CProgress extends CBasicModel {
   /**
    * 集货进度
    */
@@ -129,5 +131,9 @@ exports[`测试 generate class 一个interface 1`] = `
     name: \\"receive_sum_real\\"
   })
   receiveSumReal: number | undefined;
+
+  clone(): this {
+    return lodash.cloneDeep(this);
+  }
 }"
 `;

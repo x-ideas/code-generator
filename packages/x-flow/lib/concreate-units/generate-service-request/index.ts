@@ -381,7 +381,9 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
     }
 
     return `
+      ${isClassAdapt ? classDefines : ''}
 
+      
       ${!disableAdapt ? result.fQueryInterface : ''}
       ${result.bQueryInterface}
 
@@ -389,7 +391,7 @@ export class GenerateServiceRequestFlowUnit extends XFlowUnit {
       ${!disableAdapt ? result.fBodyInterface : ''}
       ${result.bBodyInterface}
 
-      ${isClassAdapt ? classDefines : ''}
+
       ${isInterfaceAdapt ? result.fResponseInterface : ''}
 
       ${result.bResponseInterface}

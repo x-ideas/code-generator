@@ -59,21 +59,6 @@ export class InterfaceGenerateFlowUnit extends XFlowUnit {
 
     const prefix = this.#options.nicePropertyName ? this.#options.fInterfacePrefix ?? 'IF' : this.#options.bInterfacePrefix ?? 'IB';
 
-    // 给所有的interface 名字添加前缀
-    // for (let i = 0; i < lines.length; i++) {
-    //   const str = lines[i];
-    //   if (str.match('interface')) {
-    //     const elements = str.split(' ');
-
-    //     for (let index = 1; index < elements.length; index++) {
-    //       if (elements[index - 1] === 'interface') {
-    //         elements[index] = prefix + lodash.capitalize(elements[index]);
-    //       }
-    //     }
-    //     lines[i] = elements.join(' ');
-    //   }
-    // }
-
     const replace1 = jscodeshift(lines.join('\n'), {
       parser: parserConfig(),
     })

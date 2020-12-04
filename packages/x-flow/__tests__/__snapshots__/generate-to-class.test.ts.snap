@@ -4,8 +4,7 @@ exports[`测试generate-to-class-adaptor 测试1 1`] = `
 Object {
   "func": "function toDemoAdaptorFunc(bInfo: any[]) {
   const result = plainToClass(Demo, bInfo, {
-    excludeExtraneousValues: true,
-    groups: \\"always\\"
+    excludeExtraneousValues: true
   });
 
   return result.filter(item => item.isParsedCorrect());

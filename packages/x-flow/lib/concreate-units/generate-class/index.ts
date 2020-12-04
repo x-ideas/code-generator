@@ -5,7 +5,6 @@
  *  将interface生成前端class定义的FlowUnit
  */
 
-import * as babelParser from '@babel/parser';
 import lodash from 'lodash';
 
 import { XFlowUnit } from '../../flow-unit';
@@ -38,7 +37,7 @@ export class GenerateClassFlowUnit extends XFlowUnit {
       const classDeclaration = generateClassDeclaration(path, {
         convertedFromNiceFormat: this.#convertedFromNiceFormat,
       });
-      newProgram.get('body').value.push(classDeclaration);
+      newProgram.get('body').value.push(...classDeclaration);
     });
 
     return newCollection;
@@ -306,26 +305,60 @@ function generateClassPropertyFromInterfaceProperty(
   return null;
 }
 
+function generateCloneFunc(): jscodeshift.MethodDefinition {
+  return jscodeshift.methodDefinition(
+    'method',
+    jscodeshift.identifier('clone'),
+    jscodeshift.functionExpression.from({
+      comments: [jscodeshift.commentBlock('克隆对象，对于class对象来说，请在调用时使用其clone方法去代替...运算符')],
+      returnType: jscodeshift.tsTypeAnnotation(jscodeshift.tsThisType()),
+      body: jscodeshift.blockStatement([
+        jscodeshift.returnStatement(
+          jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('lodash'), jscodeshift.identifier('cloneDeep')), [
+            jscodeshift.identifier('this'),
+          ])
+        ),
+      ]),
+      params: [],
+    })
+  );
+}
+
+function importLodashSentence(): jscodeshift.ImportDeclaration {
+  return jscodeshift.importDeclaration([jscodeshift.importDefaultSpecifier(jscodeshift.identifier('lodash'))], jscodeshift.literal('lodash'));
+}
+
 /**
  * 生成class声明
  * @param {string} className
  * @param {jscodeshift.TSPropertySignature[]} properties
- * @returns {jscodeshift.ExportNamedDeclaration}
+ * @returns {jscodeshift.Program}
  */
 function generateClassDeclaration(
   interfaceDeclaration: jscodeshift.ASTPath<jscodeshift.TSInterfaceDeclaration>,
   options: {
     convertedFromNiceFormat: boolean;
   }
-): jscodeshift.ExportNamedDeclaration {
+): K.StatementKind[] {
   const interfaceName: string = jscodeshift(interfaceDeclaration).get('id', 'name').value;
   const properties = jscodeshift(interfaceDeclaration).get('body', 'body').value;
 
   // @ts-ignore
   const cProperties = properties.map(prop => generateClassPropertyFromInterfaceProperty(prop, options));
 
+  // clone方法
+  const methods = [generateCloneFunc()];
+
   // 将第一个I替换成C
-  return jscodeshift.exportNamedDeclaration(
-    jscodeshift.classDeclaration(jscodeshift.identifier(`C${interfaceName.slice(1)}`), jscodeshift.classBody(cProperties))
-  );
+
+  return [
+    importLodashSentence(),
+    jscodeshift.exportNamedDeclaration(
+      jscodeshift.classDeclaration(
+        jscodeshift.identifier(`C${interfaceName.slice(1)}`),
+        jscodeshift.classBody([...cProperties, ...methods]),
+        jscodeshift.identifier('CBasicModel')
+      )
+    ),
+  ];
 }

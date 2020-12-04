@@ -64,13 +64,6 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
       ])
     );
 
-    [
-      jscodeshift.arrowFunctionExpression(
-        [jscodeshift.identifier('item')],
-        jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('item'), jscodeshift.identifier('isParsedCorrect')), [])
-      ),
-    ];
-
     // funcDeclaration.returnType = jscodeshift.typeAnnotation(jscodeshift.iterface(jscodeshift.identifier('dd')));
     return funcDeclaration;
   }
@@ -94,14 +87,14 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
               jscodeshift.identifier('bInfo'),
               jscodeshift.objectExpression([
                 jscodeshift.property('init', jscodeshift.identifier('excludeExtraneousValues'), jscodeshift.literal(true)),
-                jscodeshift.property(
-                  'init',
-                  jscodeshift.identifier('groups'),
-                  jscodeshift.stringLiteral('always')
-                  // jscodeshift.arrayExpression([
-                  //   jscodeshift.memberExpression(jscodeshift.identifier('EExportGroup'), jscodeshift.identifier('Always')),
-                  // ])
-                ),
+                // jscodeshift.property(
+                //   'init',
+                //   jscodeshift.identifier('groups'),
+                //   jscodeshift.stringLiteral('always')
+                //   // jscodeshift.arrayExpression([
+                //   //   jscodeshift.memberExpression(jscodeshift.identifier('EExportGroup'), jscodeshift.identifier('Always')),
+                //   // ])
+                // ),
               ]),
             ])
           ),
@@ -116,13 +109,6 @@ export class GenerateToClassAdaptorFlowUnit extends XFlowUnit {
         ),
       ])
     );
-
-    [
-      jscodeshift.arrowFunctionExpression(
-        [jscodeshift.identifier('item')],
-        jscodeshift.callExpression(jscodeshift.memberExpression(jscodeshift.identifier('item'), jscodeshift.identifier('isParsedCorrect')), [])
-      ),
-    ];
 
     // funcDeclaration.returnType = jscodeshift.typeAnnotation(jscodeshift.iterface(jscodeshift.identifier('dd')));
     return funcDeclaration;

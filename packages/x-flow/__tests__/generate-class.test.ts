@@ -5,7 +5,7 @@ describe('测试 generate class', () => {
     const str = `      /**
        * 进度
        */
-      export interface Progress {
+      export interface IProgress {
           /**
            * 集货进度
            */
